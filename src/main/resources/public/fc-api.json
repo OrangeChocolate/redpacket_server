@@ -1,0 +1,3294 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "FC-API Swagger Documentation",
+        "version": "2.0",
+        "title": "FC-API Swagger Documentation",
+        "termsOfService": "http://www.ynu.edu.cn",
+        "contact": {
+            "name": "liudonghua",
+            "url": "liudonghua.com",
+            "email": "liudonghua123@gmail.com"
+        },
+        "license": {
+            "name": "Apache License Version 2.0",
+            "url": "https://www.apache.org/licenses/LICENSE-2.0"
+        }
+    },
+    "host": "localhost:8080",
+    "basePath": "/",
+    "tags": [{
+        "name": "site-controller",
+        "description": "Site Controller"
+    }, {
+        "name": "auth-controller",
+        "description": "Auth Controller"
+    }, {
+        "name": "alarm",
+        "description": "Alarm Controller"
+    }, {
+        "name": "volume-controller",
+        "description": "Volume Controller"
+    }, {
+        "name": "cluster-controller",
+        "description": "Cluster Controller"
+    }, {
+        "name": "data-storage-controller",
+        "description": "Data Storage Controller"
+    }, {
+        "name": "host-controller",
+        "description": "Host Controller"
+    }, {
+        "name": "vm-controller",
+        "description": "Vm Controller"
+    }],
+    "schemes": ["http"],
+    "paths": {
+        "/auth/login": {
+            "get": {
+                "tags": ["auth-controller"],
+                "summary": "登录获取Token",
+                "description": "根据username/password获取Token",
+                "operationId": "loginUsingGET",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [{
+                    "name": "username",
+                    "in": "query",
+                    "description": "username",
+                    "required": true,
+                    "type": "string"
+                }, {
+                    "name": "password",
+                    "in": "query",
+                    "description": "password",
+                    "required": true,
+                    "type": "string"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/LoginResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/site/": {
+            "get": {
+                "tags": ["site-controller"],
+                "summary": "查询所有站点信息",
+                "description": "查询所有站点信息",
+                "operationId": "querySitesUsingGET",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/FCSDKResponse«List«SiteBasicInfo»»"
+                        }
+                    }
+                },
+                "security": [{
+                    "token": []
+                }]
+            }
+        },
+        "/site/{siteId}/alarm/activeAlarm": {
+            "get": {
+                "tags": ["alarm"],
+                "summary": "查询活动告警",
+                "description": "根据siteId以及可选的limit/offset查询活动告警",
+                "operationId": "queryActiveAlarmsUsingGET",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [{
+                    "name": "siteId",
+                    "in": "path",
+                    "description": "The id of the site",
+                    "required": false,
+                    "type": "string",
+                    "default": "3F7B07E2"
+                }, {
+                    "name": "limit",
+                    "in": "query",
+                    "description": "limit",
+                    "required": false,
+                    "type": "integer",
+                    "default": 10,
+                    "format": "int32"
+                }, {
+                    "name": "offset",
+                    "in": "query",
+                    "description": "The value of offset",
+                    "required": false,
+                    "type": "integer",
+                    "default": 0,
+                    "format": "int32"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/FCSDKResponse«PageList«Alarm»»"
+                        }
+                    }
+                },
+                "security": [{
+                    "token": []
+                }]
+            }
+        },
+        "/site/{siteId}/alarm/event": {
+            "get": {
+                "tags": ["alarm"],
+                "summary": "查询事件列表功能",
+                "description": "根据siteId以及可选的limit/offset查询事件列表功能",
+                "operationId": "queryEventsUsingGET",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [{
+                    "name": "siteId",
+                    "in": "path",
+                    "description": "The id of the site",
+                    "required": false,
+                    "type": "string",
+                    "default": "3F7B07E2"
+                }, {
+                    "name": "limit",
+                    "in": "query",
+                    "description": "limit",
+                    "required": false,
+                    "type": "integer",
+                    "default": 10,
+                    "format": "int32"
+                }, {
+                    "name": "offset",
+                    "in": "query",
+                    "description": "offset",
+                    "required": false,
+                    "type": "integer",
+                    "default": 0,
+                    "format": "int32"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/FCSDKResponse«PageList«Event»»"
+                        }
+                    }
+                },
+                "security": [{
+                    "token": []
+                }]
+            }
+        },
+        "/site/{siteId}/alarm/historyAlarm": {
+            "get": {
+                "tags": ["alarm"],
+                "summary": "查询历史告警",
+                "description": "根据siteId以及可选的limit/offset查询历史告警",
+                "operationId": "queryHistoryAlarmsUsingGET",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [{
+                    "name": "siteId",
+                    "in": "path",
+                    "description": "The id of the site",
+                    "required": false,
+                    "type": "string",
+                    "default": "3F7B07E2"
+                }, {
+                    "name": "limit",
+                    "in": "query",
+                    "description": "limit",
+                    "required": false,
+                    "type": "integer",
+                    "default": 10,
+                    "format": "int32"
+                }, {
+                    "name": "offset",
+                    "in": "query",
+                    "description": "offset",
+                    "required": false,
+                    "type": "integer",
+                    "default": 0,
+                    "format": "int32"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/FCSDKResponse«PageList«HistoryAlarm»»"
+                        }
+                    }
+                },
+                "security": [{
+                    "token": []
+                }]
+            }
+        },
+        "/site/{siteId}/alarm/thresold": {
+            "get": {
+                "tags": ["alarm"],
+                "summary": "查询所有阈值项信息",
+                "description": "根据siteId以及可选的limit/offset查询所有阈值项信息",
+                "operationId": "queryThresholdsUsingGET",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [{
+                    "name": "siteId",
+                    "in": "path",
+                    "description": "The id of the site",
+                    "required": false,
+                    "type": "string",
+                    "default": "3F7B07E2"
+                }, {
+                    "name": "limit",
+                    "in": "query",
+                    "description": "limit",
+                    "required": false,
+                    "type": "integer",
+                    "default": 10,
+                    "format": "int32"
+                }, {
+                    "name": "offset",
+                    "in": "query",
+                    "description": "offset",
+                    "required": false,
+                    "type": "integer",
+                    "default": 0,
+                    "format": "int32"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/FCSDKResponse«QueryThresholdsResp»"
+                        }
+                    }
+                },
+                "security": [{
+                    "token": []
+                }]
+            }
+        },
+        "/site/{siteId}/cluster": {
+            "get": {
+                "tags": ["cluster-controller"],
+                "summary": "查询集群列表",
+                "description": "根据siteId查询集群列表",
+                "operationId": "queryClustersUsingGET",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [{
+                    "name": "siteId",
+                    "in": "path",
+                    "description": "The id of the site",
+                    "required": false,
+                    "type": "string",
+                    "default": "3F7B07E2"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/FCSDKResponse«List«ClusterBasicInfo»»"
+                        }
+                    }
+                },
+                "security": [{
+                    "token": []
+                }]
+            }
+        },
+        "/site/{siteId}/cluster/{clusterId}": {
+            "get": {
+                "tags": ["cluster-controller"],
+                "summary": "查询集群详情",
+                "description": "根据siteId/clusterId查询集群详情",
+                "operationId": "queryClusterUsingGET",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [{
+                    "name": "siteId",
+                    "in": "path",
+                    "description": "The id of the site",
+                    "required": false,
+                    "type": "string",
+                    "default": "3F7B07E2"
+                }, {
+                    "name": "clusterId",
+                    "in": "path",
+                    "description": "The id of the cluster",
+                    "required": false,
+                    "type": "string",
+                    "default": "79"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/FCSDKResponse«ClusterInfo»"
+                        }
+                    }
+                },
+                "security": [{
+                    "token": []
+                }]
+            }
+        },
+        "/site/{siteId}/computerResource/{clusterId}": {
+            "get": {
+                "tags": ["cluster-controller"],
+                "summary": "查询集群内计算资源统计信息",
+                "description": "根据siteId/clusterId查询集群内计算资源统计信息",
+                "operationId": "queryComputeResourceUsingGET",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [{
+                    "name": "siteId",
+                    "in": "path",
+                    "description": "The id of the site",
+                    "required": false,
+                    "type": "string",
+                    "default": "3F7B07E2"
+                }, {
+                    "name": "clusterId",
+                    "in": "path",
+                    "description": "The id of the cluster",
+                    "required": false,
+                    "type": "string",
+                    "default": "79"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/FCSDKResponse«ComputeResource»"
+                        }
+                    }
+                },
+                "security": [{
+                    "token": []
+                }]
+            }
+        },
+        "/site/{siteId}/dataStorage/": {
+            "get": {
+                "tags": ["data-storage-controller"],
+                "summary": "分页查询站点/主机/集群下所有数据存储",
+                "description": "根据siteId以及可选的limit/offset分页查询站点/主机/集群下所有数据存储",
+                "operationId": "queryDataStoresUsingGET",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [{
+                    "name": "siteId",
+                    "in": "path",
+                    "description": "The id of the site",
+                    "required": false,
+                    "type": "string",
+                    "default": "3F7B07E2"
+                }, {
+                    "name": "limit",
+                    "in": "query",
+                    "description": "limit",
+                    "required": false,
+                    "type": "integer",
+                    "default": 20,
+                    "format": "int32"
+                }, {
+                    "name": "offset",
+                    "in": "query",
+                    "description": "offset",
+                    "required": false,
+                    "type": "integer",
+                    "default": 0,
+                    "format": "int32"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/FCSDKResponse«PageList«Datastore»»"
+                        }
+                    }
+                },
+                "security": [{
+                    "token": []
+                }]
+            }
+        },
+        "/site/{siteId}/dataStorage/{dataStoreId}/{hostId}/availableDatastore": {
+            "get": {
+                "tags": ["data-storage-controller"],
+                "summary": "分页查询集群/主机下可模板部署的所有数据存储",
+                "description": "根据siteId以及可选的limit/offset分页查询集群/主机下可模板部署的所有数据存储",
+                "operationId": "queryAvailableDatastoreUsingGET",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [{
+                    "name": "siteId",
+                    "in": "path",
+                    "description": "The id of the site",
+                    "required": false,
+                    "type": "string",
+                    "default": "3F7B07E2"
+                }, {
+                    "name": "dataStoreId",
+                    "in": "path",
+                    "description": "The id of the dataStore",
+                    "required": false,
+                    "type": "string",
+                    "default": "1"
+                }, {
+                    "name": "hostId",
+                    "in": "path",
+                    "description": "The id of the host",
+                    "required": false,
+                    "type": "string",
+                    "default": "134"
+                }, {
+                    "name": "limit",
+                    "in": "query",
+                    "description": "limit",
+                    "required": false,
+                    "type": "integer",
+                    "default": 20,
+                    "format": "int32"
+                }, {
+                    "name": "offset",
+                    "in": "query",
+                    "description": "offset",
+                    "required": false,
+                    "type": "integer",
+                    "default": 0,
+                    "format": "int32"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/FCSDKResponse«PageList«Datastore»»"
+                        }
+                    }
+                },
+                "security": [{
+                    "token": []
+                }]
+            }
+        },
+        "/site/{siteId}/dataStorage/{datastoreId}": {
+            "get": {
+                "tags": ["data-storage-controller"],
+                "summary": "查询指定数据存储",
+                "description": "根据siteId/datastoreId查询指定数据存储",
+                "operationId": "queryDataStoreUsingGET",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [{
+                    "name": "siteId",
+                    "in": "path",
+                    "description": "The id of the site",
+                    "required": false,
+                    "type": "string",
+                    "default": "3F7B07E2"
+                }, {
+                    "name": "datastoreId",
+                    "in": "path",
+                    "description": "datastoreId",
+                    "required": true,
+                    "type": "integer",
+                    "format": "int32"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/FCSDKResponse«Datastore»"
+                        }
+                    }
+                },
+                "security": [{
+                    "token": []
+                }]
+            }
+        },
+        "/site/{siteId}/hostResource/": {
+            "get": {
+                "tags": ["host-controller"],
+                "summary": "查询主机列表",
+                "description": "根据siteId以及可选的limit/offset查询主机列表",
+                "operationId": "queryHostListUsingGET",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [{
+                    "name": "siteId",
+                    "in": "path",
+                    "description": "The id of the site",
+                    "required": false,
+                    "type": "string",
+                    "default": "3F7B07E2"
+                }, {
+                    "name": "limit",
+                    "in": "query",
+                    "description": "limit",
+                    "required": false,
+                    "type": "integer",
+                    "default": 20,
+                    "format": "int32"
+                }, {
+                    "name": "offset",
+                    "in": "query",
+                    "description": "offset",
+                    "required": false,
+                    "type": "integer",
+                    "default": 0,
+                    "format": "int32"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/FCSDKResponse«PageList«HostBasicInfo»»"
+                        }
+                    }
+                },
+                "security": [{
+                    "token": []
+                }]
+            }
+        },
+        "/site/{siteId}/hostResource/hostsUsage": {
+            "get": {
+                "tags": ["host-controller"],
+                "summary": "查询主机列表统计信息",
+                "description": "根据siteId以及可选的scope查询主机列表统计信息",
+                "operationId": "queryHostsUsageUsingGET",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [{
+                    "name": "siteId",
+                    "in": "path",
+                    "description": "The id of the site",
+                    "required": false,
+                    "type": "string",
+                    "default": "3F7B07E2"
+                }, {
+                    "name": "scope ",
+                    "in": "query",
+                    "description": "scope ",
+                    "required": false,
+                    "type": "string"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/FCSDKResponse«QueryHostsUsageResp»"
+                        }
+                    }
+                },
+                "security": [{
+                    "token": []
+                }]
+            }
+        },
+        "/site/{siteId}/hostResource/hostsUsage/{hostId}": {
+            "get": {
+                "tags": ["host-controller"],
+                "summary": "查询指定主机计算资源使用情况",
+                "description": "根据siteId/hostId查询指定主机计算资源使用情况",
+                "operationId": "queryHostUsageUsingGET",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [{
+                    "name": "siteId",
+                    "in": "path",
+                    "description": "The id of the site",
+                    "required": false,
+                    "type": "string",
+                    "default": "3F7B07E2"
+                }, {
+                    "name": "hostId",
+                    "in": "path",
+                    "description": "The id of the host",
+                    "required": false,
+                    "type": "string",
+                    "default": "390"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/FCSDKResponse«QueryHostUsageResp»"
+                        }
+                    }
+                },
+                "security": [{
+                    "token": []
+                }]
+            }
+        },
+        "/site/{siteId}/hostResource/{hostId}": {
+            "get": {
+                "tags": ["host-controller"],
+                "summary": "查询指定主机",
+                "description": "根据siteId/hostId查询指定主机",
+                "operationId": "queryHostUsingGET",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [{
+                    "name": "siteId",
+                    "in": "path",
+                    "description": "The id of the site",
+                    "required": false,
+                    "type": "string",
+                    "default": "3F7B07E2"
+                }, {
+                    "name": "hostId",
+                    "in": "path",
+                    "description": "The id of the host",
+                    "required": false,
+                    "type": "string",
+                    "default": "390"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/FCSDKResponse«HostInfo»"
+                        }
+                    }
+                },
+                "security": [{
+                    "token": []
+                }]
+            }
+        },
+        "/site/{siteId}/vmResource/": {
+            "get": {
+                "tags": ["vm-controller"],
+                "summary": "分页查询虚拟机信息",
+                "description": "根据siteId以及可选的limit/offset分页查询虚拟机信息",
+                "operationId": "queryVMsUsingGET",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [{
+                    "name": "siteId",
+                    "in": "path",
+                    "description": "The id of the site",
+                    "required": false,
+                    "type": "string",
+                    "default": "3F7B07E2"
+                }, {
+                    "name": "limit",
+                    "in": "query",
+                    "description": "limit",
+                    "required": false,
+                    "type": "integer",
+                    "default": 20,
+                    "format": "int32"
+                }, {
+                    "name": "offset",
+                    "in": "query",
+                    "description": "offset",
+                    "required": false,
+                    "type": "integer",
+                    "default": 0,
+                    "format": "int32"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/FCSDKResponse«PageList«VmInfo»»"
+                        }
+                    }
+                },
+                "security": [{
+                    "token": []
+                }]
+            }
+        },
+        "/site/{siteId}/vmResource/{vmId}": {
+            "get": {
+                "tags": ["vm-controller"],
+                "summary": "查询虚拟机详情 ",
+                "description": "根据siteId/vmId查询虚拟机详情 ",
+                "operationId": "queryVMUsingGET",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [{
+                    "name": "siteId",
+                    "in": "path",
+                    "description": "The id of the site",
+                    "required": false,
+                    "type": "string",
+                    "default": "3F7B07E2"
+                }, {
+                    "name": "vmId",
+                    "in": "path",
+                    "description": "The id of the vm",
+                    "required": false,
+                    "type": "string",
+                    "default": "i-0000027D"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/FCSDKResponse«VmInfo»"
+                        }
+                    }
+                },
+                "security": [{
+                    "token": []
+                }]
+            }
+        },
+        "/site/{siteId}/volumeResource/": {
+            "get": {
+                "tags": ["volume-controller"],
+                "summary": "分页查询卷列表",
+                "description": "根据siteId以及可选的limit/offset分页查询卷列表",
+                "operationId": "queryVolumesUsingGET",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [{
+                    "name": "siteId",
+                    "in": "path",
+                    "description": "The id of the site",
+                    "required": false,
+                    "type": "string",
+                    "default": "3F7B07E2"
+                }, {
+                    "name": "limit",
+                    "in": "query",
+                    "description": "limit",
+                    "required": false,
+                    "type": "integer",
+                    "default": 20,
+                    "format": "int32"
+                }, {
+                    "name": "offset",
+                    "in": "query",
+                    "description": "offset",
+                    "required": false,
+                    "type": "integer",
+                    "default": 0,
+                    "format": "int32"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/FCSDKResponse«PageList«Volume»»"
+                        }
+                    }
+                },
+                "security": [{
+                    "token": []
+                }]
+            }
+        },
+        "/site/{siteId}/volumeResource/datastoreVolumes/{dataStoreId}": {
+            "get": {
+                "tags": ["volume-controller"],
+                "summary": "分页根据DataStore查询所有卷",
+                "description": "根据siteId/dataStoreId以及可选的limit/offset分页根据DataStore查询所有卷",
+                "operationId": "queryDatastoreVolumesUsingGET",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [{
+                    "name": "siteId",
+                    "in": "path",
+                    "description": "The id of the site",
+                    "required": false,
+                    "type": "string",
+                    "default": "3F7B07E2"
+                }, {
+                    "name": "dataStoreId",
+                    "in": "path",
+                    "description": "The id of the dataStore",
+                    "required": false,
+                    "type": "string",
+                    "default": "1"
+                }, {
+                    "name": "limit",
+                    "in": "query",
+                    "description": "limit",
+                    "required": false,
+                    "type": "integer",
+                    "default": 20,
+                    "format": "int32"
+                }, {
+                    "name": "offset",
+                    "in": "query",
+                    "description": "offset",
+                    "required": false,
+                    "type": "integer",
+                    "default": 0,
+                    "format": "int32"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/FCSDKResponse«PageList«QueryDatastoreVolumeResp»»"
+                        }
+                    }
+                },
+                "security": [{
+                    "token": []
+                }]
+            }
+        },
+        "/site/{siteId}/volumeResource/{volumeId}": {
+            "get": {
+                "tags": ["volume-controller"],
+                "summary": "查询指定卷",
+                "description": "根据siteId/volumeId查询指定卷",
+                "operationId": "queryVolumeUsingGET",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [{
+                    "name": "siteId",
+                    "in": "path",
+                    "description": "The id of the site",
+                    "required": false,
+                    "type": "string",
+                    "default": "3F7B07E2"
+                }, {
+                    "name": "volumeId",
+                    "in": "path",
+                    "description": "The id of the volume",
+                    "required": false,
+                    "type": "string",
+                    "default": "1245"
+                }, {
+                    "name": "refreshFlag",
+                    "in": "query",
+                    "description": "refreshFlag",
+                    "required": false,
+                    "type": "boolean",
+                    "default": false
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/FCSDKResponse«Volume»"
+                        }
+                    }
+                },
+                "security": [{
+                    "token": []
+                }]
+            }
+        }
+    },
+    "securityDefinitions": {
+        "token": {
+            "type": "apiKey",
+            "name": "token",
+            "in": "query"
+        }
+    },
+    "definitions": {
+        "OsOption": {
+            "type": "object",
+            "properties": {
+                "guestOSName": {
+                    "type": "string"
+                },
+                "hostname": {
+                    "type": "string"
+                },
+                "osType": {
+                    "type": "string"
+                },
+                "osVersion": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "Memory": {
+            "type": "object",
+            "properties": {
+                "limit": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "memHotPlug": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "quantityMB": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "reservation": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "weight": {
+                    "type": "integer",
+                    "format": "int32"
+                }
+            }
+        },
+        "MemoryResource": {
+            "type": "object",
+            "properties": {
+                "allocatedSizeMB": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "totalSizeMB": {
+                    "type": "integer",
+                    "format": "int32"
+                }
+            }
+        },
+        "UsbDevice": {
+            "type": "object",
+            "properties": {
+                "usbUrn": {
+                    "type": "string"
+                }
+            }
+        },
+        "CPU": {
+            "type": "object",
+            "properties": {
+                "affinitySet": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                },
+                "coresPerSocket": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "cpuHotPlug": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "limit": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "quantity": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "reservation": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "weight": {
+                    "type": "integer",
+                    "format": "int32"
+                }
+            }
+        },
+        "MonitorData": {
+            "type": "object",
+            "properties": {
+                "alarmCompFlag": {
+                    "type": "string"
+                },
+                "alarmID": {
+                    "type": "string"
+                },
+                "alarmThrCritical": {
+                    "type": "string"
+                },
+                "alarmThrMajor": {
+                    "type": "string"
+                },
+                "alarmThrMinor": {
+                    "type": "string"
+                },
+                "alarmThrWarning": {
+                    "type": "string"
+                },
+                "eviValue": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "metricDesc": {
+                    "type": "string"
+                },
+                "metricId": {
+                    "type": "string"
+                },
+                "metricUnit": {
+                    "type": "string"
+                },
+                "objectType": {
+                    "type": "string"
+                },
+                "objectTypeDesc": {
+                    "type": "string"
+                }
+            }
+        },
+        "DRSSetting": {
+            "type": "object",
+            "properties": {
+                "dpmCycle": {
+                    "$ref": "#/definitions/DrsCycle"
+                },
+                "dpmThresholds": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/DpmThresholds"
+                    }
+                },
+                "drsCycle": {
+                    "$ref": "#/definitions/DrsCycle"
+                },
+                "drsFragmentLimen": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/FragmentLimen"
+                    }
+                },
+                "drsLevel": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "drsRules": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/DRSRule"
+                    }
+                },
+                "drsThreshold": {
+                    "$ref": "#/definitions/DpmThreshold"
+                },
+                "electricStrategy": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "factor": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "powerFragmentLimen": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/FragmentLimen"
+                    }
+                },
+                "powerLevel": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "powerLimen": {
+                    "type": "integer",
+                    "format": "int32"
+                }
+            }
+        },
+        "GPU": {
+            "type": "object",
+            "properties": {
+                "gpuUrn": {
+                    "type": "string"
+                },
+                "isEffected": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "PageList«Datastore»": {
+            "type": "object",
+            "properties": {
+                "list": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Datastore"
+                    }
+                },
+                "total": {
+                    "type": "integer",
+                    "format": "int32"
+                }
+            }
+        },
+        "PageList«Alarm»": {
+            "type": "object",
+            "properties": {
+                "list": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Alarm"
+                    }
+                },
+                "total": {
+                    "type": "integer",
+                    "format": "int32"
+                }
+            }
+        },
+        "HistoryAlarm": {
+            "type": "object",
+            "properties": {
+                "dtArrivedTime": {
+                    "type": "string"
+                },
+                "dtClearTime": {
+                    "type": "string"
+                },
+                "dtOccurTime": {
+                    "type": "string"
+                },
+                "dtUpdateTime": {
+                    "type": "string"
+                },
+                "iAffectOpFlag": {
+                    "type": "string"
+                },
+                "iAlarmCategory": {
+                    "type": "string"
+                },
+                "iAlarmLevel": {
+                    "type": "string"
+                },
+                "iAutoClear": {
+                    "type": "string"
+                },
+                "iClearType": {
+                    "type": "string"
+                },
+                "iDisplay": {
+                    "type": "string"
+                },
+                "iParse": {
+                    "type": "string"
+                },
+                "iSerialNo": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "iSyncNo": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "objectType": {
+                    "type": "string"
+                },
+                "objectUrn": {
+                    "type": "string"
+                },
+                "svAdditionalInfo": {
+                    "type": "string"
+                },
+                "svAlarmCause": {
+                    "type": "string"
+                },
+                "svAlarmID": {
+                    "type": "string"
+                },
+                "svAlarmName": {
+                    "type": "string"
+                },
+                "svClearAlarmUserName": {
+                    "type": "string"
+                },
+                "svEventType": {
+                    "type": "string"
+                },
+                "svLocationInfo": {
+                    "type": "string"
+                },
+                "svMoc": {
+                    "type": "string"
+                },
+                "urnByName": {
+                    "type": "string"
+                }
+            }
+        },
+        "FCSDKResponse«QueryHostsUsageResp»": {
+            "type": "object",
+            "properties": {
+                "errorCode": {
+                    "type": "string"
+                },
+                "errorDes": {
+                    "type": "string"
+                },
+                "result": {
+                    "$ref": "#/definitions/QueryHostsUsageResp"
+                }
+            }
+        },
+        "FCSDKResponse«ClusterInfo»": {
+            "type": "object",
+            "properties": {
+                "errorCode": {
+                    "type": "string"
+                },
+                "errorDes": {
+                    "type": "string"
+                },
+                "result": {
+                    "$ref": "#/definitions/ClusterInfo"
+                }
+            }
+        },
+        "VncAccessInfo": {
+            "type": "object",
+            "properties": {
+                "hostIp": {
+                    "type": "string"
+                },
+                "vncOldPassword": {
+                    "type": "string"
+                },
+                "vncPassword": {
+                    "type": "string"
+                },
+                "vncPort": {
+                    "type": "integer",
+                    "format": "int32"
+                }
+            }
+        },
+        "DpmThresholds": {
+            "type": "object",
+            "properties": {
+                "limen": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "overloadThreshold": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "underloadThreshold": {
+                    "type": "integer",
+                    "format": "int32"
+                }
+            }
+        },
+        "FCSDKResponse«QueryThresholdsResp»": {
+            "type": "object",
+            "properties": {
+                "errorCode": {
+                    "type": "string"
+                },
+                "errorDes": {
+                    "type": "string"
+                },
+                "result": {
+                    "$ref": "#/definitions/QueryThresholdsResp"
+                }
+            }
+        },
+        "DrsCycle": {
+            "type": "object",
+            "properties": {
+                "cycleSpec": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                },
+                "cycleType": {
+                    "type": "integer",
+                    "format": "int32"
+                }
+            }
+        },
+        "Disk": {
+            "type": "object",
+            "properties": {
+                "datastoreName": {
+                    "type": "string"
+                },
+                "datastoreUrn": {
+                    "type": "string"
+                },
+                "diskName": {
+                    "type": "string"
+                },
+                "indepDisk": {
+                    "type": "boolean"
+                },
+                "ioWeight": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "isCoverData": {
+                    "type": "boolean"
+                },
+                "isDataCopy": {
+                    "type": "boolean"
+                },
+                "isThin": {
+                    "type": "boolean"
+                },
+                "maxReadBytes": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "maxReadRequest": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "maxWriteBytes": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "maxWriteRequest": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "pciType": {
+                    "type": "string"
+                },
+                "persistentDisk": {
+                    "type": "boolean"
+                },
+                "quantityGB": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "sequenceNum": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "storageType": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                },
+                "volType": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "volumeUrl": {
+                    "type": "string"
+                },
+                "volumeUrn": {
+                    "type": "string"
+                },
+                "volumeUuid": {
+                    "type": "string"
+                }
+            }
+        },
+        "HostBasicInfo": {
+            "type": "object",
+            "properties": {
+                "attachedISOVMs": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "bmcIp": {
+                    "type": "string"
+                },
+                "bmcUserName": {
+                    "type": "string"
+                },
+                "clusterEnableIOTailor": {
+                    "type": "boolean"
+                },
+                "clusterName": {
+                    "type": "string"
+                },
+                "clusterUrn": {
+                    "type": "string"
+                },
+                "computeResourceStatics": {
+                    "type": "string"
+                },
+                "cpuMHz": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "cpuQuantity": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "cpuResource": {
+                    "$ref": "#/definitions/CpuResource"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "gdvmMemory": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "gdvmMemoryReboot": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "gpuCapacity": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "gpuCapacityReboot": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "gsvmMemory": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "gsvmMemoryReboot": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "haRole": {
+                    "type": "string"
+                },
+                "haState": {
+                    "type": "string"
+                },
+                "hostMultiPathMode": {
+                    "type": "string"
+                },
+                "hostRealName": {
+                    "type": "string"
+                },
+                "imcSetting": {
+                    "type": "string"
+                },
+                "ip": {
+                    "type": "string"
+                },
+                "isFailOverHost": {
+                    "type": "boolean"
+                },
+                "isMaintaining": {
+                    "type": "boolean"
+                },
+                "maintaining": {
+                    "type": "boolean"
+                },
+                "maxImcSetting": {
+                    "type": "string"
+                },
+                "memQuantityMB": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "memResource": {
+                    "$ref": "#/definitions/MemoryResource"
+                },
+                "multiPathMode": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "nicQuantity": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "ntpCycle": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "ntpIp1": {
+                    "type": "string"
+                },
+                "ntpIp2": {
+                    "type": "string"
+                },
+                "ntpIp3": {
+                    "type": "string"
+                },
+                "params": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    }
+                },
+                "physicalCpuQuantity": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "uri": {
+                    "type": "string"
+                },
+                "urn": {
+                    "type": "string"
+                }
+            }
+        },
+        "DrsExtensionConfig": {
+            "type": "object",
+            "properties": {
+                "key": {
+                    "type": "string"
+                },
+                "value": {
+                    "type": "string"
+                }
+            }
+        },
+        "MemUsage": {
+            "type": "object",
+            "properties": {
+                "allocatedSizeMB": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "totalSizeMB": {
+                    "type": "integer",
+                    "format": "int32"
+                }
+            }
+        },
+        "FCSDKResponse«Volume»": {
+            "type": "object",
+            "properties": {
+                "errorCode": {
+                    "type": "string"
+                },
+                "errorDes": {
+                    "type": "string"
+                },
+                "result": {
+                    "$ref": "#/definitions/Volume"
+                }
+            }
+        },
+        "FCSDKResponse«PageList«Event»»": {
+            "type": "object",
+            "properties": {
+                "errorCode": {
+                    "type": "string"
+                },
+                "errorDes": {
+                    "type": "string"
+                },
+                "result": {
+                    "$ref": "#/definitions/PageList«Event»"
+                }
+            }
+        },
+        "LoginResponse": {
+            "type": "object",
+            "properties": {
+                "token": {
+                    "type": "string"
+                }
+            }
+        },
+        "HAResSetting": {
+            "type": "object",
+            "properties": {
+                "controlPolicy": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "cpuReservation": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "failoverHosts": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "hbDataStoreNumber": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "hbDataStorePolicy": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "hbDataStorePreferred": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "hostsFaultQuantity": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "isAutoMigrateAllVms": {
+                    "type": "boolean"
+                },
+                "isControlPolicy": {
+                    "type": "boolean"
+                },
+                "isCustomisedSlot": {
+                    "type": "boolean"
+                },
+                "isHaHostAutonomy": {
+                    "type": "boolean"
+                },
+                "isolateArbitrateAddress": {
+                    "type": "string"
+                },
+                "memoryReservation": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "slotcpuinmhz": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "slotmeminmb": {
+                    "type": "integer",
+                    "format": "int32"
+                }
+            }
+        },
+        "PageList«Volume»": {
+            "type": "object",
+            "properties": {
+                "list": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Volume"
+                    }
+                },
+                "total": {
+                    "type": "integer",
+                    "format": "int32"
+                }
+            }
+        },
+        "FCSDKResponse«PageList«HistoryAlarm»»": {
+            "type": "object",
+            "properties": {
+                "errorCode": {
+                    "type": "string"
+                },
+                "errorDes": {
+                    "type": "string"
+                },
+                "result": {
+                    "$ref": "#/definitions/PageList«HistoryAlarm»"
+                }
+            }
+        },
+        "ComputeResource": {
+            "type": "object",
+            "properties": {
+                "allocatedSizeMB": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "allocatedSizeMHz": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "allocatedVcpus": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "totalSizeMB": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "totalSizeMHz": {
+                    "type": "integer",
+                    "format": "int32"
+                }
+            }
+        },
+        "VmConfig": {
+            "type": "object",
+            "properties": {
+                "cpu": {
+                    "$ref": "#/definitions/CPU"
+                },
+                "disks": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Disk"
+                    }
+                },
+                "gpu": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/GPU"
+                    }
+                },
+                "memory": {
+                    "$ref": "#/definitions/Memory"
+                },
+                "nics": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Nic"
+                    }
+                },
+                "properties": {
+                    "$ref": "#/definitions/Property"
+                },
+                "usb": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Usb"
+                    }
+                }
+            }
+        },
+        "HostDNSCfg": {
+            "type": "object",
+            "properties": {
+                "domainName": {
+                    "type": "string"
+                },
+                "primaryDNSIp": {
+                    "type": "string"
+                },
+                "secondaryDNSIps": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "PageList«HostBasicInfo»": {
+            "type": "object",
+            "properties": {
+                "list": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/HostBasicInfo"
+                    }
+                },
+                "total": {
+                    "type": "integer",
+                    "format": "int32"
+                }
+            }
+        },
+        "PageList«HistoryAlarm»": {
+            "type": "object",
+            "properties": {
+                "list": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/HistoryAlarm"
+                    }
+                },
+                "total": {
+                    "type": "integer",
+                    "format": "int32"
+                }
+            }
+        },
+        "FCSDKResponse«PageList«VmInfo»»": {
+            "type": "object",
+            "properties": {
+                "errorCode": {
+                    "type": "string"
+                },
+                "errorDes": {
+                    "type": "string"
+                },
+                "result": {
+                    "$ref": "#/definitions/PageList«VmInfo»"
+                }
+            }
+        },
+        "PageList«VmInfo»": {
+            "type": "object",
+            "properties": {
+                "list": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/VmInfo"
+                    }
+                },
+                "total": {
+                    "type": "integer",
+                    "format": "int32"
+                }
+            }
+        },
+        "Datastore": {
+            "type": "object",
+            "properties": {
+                "actualCapacityGB": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "actualFreeSizeGB": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "capacityGB": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "clusterSize": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "expandCount": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "freeSizeGB": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "hosts": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "ioDelay": {
+                    "type": "string"
+                },
+                "isThin": {
+                    "type": "boolean"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "params": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    }
+                },
+                "refreshTime": {
+                    "type": "string"
+                },
+                "siocFlag": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "storageType": {
+                    "type": "string"
+                },
+                "storageUnits": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/StorageUnit"
+                    }
+                },
+                "suIdList": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "suName": {
+                    "type": "string"
+                },
+                "suUrn": {
+                    "type": "string"
+                },
+                "thinRate": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "tierSize": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                },
+                "uri": {
+                    "type": "string"
+                },
+                "urn": {
+                    "type": "string"
+                },
+                "usedSizeGB": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "version": {
+                    "type": "string"
+                }
+            }
+        },
+        "FCSDKResponse«List«SiteBasicInfo»»": {
+            "type": "object",
+            "properties": {
+                "errorCode": {
+                    "type": "string"
+                },
+                "errorDes": {
+                    "type": "string"
+                },
+                "result": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/SiteBasicInfo"
+                    }
+                }
+            }
+        },
+        "Volume": {
+            "type": "object",
+            "properties": {
+                "bindToVm": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "datastoreName": {
+                    "type": "string"
+                },
+                "datastoreUrn": {
+                    "type": "string"
+                },
+                "drExtParams": {
+                    "type": "string"
+                },
+                "indepDisk": {
+                    "type": "boolean"
+                },
+                "ioWeight": {
+                    "type": "string"
+                },
+                "isDiffVol": {
+                    "type": "boolean"
+                },
+                "isThin": {
+                    "type": "boolean"
+                },
+                "iscsi": {
+                    "type": "string"
+                },
+                "linkCloneParent": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "lunId": {
+                    "type": "string"
+                },
+                "maxReadBytes": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "maxReadRequest": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "maxWriteBytes": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "maxWriteRequest": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "occupiedVolume": {
+                    "type": "boolean"
+                },
+                "params": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    }
+                },
+                "pciType": {
+                    "type": "string"
+                },
+                "persistentDisk": {
+                    "type": "boolean"
+                },
+                "pvscsiSupport": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "quantityGB": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "sdUri": {
+                    "type": "string"
+                },
+                "sdUrn": {
+                    "type": "string"
+                },
+                "siocFlag": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "srcVolumeUrn": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "storageSN": {
+                    "type": "string"
+                },
+                "storageType": {
+                    "type": "string"
+                },
+                "storageVersion": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                },
+                "uri": {
+                    "type": "string"
+                },
+                "urn": {
+                    "type": "string"
+                },
+                "userUsedSize": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "uuid": {
+                    "type": "string"
+                },
+                "volInfoUrl": {
+                    "type": "string"
+                },
+                "volNameOnDev": {
+                    "type": "string"
+                },
+                "volProvisionSize": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "volType": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "volumeUrl": {
+                    "type": "string"
+                },
+                "volumeUseType": {
+                    "type": "integer",
+                    "format": "int32"
+                }
+            }
+        },
+        "PageList«Event»": {
+            "type": "object",
+            "properties": {
+                "list": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Event"
+                    }
+                },
+                "total": {
+                    "type": "integer",
+                    "format": "int32"
+                }
+            }
+        },
+        "FCSDKResponse«PageList«QueryDatastoreVolumeResp»»": {
+            "type": "object",
+            "properties": {
+                "errorCode": {
+                    "type": "string"
+                },
+                "errorDes": {
+                    "type": "string"
+                },
+                "result": {
+                    "$ref": "#/definitions/PageList«QueryDatastoreVolumeResp»"
+                }
+            }
+        },
+        "QueryHostsUsageResp": {
+            "type": "object",
+            "properties": {
+                "booting": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "fault": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "initial": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "normal": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "poweroff": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "rebooting": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "shutdowning": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "total": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "unknown": {
+                    "type": "integer",
+                    "format": "int32"
+                }
+            }
+        },
+        "FCSDKResponse«VmInfo»": {
+            "type": "object",
+            "properties": {
+                "errorCode": {
+                    "type": "string"
+                },
+                "errorDes": {
+                    "type": "string"
+                },
+                "result": {
+                    "$ref": "#/definitions/VmInfo"
+                }
+            }
+        },
+        "FCSDKResponse«List«ClusterBasicInfo»»": {
+            "type": "object",
+            "properties": {
+                "errorCode": {
+                    "type": "string"
+                },
+                "errorDes": {
+                    "type": "string"
+                },
+                "result": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ClusterBasicInfo"
+                    }
+                }
+            }
+        },
+        "VmInfo": {
+            "type": "object",
+            "properties": {
+                "additionalStatus": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "cdRomStatus": {
+                    "type": "string"
+                },
+                "clusterName": {
+                    "type": "string"
+                },
+                "clusterUrn": {
+                    "type": "string"
+                },
+                "createTime": {
+                    "type": "string"
+                },
+                "dataStoreUrns": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "deleteTime": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "drDrillVmUri": {
+                    "type": "string"
+                },
+                "drDrillVmUrn": {
+                    "type": "string"
+                },
+                "drStatus": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "group": {
+                    "type": "string"
+                },
+                "hostName": {
+                    "type": "string"
+                },
+                "hostUrn": {
+                    "type": "string"
+                },
+                "idle": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "imcSetting": {
+                    "type": "string"
+                },
+                "initSyncStatus": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "isBindingHost": {
+                    "type": "boolean"
+                },
+                "isLinkClone": {
+                    "type": "boolean"
+                },
+                "isMultiDiskSpeedup": {
+                    "type": "boolean"
+                },
+                "isTemplate": {
+                    "type": "boolean"
+                },
+                "location": {
+                    "type": "string"
+                },
+                "locationName": {
+                    "type": "string"
+                },
+                "minCompatibleimcSetting": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "objectPrivs": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "osOptions": {
+                    "$ref": "#/definitions/OsOption"
+                },
+                "params": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    }
+                },
+                "pvDriverStatus": {
+                    "type": "string"
+                },
+                "rpoStatus": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "toolInstallStatus": {
+                    "type": "string"
+                },
+                "toolsVersion": {
+                    "type": "string"
+                },
+                "uri": {
+                    "type": "string"
+                },
+                "urn": {
+                    "type": "string"
+                },
+                "uuid": {
+                    "type": "string"
+                },
+                "vmConfig": {
+                    "$ref": "#/definitions/VmConfig"
+                },
+                "vmRebootConfig": {
+                    "$ref": "#/definitions/VmRebootConfig"
+                },
+                "vmType": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "vncAcessInfo": {
+                    "$ref": "#/definitions/VncAccessInfo"
+                }
+            }
+        },
+        "ClusterBasicInfo": {
+            "type": "object",
+            "properties": {
+                "cpuResource": {
+                    "$ref": "#/definitions/CpuResource"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "memResource": {
+                    "$ref": "#/definitions/MemoryResource"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "params": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    }
+                },
+                "parentObjName": {
+                    "type": "string"
+                },
+                "parentObjUrn": {
+                    "type": "string"
+                },
+                "tag": {
+                    "type": "string"
+                },
+                "uri": {
+                    "type": "string"
+                },
+                "urn": {
+                    "type": "string"
+                }
+            }
+        },
+        "CpuUsage": {
+            "type": "object",
+            "properties": {
+                "allocatedSizeMHz": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "totalSizeMHz": {
+                    "type": "integer",
+                    "format": "int32"
+                }
+            }
+        },
+        "FCSDKResponse«PageList«Alarm»»": {
+            "type": "object",
+            "properties": {
+                "errorCode": {
+                    "type": "string"
+                },
+                "errorDes": {
+                    "type": "string"
+                },
+                "result": {
+                    "$ref": "#/definitions/PageList«Alarm»"
+                }
+            }
+        },
+        "SiteBasicInfo": {
+            "type": "object",
+            "properties": {
+                "ip": {
+                    "type": "string"
+                },
+                "isDC": {
+                    "type": "boolean"
+                },
+                "isSelf": {
+                    "type": "boolean"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "uri": {
+                    "type": "string"
+                },
+                "urn": {
+                    "type": "string"
+                }
+            }
+        },
+        "QueryDatastoreVolumeResp": {
+            "type": "object",
+            "properties": {
+                "clusterName": {
+                    "type": "string"
+                },
+                "clusterUrn": {
+                    "type": "string"
+                },
+                "ioWeight": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "isDiffVol": {
+                    "type": "boolean"
+                },
+                "isThin": {
+                    "type": "boolean"
+                },
+                "lunId": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "params": {
+                    "type": "object"
+                },
+                "pciType": {
+                    "type": "string"
+                },
+                "persistentDisk": {
+                    "type": "boolean"
+                },
+                "pvscsiSupport": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "quantityGB": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "storageSN": {
+                    "type": "string"
+                },
+                "storageVersion": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                },
+                "uri": {
+                    "type": "string"
+                },
+                "urn": {
+                    "type": "string"
+                },
+                "vmName": {
+                    "type": "string"
+                },
+                "vmStatus": {
+                    "type": "string"
+                },
+                "vmUrn": {
+                    "type": "string"
+                },
+                "volType": {
+                    "type": "integer",
+                    "format": "int32"
+                }
+            }
+        },
+        "FCSDKResponse«PageList«Datastore»»": {
+            "type": "object",
+            "properties": {
+                "errorCode": {
+                    "type": "string"
+                },
+                "errorDes": {
+                    "type": "string"
+                },
+                "result": {
+                    "$ref": "#/definitions/PageList«Datastore»"
+                }
+            }
+        },
+        "QueryHostUsageResp": {
+            "type": "object",
+            "properties": {
+                "cpuResource": {
+                    "$ref": "#/definitions/CpuUsage"
+                },
+                "memResource": {
+                    "$ref": "#/definitions/MemUsage"
+                }
+            }
+        },
+        "Property": {
+            "type": "object",
+            "properties": {
+                "attachType": {
+                    "type": "boolean"
+                },
+                "bootFirmware": {
+                    "type": "string"
+                },
+                "bootOption": {
+                    "type": "string"
+                },
+                "clockMode": {
+                    "type": "string"
+                },
+                "gpuShareType": {
+                    "type": "string"
+                },
+                "isAutoUpgrade": {
+                    "type": "boolean"
+                },
+                "isEnableFt": {
+                    "type": "boolean"
+                },
+                "isEnableHa": {
+                    "type": "boolean"
+                },
+                "isEnableMemVol": {
+                    "type": "boolean"
+                },
+                "isHpet": {
+                    "type": "boolean"
+                },
+                "isReserveResource": {
+                    "type": "boolean"
+                },
+                "reoverByHost": {
+                    "type": "boolean"
+                },
+                "secureVmType": {
+                    "type": "string"
+                },
+                "vmFaultProcess": {
+                    "type": "string"
+                },
+                "vmVncKeymapSetting": {
+                    "type": "integer",
+                    "format": "int32"
+                }
+            }
+        },
+        "FCSDKResponse«HostInfo»": {
+            "type": "object",
+            "properties": {
+                "errorCode": {
+                    "type": "string"
+                },
+                "errorDes": {
+                    "type": "string"
+                },
+                "result": {
+                    "$ref": "#/definitions/HostInfo"
+                }
+            }
+        },
+        "FCSDKResponse«ComputeResource»": {
+            "type": "object",
+            "properties": {
+                "errorCode": {
+                    "type": "string"
+                },
+                "errorDes": {
+                    "type": "string"
+                },
+                "result": {
+                    "$ref": "#/definitions/ComputeResource"
+                }
+            }
+        },
+        "Usb": {
+            "type": "object",
+            "properties": {
+                "controllerType": {
+                    "type": "string"
+                },
+                "device": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/UsbDevice"
+                    }
+                },
+                "usbHostName": {
+                    "type": "string"
+                }
+            }
+        },
+        "PageList«QueryDatastoreVolumeResp»": {
+            "type": "object",
+            "properties": {
+                "list": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/QueryDatastoreVolumeResp"
+                    }
+                },
+                "total": {
+                    "type": "integer",
+                    "format": "int32"
+                }
+            }
+        },
+        "QueryThresholdsResp": {
+            "type": "object",
+            "properties": {
+                "itemSize": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "items": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/MonitorData"
+                    }
+                },
+                "result": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "total": {
+                    "type": "integer",
+                    "format": "int32"
+                }
+            }
+        },
+        "StorageUnit": {
+            "type": "object",
+            "properties": {
+                "sdName": {
+                    "type": "string"
+                },
+                "suName": {
+                    "type": "string"
+                },
+                "urn": {
+                    "type": "string"
+                }
+            }
+        },
+        "Nic": {
+            "type": "object",
+            "properties": {
+                "ip": {
+                    "type": "string"
+                },
+                "ipList": {
+                    "type": "string"
+                },
+                "ips6": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "mac": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "nicType": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "portGroupName": {
+                    "type": "string"
+                },
+                "portGroupUrn": {
+                    "type": "string"
+                },
+                "portId": {
+                    "type": "string"
+                },
+                "sequenceNum": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "uri": {
+                    "type": "string"
+                },
+                "urn": {
+                    "type": "string"
+                },
+                "virtIo": {
+                    "type": "integer",
+                    "format": "int32"
+                }
+            }
+        },
+        "FCSDKResponse«PageList«HostBasicInfo»»": {
+            "type": "object",
+            "properties": {
+                "errorCode": {
+                    "type": "string"
+                },
+                "errorDes": {
+                    "type": "string"
+                },
+                "result": {
+                    "$ref": "#/definitions/PageList«HostBasicInfo»"
+                }
+            }
+        },
+        "DRSRule": {
+            "type": "object",
+            "properties": {
+                "createTime": {
+                    "type": "string"
+                },
+                "hostGroupUrn": {
+                    "type": "string"
+                },
+                "operationType": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "ruleIndex": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "ruleName": {
+                    "type": "string"
+                },
+                "ruleType": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "updateTime": {
+                    "type": "string"
+                },
+                "vm2HostRuleType": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "vmGroupUrn": {
+                    "type": "string"
+                },
+                "vms": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Vms"
+                    }
+                }
+            }
+        },
+        "VmRebootConfig": {
+            "type": "object",
+            "properties": {
+                "cpu": {
+                    "$ref": "#/definitions/CPU"
+                },
+                "memory": {
+                    "$ref": "#/definitions/Memory"
+                }
+            }
+        },
+        "FCSDKResponse«Datastore»": {
+            "type": "object",
+            "properties": {
+                "errorCode": {
+                    "type": "string"
+                },
+                "errorDes": {
+                    "type": "string"
+                },
+                "result": {
+                    "$ref": "#/definitions/Datastore"
+                }
+            }
+        },
+        "ClusterInfo": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "drsExtensionConfig": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/DrsExtensionConfig"
+                    }
+                },
+                "drsSetting": {
+                    "$ref": "#/definitions/DRSSetting"
+                },
+                "drsVmConfig": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/DrsVmConfig"
+                    }
+                },
+                "dsFaultStrategy": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "enableGuestNuma": {
+                    "type": "boolean"
+                },
+                "enableHostNumaDRS": {
+                    "type": "boolean"
+                },
+                "enableIOTailor": {
+                    "type": "boolean"
+                },
+                "enableVmDrs": {
+                    "type": "boolean"
+                },
+                "haResSetting": {
+                    "$ref": "#/definitions/HAResSetting"
+                },
+                "imcSetting": {
+                    "type": "string"
+                },
+                "isEnableDrs": {
+                    "type": "boolean"
+                },
+                "isEnableHa": {
+                    "type": "boolean"
+                },
+                "isEnableImc": {
+                    "type": "boolean"
+                },
+                "isMemOvercommit": {
+                    "type": "boolean"
+                },
+                "maxCpuQuantity": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "params": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    }
+                },
+                "parentObjName": {
+                    "type": "string"
+                },
+                "parentObjUrn": {
+                    "type": "string"
+                },
+                "resStrategy": {
+                    "type": "string"
+                },
+                "statistics": {
+                    "type": "string"
+                },
+                "tag": {
+                    "type": "string"
+                },
+                "uri": {
+                    "type": "string"
+                },
+                "urn": {
+                    "type": "string"
+                }
+            }
+        },
+        "FragmentLimen": {
+            "type": "object",
+            "properties": {
+                "fragmentTime": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "limen": {
+                    "type": "integer",
+                    "format": "int32"
+                }
+            }
+        },
+        "Alarm": {
+            "type": "object",
+            "properties": {
+                "dtArrivedTime": {
+                    "type": "string"
+                },
+                "dtClearTime": {
+                    "type": "string"
+                },
+                "dtOccurTime": {
+                    "type": "string"
+                },
+                "dtUpdateTime": {
+                    "type": "string"
+                },
+                "iAffectOpFlag": {
+                    "type": "string"
+                },
+                "iAlarmCategory": {
+                    "type": "string"
+                },
+                "iAlarmLevel": {
+                    "type": "string"
+                },
+                "iAutoClear": {
+                    "type": "string"
+                },
+                "iClearType": {
+                    "type": "string"
+                },
+                "iDisplay": {
+                    "type": "string"
+                },
+                "iParse": {
+                    "type": "string"
+                },
+                "iSerialNo": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "iSyncNo": {
+                    "type": "string"
+                },
+                "objectType": {
+                    "type": "string"
+                },
+                "objectUrn": {
+                    "type": "string"
+                },
+                "svAdditionalInfo": {
+                    "type": "string"
+                },
+                "svAlarmCause": {
+                    "type": "string"
+                },
+                "svAlarmID": {
+                    "type": "string"
+                },
+                "svAlarmName": {
+                    "type": "string"
+                },
+                "svClearAlarmUserName": {
+                    "type": "string"
+                },
+                "svEventType": {
+                    "type": "string"
+                },
+                "svLocationInfo": {
+                    "type": "string"
+                },
+                "svMoc": {
+                    "type": "string"
+                },
+                "urnByName": {
+                    "type": "string"
+                }
+            }
+        },
+        "Event": {
+            "type": "object",
+            "properties": {
+                "additionalInfo": {
+                    "type": "string"
+                },
+                "eventID": {
+                    "type": "string"
+                },
+                "eventName": {
+                    "type": "string"
+                },
+                "isParse": {
+                    "type": "string"
+                },
+                "locationInfo": {
+                    "type": "string"
+                },
+                "objectType": {
+                    "type": "string"
+                },
+                "objectUrn": {
+                    "type": "string"
+                },
+                "occurTime": {
+                    "type": "string"
+                },
+                "urnByName": {
+                    "type": "string"
+                }
+            }
+        },
+        "FCSDKResponse«QueryHostUsageResp»": {
+            "type": "object",
+            "properties": {
+                "errorCode": {
+                    "type": "string"
+                },
+                "errorDes": {
+                    "type": "string"
+                },
+                "result": {
+                    "$ref": "#/definitions/QueryHostUsageResp"
+                }
+            }
+        },
+        "HostRoutetable": {
+            "type": "object",
+            "properties": {
+                "destination": {
+                    "type": "string"
+                },
+                "dev": {
+                    "type": "string"
+                },
+                "gateway": {
+                    "type": "string"
+                },
+                "maskPrefix": {
+                    "type": "integer",
+                    "format": "int32"
+                }
+            }
+        },
+        "FCSDKResponse«PageList«Volume»»": {
+            "type": "object",
+            "properties": {
+                "errorCode": {
+                    "type": "string"
+                },
+                "errorDes": {
+                    "type": "string"
+                },
+                "result": {
+                    "$ref": "#/definitions/PageList«Volume»"
+                }
+            }
+        },
+        "DrsVmConfig": {
+            "type": "object",
+            "properties": {
+                "behavior": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "vmUrn": {
+                    "type": "string"
+                }
+            }
+        },
+        "Vms": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "urn": {
+                    "type": "string"
+                }
+            }
+        },
+        "DpmThreshold": {
+            "type": "object",
+            "properties": {
+                "cpu": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "memory": {
+                    "type": "integer",
+                    "format": "int32"
+                }
+            }
+        },
+        "HostInfo": {
+            "type": "object",
+            "properties": {
+                "attachedISOVMs": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "bmcIp": {
+                    "type": "string"
+                },
+                "bmcUserName": {
+                    "type": "string"
+                },
+                "clusterEnableIOTailor": {
+                    "type": "boolean"
+                },
+                "clusterName": {
+                    "type": "string"
+                },
+                "clusterUrn": {
+                    "type": "string"
+                },
+                "computeResourceStatics": {
+                    "type": "string"
+                },
+                "cpuMHz": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "cpuQuantity": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "defaultGateway": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "gdvmMemory": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "gdvmMemoryReboot": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "gpuCapacity": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "gpuCapacityReboot": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "gsvmMemory": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "gsvmMemoryReboot": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "haRole": {
+                    "type": "string"
+                },
+                "haState": {
+                    "type": "string"
+                },
+                "hostDNSCfg": {
+                    "$ref": "#/definitions/HostDNSCfg"
+                },
+                "hostMultiPathMode": {
+                    "type": "string"
+                },
+                "hostRealName": {
+                    "type": "string"
+                },
+                "hostRoutetable": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/HostRoutetable"
+                    }
+                },
+                "hypervisor": {
+                    "type": "string"
+                },
+                "imcSetting": {
+                    "type": "string"
+                },
+                "ip": {
+                    "type": "string"
+                },
+                "isFailOverHost": {
+                    "type": "boolean"
+                },
+                "isMaintaining": {
+                    "type": "boolean"
+                },
+                "maintaining": {
+                    "type": "boolean"
+                },
+                "maxImcSetting": {
+                    "type": "string"
+                },
+                "memQuantityMB": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "model": {
+                    "type": "string"
+                },
+                "multiPathMode": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "nicQuantity": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "ntpCycle": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "ntpIp1": {
+                    "type": "string"
+                },
+                "ntpIp2": {
+                    "type": "string"
+                },
+                "ntpIp3": {
+                    "type": "string"
+                },
+                "params": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    }
+                },
+                "physicalCpuQuantity": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "uri": {
+                    "type": "string"
+                },
+                "urn": {
+                    "type": "string"
+                },
+                "vendor": {
+                    "type": "string"
+                }
+            }
+        },
+        "CpuResource": {
+            "type": "object",
+            "properties": {
+                "allocatedSizeMHz": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "allocatedVcpus": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "totalSizeMHz": {
+                    "type": "integer",
+                    "format": "int32"
+                }
+            }
+        }
+    }
+}

@@ -33,6 +33,10 @@ public class Product {
 	 * 描述
 	 */
 	private String description;
+	
+	private boolean isRandomRedpacket;
+	
+	private int averageAmount;
 
 	private Set<ProductDetail> productDetails;
 

@@ -4,6 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Date;
 
+import javax.transaction.Transactional;
+
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -44,6 +46,7 @@ public class RedPacketRepositoryTest {
 	}
 	
 	@Test
+	@Transactional
 	public void test_c_findRelatedRedPacket() {
 		WechatUser wechatUser = wechatUserRepository.findByNickname("iman");
 		assertThat(wechatUser.getRedPackets().size()).isEqualTo(2);
