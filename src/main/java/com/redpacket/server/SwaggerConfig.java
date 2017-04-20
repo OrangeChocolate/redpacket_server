@@ -35,7 +35,7 @@ public class SwaggerConfig {
 		return new Docket(DocumentationType.SWAGGER_2)
 				.useDefaultResponseMessages(false)
 				.select()
-				.apis(RequestHandlerSelectors.any())
+				.apis(Predicates.not(RequestHandlerSelectors.basePackage("org.springframework.boot")))
 				.paths(Predicates.not(PathSelectors.regex("/error.*")))
 				.build()
 				.apiInfo(apiInfo())
@@ -68,7 +68,7 @@ public class SwaggerConfig {
     }
 	
 	private List<SecurityContext> securityContexts() {
-		List<SecurityContext> securityContexts   = Arrays.asList(SecurityContext.builder().forPaths(PathSelectors.any()).securityReferences(securityReferences()).build());
+		List<SecurityContext> securityContexts   = Arrays.asList(SecurityContext.builder().forPaths(Predicates.not(PathSelectors.regex("/error.*"))).securityReferences(securityReferences()).build());
 		return securityContexts;
 	}
 	
