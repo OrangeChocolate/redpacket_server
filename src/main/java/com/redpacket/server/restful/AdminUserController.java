@@ -25,16 +25,10 @@ import io.swagger.annotations.SecurityDefinition;
 import io.swagger.annotations.SwaggerDefinition;
 import io.swagger.annotations.ApiKeyAuthDefinition.ApiKeyLocation;
 
-@SwaggerDefinition(securityDefinition = @SecurityDefinition(
-		apiKeyAuthDefintions = {
-				@ApiKeyAuthDefinition(key = "token", name = "token", in = ApiKeyLocation.QUERY) 
-		}
-	)
-)
 @SuppressWarnings("unchecked")
 @RestController
 @RequestMapping("/api/admin/")
-public class AdminUserController {
+public class AdminUserController implements SwaggerSecurityDefinition {
 	
 	public static final Logger logger = LoggerFactory.getLogger(AdminUserController.class);
 	

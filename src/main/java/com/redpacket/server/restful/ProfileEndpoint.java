@@ -16,7 +16,7 @@ import com.redpacket.server.security.model.UserContext;
  * Aug 4, 2016
  */
 @RestController
-public class ProfileEndpoint {
+public class ProfileEndpoint implements SwaggerSecurityDefinition {
     @RequestMapping(value="/api/me", method=RequestMethod.GET)
     public @ResponseBody UserContext get(JwtAuthenticationToken token) {
         return (UserContext) token.getPrincipal();
