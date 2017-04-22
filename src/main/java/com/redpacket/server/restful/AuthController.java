@@ -1,5 +1,6 @@
 package com.redpacket.server.restful;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -23,6 +24,7 @@ import io.swagger.annotations.Authorization;
  * This is just a fake control for springfox-swagger2 to generate api-docs
  *
  */
+@CrossOrigin
 @Api(tags={"auth"})
 @RestController
 @RequestMapping("/api/auth/")

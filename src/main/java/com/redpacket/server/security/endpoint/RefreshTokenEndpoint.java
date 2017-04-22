@@ -16,6 +16,7 @@ import org.springframework.security.authentication.InsufficientAuthenticationExc
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -44,6 +45,7 @@ import io.swagger.annotations.ApiOperation;
  *
  * Aug 17, 2016
  */
+@CrossOrigin
 @Api(tags={"auth"})
 @RestController
 public class RefreshTokenEndpoint {
