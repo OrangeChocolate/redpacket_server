@@ -10,6 +10,9 @@ import javax.persistence.ManyToMany;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
+
 @Entity
 public class City {
 	
@@ -35,7 +38,7 @@ public class City {
 	}
 
 	@Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
 	public Long getId() {
 		return id;
 	}
@@ -53,6 +56,7 @@ public class City {
 	}
 
 	@ManyToMany(mappedBy = "allowSellCities")
+	@JsonProperty(access = Access.WRITE_ONLY)
 	public Set<Product> getProducts() {
 		return products;
 	}

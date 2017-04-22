@@ -1,4 +1,4 @@
-package com.redpacket.server.restful;
+package com.redpacket.server.common;
 
 import io.swagger.annotations.ApiKeyAuthDefinition;
 import io.swagger.annotations.ApiKeyAuthDefinition.ApiKeyLocation;

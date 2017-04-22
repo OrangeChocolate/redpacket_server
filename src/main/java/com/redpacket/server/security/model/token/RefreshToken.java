@@ -22,7 +22,7 @@ import io.jsonwebtoken.Jws;
 public class RefreshToken implements JwtToken {
     private Jws<Claims> claims;
 
-    private RefreshToken(Jws<Claims> claims) {
+    public RefreshToken(Jws<Claims> claims) {
         this.claims = claims;
     }
 

@@ -34,6 +34,9 @@ import com.redpacket.server.security.model.token.RawAccessJwtToken;
 import com.redpacket.server.security.model.token.RefreshToken;
 import com.redpacket.server.service.AdminUserService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
 /**
  * RefreshTokenEndpoint
  * 
@@ -41,6 +44,7 @@ import com.redpacket.server.service.AdminUserService;
  *
  * Aug 17, 2016
  */
+@Api(tags={"auth"})
 @RestController
 public class RefreshTokenEndpoint {
     @Autowired private JwtTokenFactory tokenFactory;
@@ -49,6 +53,7 @@ public class RefreshTokenEndpoint {
     @Autowired private TokenVerifier tokenVerifier;
     @Autowired private TokenExtractor tokenExtractor;
     
+    @ApiOperation(value = "Refresh Token", notes = "Refresh Token")
     @RequestMapping(value="/api/auth/token", method=RequestMethod.GET, produces={ MediaType.APPLICATION_JSON_VALUE })
     public @ResponseBody JwtToken refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String tokenPayload = tokenExtractor.extract(request);

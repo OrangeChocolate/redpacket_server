@@ -15,17 +15,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.redpacket.server.common.CustomErrorType;
+import com.redpacket.server.common.SwaggerSecurityDefinition;
 import com.redpacket.server.model.AdminUser;
 import com.redpacket.server.service.AdminUserService;
 
-import io.swagger.annotations.ApiKeyAuthDefinition;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
-import io.swagger.annotations.SecurityDefinition;
-import io.swagger.annotations.SwaggerDefinition;
-import io.swagger.annotations.ApiKeyAuthDefinition.ApiKeyLocation;
 
-@SuppressWarnings("unchecked")
+@Api(tags={"admin"})
 @RestController
 @RequestMapping("/api/admin/")
 public class AdminUserController implements SwaggerSecurityDefinition {
@@ -37,16 +35,16 @@ public class AdminUserController implements SwaggerSecurityDefinition {
 	
 	@ApiOperation(value = "List all admin", notes = "List all admin in json response", authorizations={@Authorization(value = "token")})
 	@RequestMapping(value = "/", method = RequestMethod.GET, produces = "application/json")
-	public ResponseEntity<List<AdminUser>> get() {
-		List<AdminUser> adminUsers = adminUserService.getAll();
+	public ResponseEntity<List<AdminUser>> findAll() {
+		List<AdminUser> adminUsers = adminUserService.findAll();
 		return new ResponseEntity<List<AdminUser>>(adminUsers, HttpStatus.OK);
 	}
 
 	@SuppressWarnings("rawtypes")
 	@ApiOperation(value = "Get a admin", notes = "Get a admin by id with json response", authorizations={@Authorization(value = "token")})
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = "application/json")
-	public ResponseEntity<AdminUser> get(@PathVariable Long id) {
-		AdminUser adminUser = adminUserService.getById(id);
+	public ResponseEntity<AdminUser> findById(@PathVariable Long id) {
+		AdminUser adminUser = adminUserService.findById(id);
 		if(adminUser == null) {
             logger.error("AdminUser with id {} not found.", id);
             return new ResponseEntity(new CustomErrorType("User with id " + id + " not found"), HttpStatus.NOT_FOUND);
@@ -72,7 +70,7 @@ public class AdminUserController implements SwaggerSecurityDefinition {
 	@ApiOperation(value = "Update a admin", notes = "Update a admin with json response", authorizations={@Authorization(value = "token")})
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT, consumes = "application/json", produces = "application/json")
 	public ResponseEntity<AdminUser> update(@PathVariable("id") Long id, @RequestBody AdminUser adminUser) {
-		AdminUser pesistedAdminUser = adminUserService.getById(id);
+		AdminUser pesistedAdminUser = adminUserService.findById(id);
 		if(pesistedAdminUser == null) {
             logger.error("AdminUser with id {} not found.", id);
             return new ResponseEntity(new CustomErrorType("User with id " + id + " not found"), HttpStatus.NOT_FOUND);
@@ -88,10 +86,10 @@ public class AdminUserController implements SwaggerSecurityDefinition {
 	@ApiOperation(value = "Delete a admin", notes = "Delete a admin by id with json response", authorizations={@Authorization(value = "token")})
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "application/json")
 	public ResponseEntity<AdminUser> delete(@PathVariable Long id) {
-		AdminUser adminUser = adminUserService.getById(id);
+		AdminUser adminUser = adminUserService.findById(id);
 		if(adminUser == null) {
             logger.error("AdminUser with id {} not found.", id);
-            return new ResponseEntity(new CustomErrorType("User with id " + id + " not found"), HttpStatus.NOT_FOUND);
+            return new ResponseEntity(new CustomErrorType("AdminUser with id " + id + " not found"), HttpStatus.NOT_FOUND);
 		}
 		adminUserService.delete(adminUser);
 		return new ResponseEntity<AdminUser>(adminUser, HttpStatus.OK);

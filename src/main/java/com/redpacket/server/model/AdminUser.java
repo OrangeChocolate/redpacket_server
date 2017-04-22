@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -30,7 +31,7 @@ public class AdminUser {
 	private String password;
 
 	@ManyToMany(cascade = CascadeType.ALL)
-	@JoinTable(name = "admin_user_role_join", joinColumns = @JoinColumn(name = "admin_user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "admin_user_role_id", referencedColumnName = "id"))
+	@JoinTable(name = "admin_user_role_join", joinColumns = @JoinColumn(name = "admin_user_id", referencedColumnName = "id", foreignKey = @ForeignKey(name="FK_ADMIN_USER_ID")), inverseJoinColumns = @JoinColumn(name = "admin_user_role_id", referencedColumnName = "id", foreignKey = @ForeignKey(name="FK_ADMIN_USER_ROLE_ID")))
 	private List<AdminUserRole> roles;
 
 	public AdminUser() {

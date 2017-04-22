@@ -3,11 +3,15 @@ package com.redpacket.server.model;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 @Entity
 public class RedPacket {
@@ -54,7 +58,8 @@ public class RedPacket {
 	}
 	
 	@ManyToOne
-    @JoinColumn(name = "wechat_user_id")
+    @JoinColumn(name = "wechat_user_id", foreignKey = @ForeignKey(name="FK_WECHAT_USER_ID"))
+	@JsonProperty(access = Access.WRITE_ONLY)
 	public WechatUser getUser() {
 		return user;
 	}

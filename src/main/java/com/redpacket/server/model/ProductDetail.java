@@ -1,16 +1,57 @@
 package com.redpacket.server.model;
 
+import java.io.Serializable;
+
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
+
+import javax.persistence.ForeignKey;
+
 @Entity
 public class ProductDetail {
+
+    @Embeddable
+    public static class ProductDetailPrimaryKey implements Serializable {
+        private Long productId;
+
+        private Long productDetailId;
+        
+        public ProductDetailPrimaryKey() {
+		}
+
+		public ProductDetailPrimaryKey(Long productId, Long productDetailId) {
+			this.productId = productId;
+			this.productDetailId = productDetailId;
+		}
+
+		@Column(name = "product_id", nullable = false, updatable = false)
+		public Long getProductId() {
+			return productId;
+		}
+
+		public void setProductId(Long productId) {
+			this.productId = productId;
+		}
+
+        @Column(name = "product_detail_id", nullable = false, updatable = false)
+		public Long getProductDetailId() {
+			return productDetailId;
+		}
+
+		public void setProductDetailId(Long productDetailId) {
+			this.productDetailId = productDetailId;
+		}
+    }
 	
-    private Long id;
+    private ProductDetailPrimaryKey productDetailPrimaryKey;
 	
 	/**
 	 * 产品
@@ -25,24 +66,25 @@ public class ProductDetail {
 	public ProductDetail() {
 	}
 
-	public ProductDetail(Long id, Product product, Boolean enable) {
-		this.id = id;
+	public ProductDetail(ProductDetailPrimaryKey productDetailPrimaryKey, Product product, Boolean enable) {
+		this.productDetailPrimaryKey = productDetailPrimaryKey;
 		this.product = product;
 		this.enable = enable;
 	}
 
-	@Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-	public Long getId() {
-		return id;
+
+	@EmbeddedId
+	public ProductDetailPrimaryKey getProductDetailPrimaryKey() {
+		return productDetailPrimaryKey;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setProductDetailPrimaryKey(ProductDetailPrimaryKey productDetailPrimaryKey) {
+		this.productDetailPrimaryKey = productDetailPrimaryKey;
 	}
 
 	@ManyToOne
-    @JoinColumn(name = "product_id")
+    @JoinColumn(name = "product_id", insertable = false, updatable = false, foreignKey = @ForeignKey(name="FK_PRODUCT_ID"))
+	@JsonProperty(access = Access.WRITE_ONLY)
 	public Product getProduct() {
 		return product;
 	}

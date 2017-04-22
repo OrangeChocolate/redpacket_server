@@ -32,7 +32,11 @@ public class AdminUserService {
         return userRepository.findByUsername(username);
     }
 
-	public AdminUser getById(Long id) {
+	public List<AdminUser> findAll() {
+		return userRepository.findAll();
+	}
+
+	public AdminUser findById(Long id) {
 		return userRepository.findOne(id);
 	}
 
@@ -49,9 +53,5 @@ public class AdminUserService {
 
 	public void delete(AdminUser adminUser) {
 		userRepository.delete(adminUser);
-	}
-
-	public List<AdminUser> getAll() {
-		return userRepository.findAll();
 	}
 }

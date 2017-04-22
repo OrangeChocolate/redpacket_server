@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.redpacket.server.common.SwaggerSecurityDefinition;
 import com.redpacket.server.security.auth.JwtAuthenticationToken;
 import com.redpacket.server.security.model.UserContext;
 

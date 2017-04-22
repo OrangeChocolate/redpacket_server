@@ -4,6 +4,8 @@ import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -97,7 +99,7 @@ public class Product {
 
 	// 定义Product-City的ManyToMany关系，可参考https://hellokoding.com/jpa-many-to-many-relationship-mapping-example-with-spring-boot-hsql/
 	@ManyToMany(cascade = CascadeType.ALL)
-	@JoinTable(name = "product_city", joinColumns = @JoinColumn(name = "product_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "city_id", referencedColumnName = "id"))
+	@JoinTable(name = "product_city", joinColumns = @JoinColumn(name = "product_id", referencedColumnName = "id", foreignKey = @ForeignKey(name="FK_PRODUCT_ID")), inverseJoinColumns = @JoinColumn(name = "city_id", referencedColumnName = "id", foreignKey = @ForeignKey(name="FK_CITY_ID")))
 	public Set<City> getAllowSellCities() {
 		return allowSellCities;
 	}
@@ -106,7 +108,7 @@ public class Product {
 		this.allowSellCities = allowSellCities;
 	}
 
-	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "product", fetch=FetchType.EAGER)
 	public Set<ProductDetail> getProductDetails() {
 		return productDetails;
 	}

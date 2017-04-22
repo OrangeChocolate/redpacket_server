@@ -15,7 +15,7 @@ public final class AccessJwtToken implements JwtToken {
     private final String rawToken;
     @JsonIgnore private Claims claims;
 
-    protected AccessJwtToken(final String token, Claims claims) {
+    public AccessJwtToken(final String token, Claims claims) {
         this.rawToken = token;
         this.claims = claims;
     }
