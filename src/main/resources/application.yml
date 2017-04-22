@@ -8,7 +8,7 @@ demo.security.jwt:
   tokenSigningKey: xm8EV6Hy5RMFK4EEACIDAwQus
 
 spring.datasource:
-  url: "jdbc:mysql://localhost/redpacket?useUnicode=true&characterEncoding=utf-8"
+  url: "jdbc:mysql://localhost:3306/redpacket?autoReconnect=true&useUnicode=true&characterEncoding=UTF-8&connectionCollation=utf8mb4_unicode_ci&characterSetResults=UTF-8"
   driverClassName: com.mysql.jdbc.Driver
   username: root
   password: ""

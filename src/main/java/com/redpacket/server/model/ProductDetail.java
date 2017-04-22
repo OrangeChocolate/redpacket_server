@@ -93,6 +93,7 @@ public class ProductDetail {
 		this.product = product;
 	}
 
+	@Column(nullable = false, columnDefinition = "TINYINT", length = 1)
 	public Boolean getEnable() {
 		return enable;
 	}
