@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.tomcat.util.bcel.classfile.Constant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpMethod;
@@ -19,8 +20,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.redpacket.server.common.Constants;
 import com.redpacket.server.common.WebUtil;
 import com.redpacket.server.security.exceptions.AuthMethodNotSupportedException;
 
@@ -56,6 +59,27 @@ public class AjaxLoginProcessingFilter extends AbstractAuthenticationProcessingF
 //            }
 //            throw new AuthMethodNotSupportedException("Authentication method not supported");
 //        }
+		// we need to only handle cors for /api/auth/login, other path are
+		// controlled by @CrossOrigin
+		if (request.getRequestURI().equals("/api/auth/login")) {
+			String origin = "*";
+			if (request.getHeader(Constants.ORIGIN) != null) {
+				origin = request.getHeader(Constants.ORIGIN);
+			}
+			response.addHeader("Access-Control-Allow-Origin", origin);
+			response.addHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+			response.addHeader("Access-Control-Allow-Credentials", "true");
+			response.addHeader("Access-Control-Allow-Headers", request.getHeader("Access-Control-Request-Headers"));
+			if (request.getMethod().equals(HttpMethod.OPTIONS.name())) {
+				try {
+					response.getWriter().print("OK");
+					response.getWriter().flush();
+					return null;
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
 
         LoginRequest loginRequest = objectMapper.readValue(request.getReader(), LoginRequest.class);
         
