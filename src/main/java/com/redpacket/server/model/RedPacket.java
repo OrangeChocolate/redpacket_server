@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -58,7 +59,10 @@ public class RedPacket {
 	}
 	
 	@ManyToOne
-    @JoinColumn(name = "wechat_user_id", foreignKey = @ForeignKey(name="FK_WECHAT_USER_ID"))
+	@JoinColumns({
+	    @JoinColumn(name = "wechat_user_id", foreignKey = @ForeignKey(name="FK_WECHAT_USER_ID"), referencedColumnName = "id", insertable = false, updatable = false),
+	    @JoinColumn(name = "wechat_nickname", referencedColumnName = "nickname", insertable = false, updatable = false)
+	})
 	@JsonProperty(access = Access.WRITE_ONLY)
 	public WechatUser getUser() {
 		return user;

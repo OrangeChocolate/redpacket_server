@@ -54,8 +54,9 @@ insert into city(`id`,`name`) values ("140500","晋城");
 insert into city(`id`,`name`) values ("140600","朔州");
 insert into city(`id`,`name`) values ("140700","晋中");
 
-INSERT INTO `product` VALUES (1,5,'好吃的香油','香油'),(2,3,'非常棒的面包','面包');
-INSERT INTO `product_city` VALUES (1,110000),(1,120000),(2,130100),(2,130300),(2,130600);
-INSERT INTO `product_detail` VALUES (1,1,1),(1,2,0),(2,1,1),(2,2,1),(3,1,1),(3,2,1),(4,1,0),(5,1,0);
-INSERT INTO `wechat_user` VALUES (1,'昆明','昆明','中国','http://headimgurl','中文',0,0,'iman','111','云南','男'),(2,'北京','北京','中国','http://image','中文',0,0,'believejava','222','北京','男');
-INSERT INTO `red_packet` VALUES (1,123,'2017-04-22 15:45:53',1),(2,234,'2017-04-21 15:46:10',1),(3,345,'2017-04-13 15:46:27',2);
+INSERT INTO `product` (`id`, `amount`, `description`, `name`) VALUES (1,5,'好吃的香油','香油'),(2,3,'非常棒的面包','面包');
+INSERT INTO `product_city` (`product_id`, `city_id`) VALUES (1,110000),(1,120000),(2,130100),(2,130300),(2,130600);
+INSERT INTO `product_detail` (`product_detail_id`, `product_id`, `product_name`, `enable`) VALUES (1,1,'香油',1),(1,2,'面包',0),(2,1,'香油',1),(2,2,'面包',1),(3,1,'香油',1),(3,2,'面包',1),(4,1,'香油',0),(5,1,'香油',0);
+INSERT INTO `wechat_user` (`id`, `actual_city`, `city`, `country`, `headimgurl`, `language`, `latitude`, `longitude`, `nickname`, `open_id`, `province`, `sex`) VALUES (1,'昆明','昆明','中国','http://headimgurl','中文',0,0,'iman','111','云南','男'),(2,'北京','北京','中国','http://image','中文',0,0,'believejava','222','北京','男');
+INSERT INTO `red_packet` (`id`, `amount`, `create_date_time`, `wechat_user_id`, `wechat_nickname`) VALUES (1,123,'2017-04-22 15:45:53',1,'iman'),(2,234,'2017-04-21 15:46:10',1, 'iman'),(3,345,'2017-04-13 15:46:27',2,'believejava');
+

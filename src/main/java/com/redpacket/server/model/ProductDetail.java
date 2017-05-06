@@ -7,6 +7,7 @@ import javax.persistence.Embeddable;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -83,7 +84,10 @@ public class ProductDetail {
 	}
 
 	@ManyToOne
-    @JoinColumn(name = "product_id", insertable = false, updatable = false, foreignKey = @ForeignKey(name="FK_PRODUCT_ID"))
+	@JoinColumns({
+	    @JoinColumn(name = "product_id", foreignKey = @ForeignKey(name="FK_PRODUCT_ID"), referencedColumnName = "id", insertable = false, updatable = false),
+	    @JoinColumn(name = "product_name", referencedColumnName = "name", insertable = false, updatable = false)
+	})
 	@JsonProperty(access = Access.WRITE_ONLY)
 	public Product getProduct() {
 		return product;
