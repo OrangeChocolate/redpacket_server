@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
@@ -43,7 +44,8 @@ public class RedPacket implements Serializable {
      */
     private Date createDateTime = new Date();
     
-    private Product product;
+//    private Product product;
+    private ProductDetail productDetail;
 	
 	private Long productId;
 	private String productName;
@@ -120,21 +122,33 @@ public class RedPacket implements Serializable {
 		this.createDateTime = createDateTime;
 	}
 
-	@ManyToOne
-	@JoinColumns(foreignKey = @ForeignKey(name = "FK_PRODUCT_COMPOSITE"), value = {
-	    @JoinColumn(name = "product_id", referencedColumnName = "id", insertable = false, updatable = false),
-	    @JoinColumn(name = "product_name", referencedColumnName = "name", insertable = false, updatable = false)
-	})
-	@JsonProperty(access = Access.WRITE_ONLY)
-	public Product getProduct() {
-		return product;
+//	@ManyToOne
+//	@JoinColumns(foreignKey = @ForeignKey(name = "FK_PRODUCT_COMPOSITE"), value = {
+//	    @JoinColumn(name = "product_id", referencedColumnName = "id", insertable = false, updatable = false),
+//	    @JoinColumn(name = "product_name", referencedColumnName = "name", insertable = false, updatable = false)
+//	})
+//	@JsonProperty(access = Access.WRITE_ONLY)
+//	public Product getProduct() {
+//		return product;
+//	}
+//
+//	public void setProduct(Product product) {
+//		this.product = product;
+//	}
+	
+	@OneToOne
+	@JoinColumns(foreignKey = @ForeignKey(name = "FK_PRODUCT_DETAIL_COMPOSITE"), value = {
+			@JoinColumn(name = "product_id", referencedColumnName = "product_id", insertable = false, updatable = false),
+			@JoinColumn(name = "product_detail_id", referencedColumnName = "product_detail_id", insertable = false, updatable = false) })
+    public ProductDetail getProductDetail() {
+		return productDetail;
 	}
 
-	public void setProduct(Product product) {
-		this.product = product;
+	public void setProductDetail(ProductDetail productDetail) {
+		this.productDetail = productDetail;
 	}
 
-    @Column(name="product_id")
+	@Column(name="product_id")
 	public Long getProductId() {
 		return productId;
 	}

@@ -49,7 +49,7 @@ public class Product implements Serializable {
 
 	private Set<ProductDetail> productDetails;
 	
-	private Set<RedPacket> redPackets;
+//	private Set<RedPacket> redPackets;
 
 	/**
 	 * 可销售城市
@@ -144,14 +144,14 @@ public class Product implements Serializable {
 		this.averageAmount = averageAmount;
 	}
 	
-	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
-	public Set<RedPacket> getRedPackets() {
-		return redPackets;
-	}
-
-	public void setRedPackets(Set<RedPacket> redPackets) {
-		this.redPackets = redPackets;
-	}
+//	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+//	public Set<RedPacket> getRedPackets() {
+//		return redPackets;
+//	}
+//
+//	public void setRedPackets(Set<RedPacket> redPackets) {
+//		this.redPackets = redPackets;
+//	}
 
 	// https://commons.apache.org/proper/commons-lang/apidocs/org/apache/commons/lang3/builder/ToStringBuilder.html
 	@Override
