@@ -9,6 +9,8 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -86,10 +88,9 @@ public class ProductDetail implements Serializable {
 	}
     
 	@ManyToOne
-	@JoinColumns({
-	    @JoinColumn(name = "product_id", foreignKey = @ForeignKey(name="FK_PRODUCT_ID"), referencedColumnName = "id", insertable = false, updatable = false),
-	    @JoinColumn(name = "product_name", referencedColumnName = "name", insertable = false, updatable = false)
-	})
+	@JoinColumns(foreignKey = @ForeignKey(name = "FK_PRODUCT_COMPOSITE_KEY"), value = {
+			@JoinColumn(name = "product_id", referencedColumnName = "id", insertable = false, updatable = false),
+			@JoinColumn(name = "product_name", referencedColumnName = "name", insertable = false, updatable = false) })
 	@JsonProperty(access = Access.WRITE_ONLY)
 	public Product getProduct() {
 		return product;
@@ -135,6 +136,7 @@ public class ProductDetail implements Serializable {
 	 * @author Liu.D.H
 	 *
 	 */
+	@Embeddable
     public static class ProductDetailPrimaryKey implements Serializable {
 
 		private static final long serialVersionUID = 8860150264004330941L;

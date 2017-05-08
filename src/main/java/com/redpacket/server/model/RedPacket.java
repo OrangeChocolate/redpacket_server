@@ -12,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
@@ -71,7 +73,7 @@ public class RedPacket implements Serializable {
 	}
 	
 	@ManyToOne
-	@JoinColumns({
+	@JoinColumns(foreignKey = @ForeignKey(name = "FK_WECHAT_USER_COMPOSITE"), value = {
 	    @JoinColumn(name = "wechat_user_id", foreignKey = @ForeignKey(name="FK_WECHAT_USER_ID"), referencedColumnName = "id", insertable = false, updatable = false),
 	    @JoinColumn(name = "wechat_nickname", referencedColumnName = "nickname", insertable = false, updatable = false)
 	})
@@ -119,7 +121,7 @@ public class RedPacket implements Serializable {
 	}
 
 	@ManyToOne
-	@JoinColumns({
+	@JoinColumns(foreignKey = @ForeignKey(name = "FK_PRODUCT_COMPOSITE"), value = {
 	    @JoinColumn(name = "product_id", referencedColumnName = "id", insertable = false, updatable = false),
 	    @JoinColumn(name = "product_name", referencedColumnName = "name", insertable = false, updatable = false)
 	})

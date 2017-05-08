@@ -15,10 +15,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 @Entity
+@Table(uniqueConstraints = @UniqueConstraint(name = "UK_PRODUCT_ID_NAME", columnNames = { "id", "name" }))
 public class Product implements Serializable {
 
 	private static final long serialVersionUID = 6804853862173665407L;
