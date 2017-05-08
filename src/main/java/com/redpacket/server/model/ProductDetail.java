@@ -26,7 +26,7 @@ import com.redpacket.server.model.ProductDetail.ProductDetailPrimaryKey;
 
 @Entity
 @IdClass(ProductDetailPrimaryKey.class)
-public class ProductDetail implements Serializable {
+public class ProductDetail implements Comparable<ProductDetail>, Serializable {
 
 	private static final long serialVersionUID = -3725950221569975053L;
 
@@ -65,10 +65,11 @@ public class ProductDetail implements Serializable {
 	public ProductDetail() {
 	}
 
-	public ProductDetail(Product product, Boolean enable) {
+	public ProductDetail(Product product, Long productDetailId) {
 		this.product = product;
 		this.productId = product.getId();
-		this.enable = enable;
+		this.productName = product.getName();
+		this.productDetailId = productDetailId;
 	}
     
     @Id
@@ -216,4 +217,58 @@ public class ProductDetail implements Serializable {
 			return true;
 		}
     }
+
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (enable ? 1231 : 1237);
+		result = prime * result + (isScanned ? 1231 : 1237);
+		result = prime * result + ((productDetailId == null) ? 0 : productDetailId.hashCode());
+		result = prime * result + ((productId == null) ? 0 : productId.hashCode());
+		result = prime * result + ((productName == null) ? 0 : productName.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ProductDetail other = (ProductDetail) obj;
+		if (enable != other.enable)
+			return false;
+		if (isScanned != other.isScanned)
+			return false;
+		if (productDetailId == null) {
+			if (other.productDetailId != null)
+				return false;
+		} else if (!productDetailId.equals(other.productDetailId))
+			return false;
+		if (productId == null) {
+			if (other.productId != null)
+				return false;
+		} else if (!productId.equals(other.productId))
+			return false;
+		if (productName == null) {
+			if (other.productName != null)
+				return false;
+		} else if (!productName.equals(other.productName))
+			return false;
+		return true;
+	}
+
+	@Override
+	public int compareTo(ProductDetail other) {
+		if(this.productId != other.productId) {
+			return (int) (this.productId - other.productId);
+		}
+		return (int) (this.productDetailId - other.productDetailId);
+	}
+	
+	
 }

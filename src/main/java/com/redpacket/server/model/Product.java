@@ -117,7 +117,7 @@ public class Product implements Serializable {
 		this.allowSellCities = allowSellCities;
 	}
 
-	@OneToMany(mappedBy = "product", fetch=FetchType.EAGER)
+	@OneToMany(mappedBy = "product" , cascade = CascadeType.ALL)
 	public Set<ProductDetail> getProductDetails() {
 		return productDetails;
 	}

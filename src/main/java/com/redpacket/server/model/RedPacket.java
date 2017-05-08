@@ -49,6 +49,7 @@ public class RedPacket implements Serializable {
 	
 	private Long productId;
 	private String productName;
+	private Long productDetailId;
 
 	public RedPacket() {
 	}
@@ -140,6 +141,7 @@ public class RedPacket implements Serializable {
 	@JoinColumns(foreignKey = @ForeignKey(name = "FK_PRODUCT_DETAIL_COMPOSITE"), value = {
 			@JoinColumn(name = "product_id", referencedColumnName = "product_id", insertable = false, updatable = false),
 			@JoinColumn(name = "product_detail_id", referencedColumnName = "product_detail_id", insertable = false, updatable = false) })
+	@JsonProperty(access = Access.WRITE_ONLY)
     public ProductDetail getProductDetail() {
 		return productDetail;
 	}
@@ -164,6 +166,15 @@ public class RedPacket implements Serializable {
 
 	public void setProductName(String productName) {
 		this.productName = productName;
+	}
+
+    @Column(name="product_detail_id")
+	public Long getProductDetailId() {
+		return productDetailId;
+	}
+
+	public void setProductDetailId(Long productDetailId) {
+		this.productDetailId = productDetailId;
 	}
     
     
