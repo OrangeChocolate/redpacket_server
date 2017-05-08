@@ -107,7 +107,7 @@ public class Product implements Serializable {
 	}
 
 	// 定义Product-City的ManyToMany关系，可参考https://hellokoding.com/jpa-many-to-many-relationship-mapping-example-with-spring-boot-hsql/
-	@ManyToMany(cascade = CascadeType.ALL)
+	@ManyToMany(cascade = CascadeType.MERGE)
 	@JoinTable(name = "product_city", joinColumns = @JoinColumn(name = "product_id", referencedColumnName = "id", foreignKey = @ForeignKey(name="FK_PRODUCT_ID")), inverseJoinColumns = @JoinColumn(name = "city_id", referencedColumnName = "id", foreignKey = @ForeignKey(name="FK_CITY_ID")))
 	public Set<City> getAllowSellCities() {
 		return allowSellCities;
@@ -117,7 +117,7 @@ public class Product implements Serializable {
 		this.allowSellCities = allowSellCities;
 	}
 
-	@OneToMany(mappedBy = "product" , cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "product" , cascade = CascadeType.MERGE)
 	public Set<ProductDetail> getProductDetails() {
 		return productDetails;
 	}

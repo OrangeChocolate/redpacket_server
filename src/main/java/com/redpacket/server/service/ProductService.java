@@ -8,8 +8,10 @@ import java.util.TreeSet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.redpacket.server.model.City;
 import com.redpacket.server.model.Product;
 import com.redpacket.server.model.ProductDetail;
+import com.redpacket.server.repository.CityRepository;
 import com.redpacket.server.repository.ProductDetailRepository;
 import com.redpacket.server.repository.ProductRepository;
 
@@ -20,6 +22,8 @@ public class ProductService {
 	private ProductRepository productRepository;
 	@Autowired
 	private ProductDetailRepository productDetailRepository;
+	@Autowired
+	private CityRepository cityRepository;
 	
 	public List<Product> findAll() {
 		return productRepository.findAll();
@@ -30,12 +34,14 @@ public class ProductService {
 	}
 
 	public Product saveOrUpdate(Product product) {
+		Set<City> savedCities = new HashSet<City>(cityRepository.save(product.getAllowSellCities()));
 		Product persistedProduct = productRepository.save(product);
 		int amount = product.getAmount();
 		Set<ProductDetail> productDetails = new TreeSet<>();
 		for(int i = 0; i < amount; i ++) {
 			productDetails.add(new ProductDetail(product, (long)i + 1));
 		}
+		persistedProduct.setAllowSellCities(savedCities);
 		persistedProduct.setProductDetails(productDetails);
 		return productRepository.save(persistedProduct);
 	}
