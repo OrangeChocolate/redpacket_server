@@ -32,11 +32,11 @@ public class ProductDetailService {
 	}
 
 	public List<ProductDetail> findByProductId(Long productId) {
-		return productDetailRepository.findByProductDetailPrimaryKeyProductId(productId);
+		return productDetailRepository.findByProductId(productId);
 	}
 
 	public ProductDetail findByProductIdAndProductDetailId(Long productId, Long productDetailId) {
-		return productDetailRepository.findByProductDetailPrimaryKeyProductIdAndProductDetailPrimaryKeyProductDetailId(productId, productDetailId);
+		return productDetailRepository.findByProductIdAndProductDetailId(productId, productDetailId);
 	}
 
 	public void delete(ProductDetailPrimaryKey productDetailPrimaryKey) {

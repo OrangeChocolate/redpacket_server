@@ -10,8 +10,8 @@ import com.redpacket.server.model.ProductDetail.ProductDetailPrimaryKey;
 
 public interface ProductDetailRepository extends JpaRepository<ProductDetail, ProductDetailPrimaryKey> {
 
-	List<ProductDetail> findByProductDetailPrimaryKeyProductId(Long productId);
+	List<ProductDetail> findByProductId(Long productId);
 
-	ProductDetail findByProductDetailPrimaryKeyProductIdAndProductDetailPrimaryKeyProductDetailId(Long productId, Long productDetailId);
+	ProductDetail findByProductIdAndProductDetailId(Long productId, Long productDetailId);
 
 }
