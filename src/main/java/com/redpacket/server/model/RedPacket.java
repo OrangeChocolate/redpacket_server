@@ -1,7 +1,9 @@
 package com.redpacket.server.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
@@ -15,9 +17,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 @Entity
-public class RedPacket {
+public class RedPacket implements Serializable {
 	
-    private Long id;
+	private static final long serialVersionUID = 7567567480558510660L;
+
+	private Long id;
 	
 	/**
 	 * 红包接收人
@@ -67,9 +71,30 @@ public class RedPacket {
 	public WechatUser getUser() {
 		return user;
 	}
+	
+	private Long wechatUserId;
+	private String wechatNickname;
 
 	public void setUser(WechatUser user) {
 		this.user = user;
+	}
+
+    @Column(name="wechat_user_id")
+	public Long getWechatUserId() {
+		return wechatUserId;
+	}
+
+	public void setWechatUserId(Long wechatUserId) {
+		this.wechatUserId = wechatUserId;
+	}
+
+    @Column(name="wechat_nickname")
+	public String getWechatNickname() {
+		return wechatNickname;
+	}
+
+	public void setWechatNickname(String wechatNickname) {
+		this.wechatNickname = wechatNickname;
 	}
 
 	public int getAmount() {

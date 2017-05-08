@@ -1,5 +1,6 @@
 package com.redpacket.server.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -23,7 +24,9 @@ import com.redpacket.server.common.CustomAdminUserRoleDeserializer;
  */
 @Entity
 @JsonDeserialize(using = CustomAdminUserRoleDeserializer.class)
-public class AdminUserRole {
+public class AdminUserRole implements Serializable {
+
+	private static final long serialVersionUID = -2837556926525951232L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

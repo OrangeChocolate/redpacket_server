@@ -1,5 +1,6 @@
 package com.redpacket.server.model;
 
+import java.io.Serializable;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -14,9 +15,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 @Entity
-public class City {
+public class City implements Serializable {
 	
-    private Long id;
+	private static final long serialVersionUID = -6065104528173032959L;
+
+	private Long id;
 	
 	/**
 	 * 城市名称

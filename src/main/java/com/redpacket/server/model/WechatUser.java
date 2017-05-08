@@ -1,5 +1,6 @@
 package com.redpacket.server.model;
 
+import java.io.Serializable;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -10,9 +11,11 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 @Entity
-public class WechatUser {
+public class WechatUser implements Serializable {
 	
-    private Long id;
+	private static final long serialVersionUID = 5416290197708277177L;
+
+	private Long id;
 	
 	// see http://mp.weixin.qq.com/wiki/14/bb5031008f1494a59c6f71fa0f319c66.html
 	/**

@@ -17,11 +17,16 @@ import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import javax.persistence.ForeignKey;
 
 @Entity
-public class ProductDetail {
+public class ProductDetail implements Serializable {
 
-    @Embeddable
+	private static final long serialVersionUID = -3725950221569975053L;
+
+	@Embeddable
     public static class ProductDetailPrimaryKey implements Serializable {
-        private Long productId;
+
+		private static final long serialVersionUID = 8860150264004330941L;
+
+		private Long productId;
 
         private Long productDetailId;
         
@@ -62,7 +67,11 @@ public class ProductDetail {
     /**
      * 产品是否可启用扫码
      */
-    private Boolean enable;
+    private boolean enable = true;
+    
+    private String productName;
+    
+    private boolean isScanned = false;
 
 	public ProductDetail() {
 	}
@@ -83,6 +92,7 @@ public class ProductDetail {
 		this.productDetailPrimaryKey = productDetailPrimaryKey;
 	}
 
+
 	@ManyToOne
 	@JoinColumns({
 	    @JoinColumn(name = "product_id", foreignKey = @ForeignKey(name="FK_PRODUCT_ID"), referencedColumnName = "id", insertable = false, updatable = false),
@@ -97,13 +107,31 @@ public class ProductDetail {
 		this.product = product;
 	}
 
-	@Column(nullable = false, columnDefinition = "TINYINT", length = 1)
-	public Boolean getEnable() {
+	@Column(nullable = false, columnDefinition = "TINYINT default 1", length = 1)
+	public boolean getEnable() {
 		return enable;
 	}
 
-	public void setEnable(Boolean enable) {
+	public void setEnable(boolean enable) {
 		this.enable = enable;
+	}
+
+    @Column(name="product_name")
+	public String getProductName() {
+		return productName;
+	}
+
+	public void setProductName(String productName) {
+		this.productName = productName;
+	}
+
+	@Column(nullable = false, columnDefinition = "TINYINT default 0", length = 1)
+	public boolean isScanned() {
+		return isScanned;
+	}
+
+	public void setScanned(boolean isScanned) {
+		this.isScanned = isScanned;
 	}
     
     

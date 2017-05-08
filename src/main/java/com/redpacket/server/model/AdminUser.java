@@ -1,5 +1,6 @@
 package com.redpacket.server.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -17,7 +18,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 @Entity
-public class AdminUser {
+public class AdminUser implements Serializable {
+
+	private static final long serialVersionUID = 669017746501219540L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,5 +1,6 @@
 package com.redpacket.server.model;
 
+import java.io.Serializable;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -17,7 +18,9 @@ import javax.persistence.OneToMany;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 @Entity
-public class Product {
+public class Product implements Serializable {
+
+	private static final long serialVersionUID = 6804853862173665407L;
 
 	private Long id;
 
