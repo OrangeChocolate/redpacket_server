@@ -27,16 +27,24 @@ public class RedPacket implements Serializable {
 	 * 红包接收人
 	 */
     private WechatUser user;
+	
+	private Long wechatUserId;
+	private String wechatNickname;
     
     /**
      * 红包发放金额（单位分）
      */
-    private int amount;
+    private int amount = 0;
     
     /**
      * 红包发放时间
      */
-    private Date createDateTime;
+    private Date createDateTime = new Date();
+    
+    private Product product;
+	
+	private Long productId;
+	private String productName;
 
 	public RedPacket() {
 	}
@@ -71,9 +79,6 @@ public class RedPacket implements Serializable {
 	public WechatUser getUser() {
 		return user;
 	}
-	
-	private Long wechatUserId;
-	private String wechatNickname;
 
 	public void setUser(WechatUser user) {
 		this.user = user;
@@ -111,6 +116,38 @@ public class RedPacket implements Serializable {
 
 	public void setCreateDateTime(Date createDateTime) {
 		this.createDateTime = createDateTime;
+	}
+
+	@ManyToOne
+	@JoinColumns({
+	    @JoinColumn(name = "product_id", referencedColumnName = "id", insertable = false, updatable = false),
+	    @JoinColumn(name = "product_name", referencedColumnName = "name", insertable = false, updatable = false)
+	})
+	@JsonProperty(access = Access.WRITE_ONLY)
+	public Product getProduct() {
+		return product;
+	}
+
+	public void setProduct(Product product) {
+		this.product = product;
+	}
+
+    @Column(name="product_id")
+	public Long getProductId() {
+		return productId;
+	}
+
+	public void setProductId(Long productId) {
+		this.productId = productId;
+	}
+
+    @Column(name="product_name")
+	public String getProductName() {
+		return productName;
+	}
+
+	public void setProductName(String productName) {
+		this.productName = productName;
 	}
     
     

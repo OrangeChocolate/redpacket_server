@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
@@ -39,11 +40,13 @@ public class Product implements Serializable {
 	 */
 	private String description;
 	
-	private boolean isRandomRedpacket;
+	private boolean isRandomRedpacket = false;
 	
-	private int averageAmount;
+	private int averageAmount = 0;
 
 	private Set<ProductDetail> productDetails;
+	
+	private Set<RedPacket> redPackets;
 
 	/**
 	 * 可销售城市
@@ -118,6 +121,33 @@ public class Product implements Serializable {
 
 	public void setProductDetails(Set<ProductDetail> productDetails) {
 		this.productDetails = productDetails;
+	}
+
+	@Column(name="random_redpacket")
+	public boolean isRandomRedpacket() {
+		return isRandomRedpacket;
+	}
+
+	public void setRandomRedpacket(boolean isRandomRedpacket) {
+		this.isRandomRedpacket = isRandomRedpacket;
+	}
+	
+	@Column(name="average_amount")
+	public int getAverageAmount() {
+		return averageAmount;
+	}
+
+	public void setAverageAmount(int averageAmount) {
+		this.averageAmount = averageAmount;
+	}
+	
+	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+	public Set<RedPacket> getRedPackets() {
+		return redPackets;
+	}
+
+	public void setRedPackets(Set<RedPacket> redPackets) {
+		this.redPackets = redPackets;
 	}
 
 	// https://commons.apache.org/proper/commons-lang/apidocs/org/apache/commons/lang3/builder/ToStringBuilder.html
