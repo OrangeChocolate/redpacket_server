@@ -6,6 +6,7 @@ import java.io.PrintWriter;
 import javax.servlet.http.HttpServletResponse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.redpacket.server.model.Option;
 
 public class Utils {
 	public static class GeneralResponse{
@@ -44,5 +45,18 @@ public class Utils {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public static Option merge(Option existOption, Option option) {
+		if(option.getEnable() != null) {
+			existOption.setEnable(option.getEnable());
+		}
+		if(option.getName() != null) {
+			existOption.setName(option.getName());
+		}
+		if(option.getValue() != null) {
+			existOption.setValue(option.getValue());
+		}
+		return existOption;
 	}
 }

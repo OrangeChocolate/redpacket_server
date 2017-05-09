@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.redpacket.server.common.CustomErrorType;
+import com.redpacket.server.common.Utils;
 import com.redpacket.server.model.Option;
 import com.redpacket.server.service.OptionService;
 
@@ -49,7 +51,13 @@ public class OptionController {
 	@ApiOperation(value = "Update a product", notes = "Update a product with json response", authorizations={@Authorization(value = "token")})
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT, consumes = "application/json", produces = "application/json")
 	public ResponseEntity<Option> update(@PathVariable("id") Long id, @RequestBody Option option) {
-		Option pesistedOption = optionService.saveOrUpdate(option);
+		Option existOption = optionService.findById(id);
+		if(existOption == null) {
+            logger.error("Option with id {} not found.", id);
+            return new ResponseEntity(new CustomErrorType("Option with id " + id + " not found"), HttpStatus.NOT_FOUND);
+		}
+		Option mergedOption = Utils.merge(existOption, option);
+		Option pesistedOption = optionService.saveOrUpdate(mergedOption);
 		return new ResponseEntity<Option>(pesistedOption, HttpStatus.OK);
 	}
 }
