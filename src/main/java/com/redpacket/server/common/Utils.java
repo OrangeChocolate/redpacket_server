@@ -2,6 +2,7 @@ package com.redpacket.server.common;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.lang.reflect.Field;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -58,5 +59,25 @@ public class Utils {
 			existOption.setValue(option.getValue());
 		}
 		return existOption;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static <T> T mergeObjects(T exist, T patch) {
+		Class<?> clazz = exist.getClass();
+		try {
+			Field[] fields = clazz.getDeclaredFields();
+			for (Field field : fields) {
+				if (!field.getName().equals("serialVersionUID")) {
+					field.setAccessible(true);
+					Object valueMerge = field.get(patch);
+					if (valueMerge != null) {
+						field.set(exist, valueMerge);
+					}
+				}
+			}
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		return (T) exist;
 	}
 }

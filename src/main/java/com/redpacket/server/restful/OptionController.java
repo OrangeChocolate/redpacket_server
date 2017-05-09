@@ -56,7 +56,7 @@ public class OptionController {
             logger.error("Option with id {} not found.", id);
             return new ResponseEntity(new CustomErrorType("Option with id " + id + " not found"), HttpStatus.NOT_FOUND);
 		}
-		Option mergedOption = Utils.merge(existOption, option);
+		Option mergedOption = Utils.mergeObjects(existOption, option);
 		Option pesistedOption = optionService.saveOrUpdate(mergedOption);
 		return new ResponseEntity<Option>(pesistedOption, HttpStatus.OK);
 	}
