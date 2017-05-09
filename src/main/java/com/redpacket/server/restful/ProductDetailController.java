@@ -93,4 +93,12 @@ public class ProductDetailController implements SwaggerSecurityDefinition {
 		productDetailService.delete(product_detail_id);
 		return new ResponseEntity<ProductDetail>(pesistedProductDetail, HttpStatus.OK);
 	}
+
+	@SuppressWarnings("rawtypes")
+	@ApiOperation(value = "Enable a list of product", notes = "Enable a list of product with json array", authorizations={@Authorization(value = "token")})
+	@RequestMapping(value = "/updateEnable/{enable}", method = RequestMethod.PUT, consumes = "application/json", produces = "application/json")
+	public ResponseEntity<List<ProductDetail>> updateEnable(@PathVariable(name="enable") boolean enable, @RequestBody List<Long> productDetailIds) {
+		List<ProductDetail> updatedProductDetails = productDetailService.batchEable(productDetailIds, enable);
+		return new ResponseEntity<List<ProductDetail>>(updatedProductDetails, HttpStatus.OK);
+	}
 }

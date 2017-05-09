@@ -1,10 +1,12 @@
 package com.redpacket.server.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.redpacket.server.model.Product;
 import com.redpacket.server.model.ProductDetail;
 import com.redpacket.server.repository.ProductDetailRepository;
 
@@ -40,6 +42,13 @@ public class ProductDetailService {
 
 	public ProductDetail findByProductDetailId(Long productDetailId) {
 		return productDetailRepository.findOne(productDetailId);
+	}
+
+	public List<ProductDetail> batchEable(List<Long> productDetailIds, boolean enable) {
+		List<ProductDetail> productDetails = productDetailRepository.findByIdIn(productDetailIds);
+		productDetails.stream().forEach(productDetail -> productDetail.setEnable(enable));
+		List<ProductDetail> updatedProductDetails = productDetailRepository.save(productDetails);
+		return updatedProductDetails;
 	}
 
 }
