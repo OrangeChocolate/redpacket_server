@@ -18,3 +18,7 @@ INSERT INTO `product_city` (`product_id`, `city_id`) VALUES (1,110000),(1,120000
 INSERT INTO `product_detail` (`product_detail_num`, `product_id`, `enable`, `product_name`, `scanned`) VALUES (1,1,1,'香油',0),(1,2,0,'面包',0),(2,1,1,'香油',0),(2,2,1,'面包',0),(3,1,1,'香油',0),(3,2,1,'面包',0),(4,1,0,'香油',0),(5,1,0,'香油',0);
 INSERT INTO `wechat_user` (`id`, `actual_city`, `city`, `country`, `headimgurl`, `language`, `latitude`, `longitude`, `nickname`, `open_id`, `province`, `sex`) VALUES (1,'昆明','昆明','中国','http://headimgurl','中文',0,0,'iman','111','云南','男'),(2,'北京','北京','中国','http://image','中文',0,0,'believejava','222','北京','男');
 INSERT INTO `red_packet` (`id`, `amount`, `create_date_time`, `wechat_nickname`, `wechat_user_id`, `product_detail_id`) VALUES (1,123,'2017-04-22 15:45:53','iman',1,1),(2,234,'2017-04-21 15:46:10','iman',1,2),(3,345,'2017-04-13 15:46:27','believejava',2,3);
+
+INSERT INTO `option` (`enable`, `name`, `value`) VALUES (1, 'min_redpacket_amount', '1');
+INSERT INTO `option` (`enable`, `name`, `value`) VALUES (1, 'max_redpacket_amount', '1000');
+INSERT INTO `option` (`enable`, `name`, `value`) VALUES (0, 'force_city_check', 'false');
