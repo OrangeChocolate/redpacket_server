@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.redpacket.server.common.CustomErrorType;
 import com.redpacket.server.common.SwaggerSecurityDefinition;
 import com.redpacket.server.model.ProductDetail;
-import com.redpacket.server.model.ProductDetail.ProductDetailPrimaryKey;
 import com.redpacket.server.service.ProductDetailService;
 
 import io.swagger.annotations.Api;
@@ -44,26 +43,26 @@ public class ProductDetailController implements SwaggerSecurityDefinition {
 	
 	@ApiOperation(value = "List all productDetail", notes = "List all productDetail in json response", authorizations={@Authorization(value = "token")})
 	@RequestMapping(value = "/{product_id}", method = RequestMethod.GET, produces = "application/json")
-	public ResponseEntity<List<ProductDetail>> get(@PathVariable(name="product_id") Long productId) {
+	public ResponseEntity<List<ProductDetail>> getByProductId(@PathVariable(name="product_id") Long productId) {
 		List<ProductDetail> productDetails = productDetailService.findByProductId(productId);
 		return new ResponseEntity<List<ProductDetail>>(productDetails, HttpStatus.OK);
 	}
 
 	@SuppressWarnings("rawtypes")
 	@ApiOperation(value = "Get a productDetail", notes = "Get a productDetail by id with json response", authorizations={@Authorization(value = "token")})
-	@RequestMapping(value = "/{product_id}/{product_detail_id}", method = RequestMethod.GET, produces = "application/json")
-	public ResponseEntity<ProductDetail> get(@PathVariable(name="product_id") Long productId, @PathVariable(name="product_detail_id") Long productDetailId) {
-		ProductDetail productDetail = productDetailService.findByProductIdAndProductDetailId(productId, productDetailId);
+	@RequestMapping(value = "/{product_detail_id}", method = RequestMethod.GET, produces = "application/json")
+	public ResponseEntity<ProductDetail> getByProductDetailId(@PathVariable(name="product_detail_id") Long productDetailId) {
+		ProductDetail productDetail = productDetailService.findByProductDetailId(productDetailId);
 		if(productDetail == null) {
-            logger.error("ProductDetail with product_id {} and product_detail_id {} not found.", productId, productDetailId);
-            return new ResponseEntity(new CustomErrorType("ProductDetail with product_id " + productId + " and product_detail_id " + productDetailId + " not found"), HttpStatus.NOT_FOUND);
+            logger.error("ProductDetail with product_detail_id {} not found.", productDetailId);
+            return new ResponseEntity(new CustomErrorType("ProductDetail with product_detail_id " + productDetailId + " not found"), HttpStatus.NOT_FOUND);
 		}
 		return new ResponseEntity<ProductDetail>(productDetail, HttpStatus.OK);
 	}
 
 	@SuppressWarnings("rawtypes")
 	@ApiOperation(value = "Create a productDetail", notes = "Create a productDetail with json response", authorizations={@Authorization(value = "token")})
-	@RequestMapping(value = "/{product_id}/", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = "/", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
 	public ResponseEntity<ProductDetail> create(@RequestBody ProductDetail productDetail) {
 		ProductDetail pesistedProductDetail = productDetailService.saveOrUpdate(productDetail);
 		return new ResponseEntity<ProductDetail>(pesistedProductDetail, HttpStatus.OK);
@@ -71,12 +70,12 @@ public class ProductDetailController implements SwaggerSecurityDefinition {
 
 	@SuppressWarnings("rawtypes")
 	@ApiOperation(value = "Update a productDetail", notes = "Update a productDetail with json response", authorizations={@Authorization(value = "token")})
-	@RequestMapping(value = "/{product_id}/{product_detail_id}", method = RequestMethod.PUT, consumes = "application/json", produces = "application/json")
-	public ResponseEntity<ProductDetail> update(@PathVariable(name="product_id") Long productId, @PathVariable(name="product_detail_id") Long productDetailId, @RequestBody ProductDetail productDetail) {
-		ProductDetail pesistedProductDetail = productDetailService.findByProductIdAndProductDetailId(productId, productDetailId);
+	@RequestMapping(value = "/{product_detail_id}", method = RequestMethod.PUT, consumes = "application/json", produces = "application/json")
+	public ResponseEntity<ProductDetail> update(@PathVariable(name="product_detail_id") Long productDetailId, @RequestBody ProductDetail productDetail) {
+		ProductDetail pesistedProductDetail = productDetailService.findByProductDetailId(productDetailId);
 		if(productDetail == null) {
-            logger.error("ProductDetail with product_id {} and product_detail_id {} not found.", productId, productDetailId);
-            return new ResponseEntity(new CustomErrorType("ProductDetail with product_id " + productId + " and product_detail_id " + productDetailId + " not found"), HttpStatus.NOT_FOUND);
+            logger.error("ProductDetail with product_detail_id {} not found.", productDetailId);
+            return new ResponseEntity(new CustomErrorType("ProductDetail with product_detail_id " + productDetailId + " not found"), HttpStatus.NOT_FOUND);
 		}
 		pesistedProductDetail = productDetailService.saveOrUpdate(productDetail);
 		return new ResponseEntity<ProductDetail>(pesistedProductDetail, HttpStatus.OK);
@@ -84,15 +83,14 @@ public class ProductDetailController implements SwaggerSecurityDefinition {
 
 	@SuppressWarnings("rawtypes")
 	@ApiOperation(value = "Delete a productDetail", notes = "Delete a productDetail by id with json response", authorizations={@Authorization(value = "token")})
-	@RequestMapping(value = "/{product_id}/{product_detail_id}", method = RequestMethod.DELETE, produces = "application/json")
-	public ResponseEntity<ProductDetail> delete(@PathVariable(name="product_id") Long productId, @PathVariable(name="product_detail_id") Long productDetailId) {
-		ProductDetail pesistedProductDetail = productDetailService.findByProductIdAndProductDetailId(productId, productDetailId);
+	@RequestMapping(value = "/{product_detail_id}", method = RequestMethod.DELETE, produces = "application/json")
+	public ResponseEntity<ProductDetail> delete(@PathVariable(name="product_detail_id") Long product_detail_id) {
+		ProductDetail pesistedProductDetail = productDetailService.findByProductDetailId(product_detail_id);
 		if(pesistedProductDetail == null) {
-            logger.error("ProductDetail with product_id {} and product_detail_id {} not found.", productId, productDetailId);
-            return new ResponseEntity(new CustomErrorType("ProductDetail with product_id " + productId + " and product_detail_id " + productDetailId + " not found"), HttpStatus.NOT_FOUND);
+            logger.error("ProductDetail with id {} not found.", product_detail_id);
+            return new ResponseEntity(new CustomErrorType("ProductDetail with id " + product_detail_id +  " not found"), HttpStatus.NOT_FOUND);
 		}
-		ProductDetailPrimaryKey productDetailPrimaryKey = new ProductDetail.ProductDetailPrimaryKey(productId, productDetailId);
-		productDetailService.delete(productDetailPrimaryKey);
+		productDetailService.delete(product_detail_id);
 		return new ResponseEntity<ProductDetail>(pesistedProductDetail, HttpStatus.OK);
 	}
 }

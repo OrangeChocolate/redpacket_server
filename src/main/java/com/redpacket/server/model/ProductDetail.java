@@ -2,6 +2,7 @@ package com.redpacket.server.model;
 
 import java.io.Serializable;
 
+import javax.annotation.Generated;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -19,16 +20,18 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 import javax.persistence.ForeignKey;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 
-import com.redpacket.server.model.ProductDetail.ProductDetailPrimaryKey;
 
 @Entity
-@IdClass(ProductDetailPrimaryKey.class)
 public class ProductDetail implements Comparable<ProductDetail>, Serializable {
 
 	private static final long serialVersionUID = -3725950221569975053L;
+
+	private Long id;
 
     /**
      * 产品ID
@@ -38,7 +41,7 @@ public class ProductDetail implements Comparable<ProductDetail>, Serializable {
 	/**
 	 * 产品详情序号
 	 */
-    private Long productDetailId;
+    private Long productDetailNum;
 	
 	/**
 	 * 产品
@@ -65,14 +68,23 @@ public class ProductDetail implements Comparable<ProductDetail>, Serializable {
 	public ProductDetail() {
 	}
 
-	public ProductDetail(Product product, Long productDetailId) {
+	public ProductDetail(Product product, Long productDetailNum) {
 		this.product = product;
 		this.productId = product.getId();
 		this.productName = product.getName();
-		this.productDetailId = productDetailId;
+		this.productDetailNum = productDetailNum;
 	}
-    
-    @Id
+	
+	@Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
 	@Column(name = "product_id")
 	public Long getProductId() {
 		return productId;
@@ -82,16 +94,15 @@ public class ProductDetail implements Comparable<ProductDetail>, Serializable {
 		this.productId = productId;
 	}
 
-    @Id
-    @Column(name = "product_detail_id")
-	public Long getProductDetailId() {
-		return productDetailId;
+    
+	public Long getProductDetailNum() {
+		return productDetailNum;
 	}
 
-	public void setProductDetailId(Long productDetailId) {
-		this.productDetailId = productDetailId;
+	public void setProductDetailNum(Long productDetailNum) {
+		this.productDetailNum = productDetailNum;
 	}
-    
+
 	@ManyToOne
 	@JoinColumns(foreignKey = @ForeignKey(name = "FK_PRODUCT_COMPOSITE_KEY"), value = {
 			@JoinColumn(name = "product_id", referencedColumnName = "id", insertable = false, updatable = false),
@@ -133,6 +144,8 @@ public class ProductDetail implements Comparable<ProductDetail>, Serializable {
 	}
 
 	@OneToOne(mappedBy="productDetail")
+//	@OneToOne
+//	@JoinColumn(name="red_packet_id")
 	@JsonProperty(access = Access.WRITE_ONLY)
 	public RedPacket getRedPacket() {
 		return redPacket;
@@ -149,74 +162,8 @@ public class ProductDetail implements Comparable<ProductDetail>, Serializable {
 	 * @see http://stackoverflow.com/questions/29952386/embedded-id-and-repeated-column-in-mapping-for-entity-exception
 	 * @see http://stackoverflow.com/questions/4432748/what-does-attributeoverride-mean
 	 * @author Liu.D.H
-	 *
 	 */
-	@Embeddable
-    public static class ProductDetailPrimaryKey implements Serializable {
-
-		private static final long serialVersionUID = 8860150264004330941L;
-
-		private Long productId;
-
-        private Long productDetailId;
-        
-        public ProductDetailPrimaryKey() {
-		}
-
-		public ProductDetailPrimaryKey(Long productId, Long productDetailId) {
-			this.productId = productId;
-			this.productDetailId = productDetailId;
-		}
-
-		@Column(name = "product_id", nullable = false, updatable = false)
-		public Long getProductId() {
-			return productId;
-		}
-
-		public void setProductId(Long productId) {
-			this.productId = productId;
-		}
-
-        @Column(name = "product_detail_id", nullable = false, updatable = false)
-		public Long getProductDetailId() {
-			return productDetailId;
-		}
-
-		public void setProductDetailId(Long productDetailId) {
-			this.productDetailId = productDetailId;
-		}
-
-		@Override
-		public int hashCode() {
-			final int prime = 31;
-			int result = 1;
-			result = prime * result + ((productDetailId == null) ? 0 : productDetailId.hashCode());
-			result = prime * result + ((productId == null) ? 0 : productId.hashCode());
-			return result;
-		}
-
-		@Override
-		public boolean equals(Object obj) {
-			if (this == obj)
-				return true;
-			if (obj == null)
-				return false;
-			if (getClass() != obj.getClass())
-				return false;
-			ProductDetailPrimaryKey other = (ProductDetailPrimaryKey) obj;
-			if (productDetailId == null) {
-				if (other.productDetailId != null)
-					return false;
-			} else if (!productDetailId.equals(other.productDetailId))
-				return false;
-			if (productId == null) {
-				if (other.productId != null)
-					return false;
-			} else if (!productId.equals(other.productId))
-				return false;
-			return true;
-		}
-    }
+	
 
 
 	@Override
@@ -225,7 +172,7 @@ public class ProductDetail implements Comparable<ProductDetail>, Serializable {
 		int result = 1;
 		result = prime * result + (enable ? 1231 : 1237);
 		result = prime * result + (isScanned ? 1231 : 1237);
-		result = prime * result + ((productDetailId == null) ? 0 : productDetailId.hashCode());
+		result = prime * result + ((productDetailNum == null) ? 0 : productDetailNum.hashCode());
 		result = prime * result + ((productId == null) ? 0 : productId.hashCode());
 		result = prime * result + ((productName == null) ? 0 : productName.hashCode());
 		return result;
@@ -244,10 +191,10 @@ public class ProductDetail implements Comparable<ProductDetail>, Serializable {
 			return false;
 		if (isScanned != other.isScanned)
 			return false;
-		if (productDetailId == null) {
-			if (other.productDetailId != null)
+		if (productDetailNum == null) {
+			if (other.productDetailNum != null)
 				return false;
-		} else if (!productDetailId.equals(other.productDetailId))
+		} else if (!productDetailNum.equals(other.productDetailNum))
 			return false;
 		if (productId == null) {
 			if (other.productId != null)
@@ -267,7 +214,7 @@ public class ProductDetail implements Comparable<ProductDetail>, Serializable {
 		if(this.productId != other.productId) {
 			return (int) (this.productId - other.productId);
 		}
-		return (int) (this.productDetailId - other.productDetailId);
+		return (int) (this.productDetailNum - other.productDetailNum);
 	}
 	
 	

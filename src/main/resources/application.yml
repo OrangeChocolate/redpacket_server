@@ -18,6 +18,13 @@ spring.jpa:
   hibernate:
     ddl-auto: create
   show-sql: true
+  # https://github.com/spring-projects/spring-boot/issues/2763
+  # http://stackoverflow.com/questions/32437202/improvednamingstrategy-no-longer-working-in-hibernate-5
+#  properties:
+#    hibernate.implicit_naming_strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl
+#    hibernate.physical_naming_strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+#    hibernate.ejb.naming_strategy_delegator: ""
+  
 
   
 #spring.datasource:

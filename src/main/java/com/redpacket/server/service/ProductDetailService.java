@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.redpacket.server.model.ProductDetail;
-import com.redpacket.server.model.ProductDetail.ProductDetailPrimaryKey;
 import com.redpacket.server.repository.ProductDetailRepository;
 
 @Service
@@ -17,10 +16,6 @@ public class ProductDetailService {
 	
 	public List<ProductDetail> findAll() {
 		return productDetailRepository.findAll();
-	}
-	
-	public ProductDetail findById(ProductDetailPrimaryKey productDetailPrimaryKey) {
-		return productDetailRepository.findOne(productDetailPrimaryKey);
 	}
 
 	public ProductDetail saveOrUpdate(ProductDetail productDetail) {
@@ -35,12 +30,16 @@ public class ProductDetailService {
 		return productDetailRepository.findByProductId(productId);
 	}
 
-	public ProductDetail findByProductIdAndProductDetailId(Long productId, Long productDetailId) {
-		return productDetailRepository.findByProductIdAndProductDetailId(productId, productDetailId);
+	public ProductDetail findByProductIdAndProductDetailNum(Long productId, Long productDetailId) {
+		return productDetailRepository.findByProductIdAndProductDetailNum(productId, productDetailId);
 	}
 
-	public void delete(ProductDetailPrimaryKey productDetailPrimaryKey) {
-		productDetailRepository.delete(productDetailPrimaryKey);
+	public void delete(Long id) {
+		productDetailRepository.delete(id);
+	}
+
+	public ProductDetail findByProductDetailId(Long productDetailId) {
+		return productDetailRepository.findOne(productDetailId);
 	}
 
 }

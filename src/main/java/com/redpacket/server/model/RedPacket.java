@@ -46,11 +46,8 @@ public class RedPacket implements Serializable {
     
 //    private Product product;
     private ProductDetail productDetail;
+//    private String productName;
 	
-	private Long productId;
-	private String productName;
-	private Long productDetailId;
-
 	public RedPacket() {
 	}
 
@@ -138,9 +135,10 @@ public class RedPacket implements Serializable {
 //	}
 	
 	@OneToOne
-	@JoinColumns(foreignKey = @ForeignKey(name = "FK_PRODUCT_DETAIL_COMPOSITE"), value = {
-			@JoinColumn(name = "product_id", referencedColumnName = "product_id", insertable = false, updatable = false),
-			@JoinColumn(name = "product_detail_id", referencedColumnName = "product_detail_id", insertable = false, updatable = false) })
+	@JoinColumn(name = "product_detail_id", referencedColumnName = "id", insertable = false, updatable = false)
+//	@JoinColumns(foreignKey = @ForeignKey(name = "FK_PRODUCT_DETAIL_COMPOSITE"), value = {
+//			@JoinColumn(name = "product_detail_id", referencedColumnName = "id", insertable = false, updatable = false),
+//			@JoinColumn(name = "product_name", referencedColumnName = "product_name", insertable = false, updatable = false) })
 	@JsonProperty(access = Access.WRITE_ONLY)
     public ProductDetail getProductDetail() {
 		return productDetail;
@@ -150,32 +148,13 @@ public class RedPacket implements Serializable {
 		this.productDetail = productDetail;
 	}
 
-	@Column(name="product_id")
-	public Long getProductId() {
-		return productId;
-	}
+//	@Column(name="product_name")
+//	public String getProductName() {
+//		return productName;
+//	}
+//
+//	public void setProductName(String productName) {
+//		this.productName = productName;
+//	}
 
-	public void setProductId(Long productId) {
-		this.productId = productId;
-	}
-
-    @Column(name="product_name")
-	public String getProductName() {
-		return productName;
-	}
-
-	public void setProductName(String productName) {
-		this.productName = productName;
-	}
-
-    @Column(name="product_detail_id")
-	public Long getProductDetailId() {
-		return productDetailId;
-	}
-
-	public void setProductDetailId(Long productDetailId) {
-		this.productDetailId = productDetailId;
-	}
-    
-    
 }
