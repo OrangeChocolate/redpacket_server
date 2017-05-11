@@ -3,6 +3,7 @@ package com.redpacket.server.model;
 import java.io.Serializable;
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -50,6 +51,7 @@ public class City implements Serializable {
 		this.id = id;
 	}
 
+	@Column(updatable=false)
 	public String getName() {
 		return name;
 	}
