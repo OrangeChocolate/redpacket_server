@@ -8,6 +8,7 @@ import java.util.Set;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 
 import com.google.common.base.Predicates;
 
@@ -30,6 +31,8 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @Configuration
 @EnableSwagger2
+//see https://github.com/springfox/springfox/blob/master/docs/asciidoc/getting_started.adoc#springfox-spring-data-rest
+//@Import({springfox.documentation.spring.data.rest.configuration.SpringDataRestConfiguration.class})
 public class SwaggerConfig {
 	@Bean
 	public Docket api() {

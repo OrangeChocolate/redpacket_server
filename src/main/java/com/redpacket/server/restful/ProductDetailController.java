@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.redpacket.server.common.CustomErrorType;
 import com.redpacket.server.common.SwaggerSecurityDefinition;
 import com.redpacket.server.model.ProductDetail;
+import com.redpacket.server.model.SimpleEnableItem;
 import com.redpacket.server.service.ProductDetailService;
 
 import io.swagger.annotations.Api;
@@ -99,6 +100,14 @@ public class ProductDetailController implements SwaggerSecurityDefinition {
 	@RequestMapping(value = "/updateEnable/{enable}", method = RequestMethod.PUT, consumes = "application/json", produces = "application/json")
 	public ResponseEntity<List<ProductDetail>> updateEnable(@PathVariable(name="enable") boolean enable, @RequestBody List<Long> productDetailIds) {
 		List<ProductDetail> updatedProductDetails = productDetailService.batchEable(productDetailIds, enable);
+		return new ResponseEntity<List<ProductDetail>>(updatedProductDetails, HttpStatus.OK);
+	}
+
+	@SuppressWarnings("rawtypes")
+	@ApiOperation(value = "Enable a list of product", notes = "Enable a list of product with json array", authorizations={@Authorization(value = "token")})
+	@RequestMapping(value = "/updateEnable/", method = RequestMethod.PUT, consumes = "application/json", produces = "application/json")
+	public ResponseEntity<List<ProductDetail>> updateEnable(@RequestBody List<SimpleEnableItem> productDetailIds) {
+		List<ProductDetail> updatedProductDetails = productDetailService.batchMixedEable(productDetailIds);
 		return new ResponseEntity<List<ProductDetail>>(updatedProductDetails, HttpStatus.OK);
 	}
 }
