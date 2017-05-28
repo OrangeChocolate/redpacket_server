@@ -211,8 +211,11 @@ public class WebController {
 		else {
 			amount = product.getAverageAmount();
 		}
+		productDetail.setScanned(true);
+		productDetailService.saveOrUpdate(productDetail);
 		RedPacket redPacket = new RedPacket(wechatUser, productDetail, amount, new Date());
 		redPacketService.saveOrUpdate(redPacket);
+		// 调用商户平台api发放现金红包
 		
 		return new GeneralResponse<String>(GeneralResponse.SUCCESS, applicationMessageConfiguration.scanItemRedpacketGot);
 	}

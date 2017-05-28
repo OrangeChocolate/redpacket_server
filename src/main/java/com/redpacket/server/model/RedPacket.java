@@ -167,6 +167,7 @@ public class RedPacket implements Serializable {
 	}
 
 //	// Table [red_packet] contains physical column name [product_detail_id] referred to by multiple physical column names: [product_detail_id], [productDetailId]
+	// https://stackoverflow.com/questions/16335513/hibernate-find-with-composite-key-invalid-column-name-exception
 	@PrimaryKeyJoinColumn(name = "product_product_detail_id")
 	public long getProductDetailId() {
 		return productDetailId;
