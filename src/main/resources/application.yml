@@ -51,3 +51,7 @@ wechat:
     secret: a1e229be117b2a8d45e4a48d4239d6ac
     token: test
     aesKey: f7GgZCfK8o5bQVE9Hs3BHLP51SG2rD5wgXQ8LyDAbly
+
+app:
+  mapKey: SP2BZ-B7MWJ-KW5F7-FVV37-S4UCO-XFFW6
+

@@ -17,6 +17,7 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.redpacket.server.model.Option;
@@ -213,4 +214,5 @@ public class Utils {
 	public static int getRandom(int randomMinAmount, int randomMaxAmount) {
 		return (int)(Math.random() * (randomMaxAmount - randomMinAmount) + randomMinAmount);
 	}
+
 }

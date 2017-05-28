@@ -49,12 +49,12 @@ public class Product implements Serializable {
 	private boolean isRandomRedpacket = false;
 	
 	/**
-	 * 是否随机红包
+	 * 随机红包最小值
 	 */
 	private int randomMinAmount = 1;
 	
 	/**
-	 * 是否随机红包
+	 * 随机红包最大值
 	 */
 	private int randomMaxAmount = 1000;
 	
@@ -73,6 +73,11 @@ public class Product implements Serializable {
 	 * 可销售城市
 	 */
 	private Set<City> allowSellCities;
+	
+	/**
+	 * 是否强制城市检查
+	 */
+	private boolean forceCityCheck = false;
 	
 	/**
 	 * 产品层面的是否可以领取红包
@@ -149,7 +154,7 @@ public class Product implements Serializable {
 		this.productDetails = productDetails;
 	}
 
-	@Column(name="random_redpacket")
+	@Column(name="random_redpacket", nullable = false, columnDefinition = "TINYINT default 0", length = 1)
 	public boolean isRandomRedpacket() {
 		return isRandomRedpacket;
 	}
@@ -193,6 +198,15 @@ public class Product implements Serializable {
 //	public void setRedPackets(Set<RedPacket> redPackets) {
 //		this.redPackets = redPackets;
 //	}
+
+	@Column(nullable = false, columnDefinition = "TINYINT default 0", length = 1)
+	public boolean isForceCityCheck() {
+		return forceCityCheck;
+	}
+
+	public void setForceCityCheck(boolean forceCityCheck) {
+		this.forceCityCheck = forceCityCheck;
+	}
 
 	@Column(nullable = false, columnDefinition = "TINYINT default 1", length = 1)
 	public boolean isEnable() {

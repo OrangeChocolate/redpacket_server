@@ -4,8 +4,12 @@ import java.util.Date;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
 
+import com.redpacket.server.ApplicationProperties;
+import com.redpacket.server.common.GeocoderResult;
 import com.redpacket.server.model.WechatUser;
 import com.redpacket.server.service.WechatUserService;
 import com.redpacket.server.wechat.builder.TextBuilder;
@@ -22,10 +26,19 @@ import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
  *
  */
 @Component
+@EnableConfigurationProperties(ApplicationProperties.class)
 public class LocationHandler extends AbstractHandler {
 	
 	@Autowired
 	private WechatUserService wechatUserService;
+	
+	@Autowired
+	RestTemplate restTemplate;
+	
+	@Autowired
+	ApplicationProperties applicationProperties;
+
+	String urlTemplateString = "http://apis.map.qq.com/ws/geocoder/v1/?location=%f,%f&key=%s";
 
     @Override
     public WxMpXmlOutMessage handle(WxMpXmlMessage wxMessage,
@@ -51,6 +64,11 @@ public class LocationHandler extends AbstractHandler {
         	wechatUser.setLatitude(wxMessage.getLatitude());
         	wechatUser.setLongitude(wxMessage.getLongitude());
         	// 可以根据经纬度获取用户的真实位置信息
+    		String url = String.format(urlTemplateString, wxMessage.getLatitude(), wxMessage.getLongitude(), applicationProperties.getMapKey());
+        	GeocoderResult geocoderResult = restTemplate.getForObject(url, GeocoderResult.class);
+        	String cityString = geocoderResult.getResult().getAddressComponent().getCity();
+            logger.info("更新{}数据库中的地理位置城市信息{}", wechatUser.getNickname(), cityString);
+        	wechatUser.setActualCity(cityString);
         	wechatUser.setUpdateDate(new Date());
         	wechatUserService.saveOrUpdate(wechatUser);
         }
