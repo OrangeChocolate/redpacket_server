@@ -1,0 +1,110 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>微信红包</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0" />
+<link rel="stylesheet" href="//res.wx.qq.com/open/libs/weui/1.1.2/weui.min.css" />
+<link rel="stylesheet" href="/css/app.css" />
+<meta name="format-detection" content="telephone=no" />
+<meta name="format-detection" content="address=no" />
+<script src="//res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+<script src="//cdn.bootcss.com/zepto/1.2.0/zepto.min.js"></script>
+</head>
+<body>
+
+<div class="container" id="container">
+	<div class="page panel">
+	    <div class="page__hd">
+		    <article class="weui-article padding-left-article">
+		           <h1>微信认证成功啦</h1>
+		           <section>
+		           		<p th:text="'欢迎' + ${wxMpUser.nickname} + '回来，最后一步，点击右上角的微信按钮，选择分享到朋友圈即可领取现金红包!'"/>
+		           		<p>注意不要屏蔽以及分享之后删除哦，请支持我们，我们将用更优质的产品和服务回报大家滴:)</p>
+		           </section>
+		    </article>
+	    </div>
+	</div>
+	
+    <div class="weui-footer margin-top-footer">
+           <p class="weui-footer__links">
+               <a href="javascript:void(0);" class="weui-footer__link">微信红包</a>
+           </p>
+           <p class="weui-footer__text">Copyright © 2008-2016 inthb.com</p>
+    </div>
+</div>
+
+	<script th:inline="javascript">
+	/*<![CDATA[*/
+	
+		'use strict';
+	
+		var message = [[${p_id}]];
+		var config = {
+			debug: 'true',
+			appId: /*[[${jsapiSignature.appId}]]*/'appId',
+			timestamp: /*[[${jsapiSignature.timestamp}]]*/'timestamp',
+			nonceStr: /*[[${jsapiSignature.nonceStr}]]*/'nonceStr',
+			signature: /*[[${jsapiSignature.signature}]]*/'signature',
+			// https://mp.weixin.qq.com/wiki?t=resource/res_main&amp;id=mp1421141115&amp;token=&amp;lang=zh_CN
+			jsApiList: [ 'checkJsApi','getLocation', 'onMenuShareTimeline', '' ]
+		};
+		var openId = /*[[${wxMpUser.openId}]]*/'openId'
+		
+		var QueryString = function () {
+			  // This function is anonymous, is executed immediately and 
+			  // the return value is assigned to QueryString!
+			  var query_string = {};
+			  var query = window.location.search.substring(1);
+			  var vars = query.split("&");
+			  for (var i=0;i<vars.length;i++) {
+			    var pair = vars[i].split("=");
+			        // If first entry with this name
+			    if (typeof query_string[pair[0]] === "undefined") {
+			      query_string[pair[0]] = decodeURIComponent(pair[1]);
+			        // If second entry with this name
+			    } else if (typeof query_string[pair[0]] === "string") {
+			      var arr = [ query_string[pair[0]],decodeURIComponent(pair[1]) ];
+			      query_string[pair[0]] = arr;
+			        // If third or later entry with this name
+			    } else {
+			      query_string[pair[0]].push(decodeURIComponent(pair[1]));
+			    }
+			  } 
+			  return query_string;
+			}();
+	
+		wx.config(config);
+		wx.ready(function() {
+			wx.getLocation({
+			    type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
+			    success: function (res) {
+			        var latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
+			        var longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
+			        var speed = res.speed; // 速度，以米/每秒计
+			        var accuracy = res.accuracy; // 位置精度
+					console.info("latitude:", latitude, "longitude:", longitude, "speed:", speed, "accuracy:", accuracy);
+			    }
+			});
+			wx.onMenuShareTimeline({
+			    title: 'ruanyifeng', // 分享标题
+			    link: 'http://www.ruanyifeng.com/home.html', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+			    imgUrl: 'http://redpacket.dev.liudonghua.com/images/2017.jpg', // 分享图标
+			    success: function () { 
+			        console.info('onMenuShareTimeline success');
+			        // ajax get方式调用后台接口准备发送红包
+			        $.get('/p/sharedtimeline', {state: QueryString.state, openId: openId}, function(response){
+			        	console.info(response);
+			        });
+			        
+			    },
+			    cancel: function () { 
+			        console.info('onMenuShareTimeline cancel');
+			    }
+			});
+		});
+	
+	/*]]>*/
+	</script>	
+</body>
+</html>

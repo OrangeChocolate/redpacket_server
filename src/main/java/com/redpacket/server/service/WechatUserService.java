@@ -30,4 +30,8 @@ public class WechatUserService {
 		wechatUserRepository.delete(wechatUser);
 	}
 
+	public WechatUser findByOpenId(String openId) {
+		return wechatUserRepository.findByOpenId(openId);
+	}
+
 }

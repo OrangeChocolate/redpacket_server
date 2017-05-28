@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.redpacket.server.common.SwaggerSecurityDefinition;
 import com.redpacket.server.security.auth.JwtAuthenticationToken;
 import com.redpacket.server.security.model.UserContext;
 
@@ -19,7 +18,7 @@ import com.redpacket.server.security.model.UserContext;
  */
 @CrossOrigin
 @RestController
-public class ProfileEndpoint implements SwaggerSecurityDefinition {
+public class ProfileEndpoint {
     @RequestMapping(value="/api/me", method=RequestMethod.GET)
     public @ResponseBody UserContext get(JwtAuthenticationToken token) {
         return (UserContext) token.getPrincipal();

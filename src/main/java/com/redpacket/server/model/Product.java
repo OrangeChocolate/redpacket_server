@@ -43,18 +43,41 @@ public class Product implements Serializable {
 	 */
 	private String description;
 	
+	/**
+	 * 是否随机红包
+	 */
 	private boolean isRandomRedpacket = false;
 	
+	/**
+	 * 是否随机红包
+	 */
+	private int randomMinAmount = 1;
+	
+	/**
+	 * 是否随机红包
+	 */
+	private int randomMaxAmount = 1000;
+	
+	/**
+	 * 平均红包金额，当isRandomRedpacket为false时才生效
+	 */
 	private int averageAmount = 0;
 
+	/**
+	 * 产品详情，即对应这批产品中的所有产品项
+	 */
 	private Set<ProductDetail> productDetails;
 	
-//	private Set<RedPacket> redPackets;
 
 	/**
 	 * 可销售城市
 	 */
 	private Set<City> allowSellCities;
+	
+	/**
+	 * 产品层面的是否可以领取红包
+	 */
+	private boolean enable = true;
 
 	public Product() {
 	}
@@ -134,7 +157,25 @@ public class Product implements Serializable {
 	public void setRandomRedpacket(boolean isRandomRedpacket) {
 		this.isRandomRedpacket = isRandomRedpacket;
 	}
-	
+
+	@Column(nullable = false, columnDefinition = "integer default 1")
+	public int getRandomMinAmount() {
+		return randomMinAmount;
+	}
+
+	public void setRandomMinAmount(int randomMinAmount) {
+		this.randomMinAmount = randomMinAmount;
+	}
+
+	@Column(nullable = false, columnDefinition = "integer default 1000")
+	public int getRandomMaxAmount() {
+		return randomMaxAmount;
+	}
+
+	public void setRandomMaxAmount(int randomMaxAmount) {
+		this.randomMaxAmount = randomMaxAmount;
+	}
+
 	@Column(name="average_amount")
 	public int getAverageAmount() {
 		return averageAmount;
@@ -152,6 +193,15 @@ public class Product implements Serializable {
 //	public void setRedPackets(Set<RedPacket> redPackets) {
 //		this.redPackets = redPackets;
 //	}
+
+	@Column(nullable = false, columnDefinition = "TINYINT default 1", length = 1)
+	public boolean isEnable() {
+		return enable;
+	}
+
+	public void setEnable(boolean enable) {
+		this.enable = enable;
+	}
 
 	// https://commons.apache.org/proper/commons-lang/apidocs/org/apache/commons/lang3/builder/ToStringBuilder.html
 	@Override

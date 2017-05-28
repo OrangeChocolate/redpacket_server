@@ -1,0 +1,140 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>微信红包</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0" />
+<link rel="stylesheet" href="//res.wx.qq.com/open/libs/weui/1.1.2/weui.min.css" />
+<link rel="stylesheet" href="/css/app.css" />
+<meta name="format-detection" content="telephone=no" />
+<meta name="format-detection" content="address=no" />
+<script src="//res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+<script src="//cdn.bootcss.com/zepto/1.2.0/zepto.min.js"></script>
+</head>
+<body>
+
+<div class="container" id="container">
+	<div class="page panel">
+	    <div class="page__hd">
+		    <article class="weui-article padding-left-article">
+		           <h1>发红包啦 ^_^</h1>
+		           <section>
+		           		<p>谢谢您购买我们的产品，为了答谢客户长期的支持，我们给大家发放一定的现金红包，打开这个页面的时候请大家统一获取地理位置信息以及进行如下操作</p>
+		           		<!-- 
+				   		<p th:text="'您购买的产品是' + ${p_id} + '，' + ${p_num}" />
+				   		 -->
+		           </section>
+		    </article>
+	    </div>
+	    <div class="page__bd">
+	        <div class="weui-panel weui-panel_access">
+	            <div class="weui-panel__hd">操作步骤</div>
+	            <div class="weui-panel__bd">
+	                <a href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg">
+	                    <div class="weui-media-box__hd">
+	                        <img class="weui-media-box__thumb" src="/images/1.png" alt="" />
+	                    </div>
+	                    <div class="weui-media-box__bd">
+	                        <h4 class="weui-media-box__title">关注公众号</h4>
+	                        <p class="weui-media-box__desc">打开<button id="subscribe_btn" class="weui-btn weui-btn_mini weui-btn_primary my-narrow-button" href='https://mp.weixin.qq.com/mp/profile_ext?action=home&amp;__biz=MzIxOTEzMzcyMg==&amp;scene=124#wechat_redirect'>众信香油公众号</button>，点击关注，如果已经关注则忽略这一步</p>
+	                    </div>
+	                </a>
+	                <a href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg">
+	                    <div class="weui-media-box__hd">
+	                        <img class="weui-media-box__thumb" src="/images/2.png" alt="" />
+	                    </div>
+	                    <div class="weui-media-box__bd">
+	                        <h4 class="weui-media-box__title">微信认证登录</h4>
+	                        <p class="weui-media-box__desc">由于发送红包需要获得用户基本信息，所以需要<button id="oauth2_btn" class="weui-btn weui-btn_mini weui-btn_primary my-narrow-button" th:href="@{${oauth2AuthorizationUrl}}">微信认证</button>，点击前面的按钮开始认证</p>
+	                    </div>
+	                </a>
+	                <a href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg">
+	                    <div class="weui-media-box__hd">
+	                        <img class="weui-media-box__thumb" src="/images/3.png" alt="" />
+	                    </div>
+	                    <div class="weui-media-box__bd">
+	                        <h4 class="weui-media-box__title">分享朋友圈</h4>
+	                        <p class="weui-media-box__desc">最后一步啦:)，再微信认证后的页面上点击右上角分享到朋友圈即可领取现金红包</p>
+	                    </div>
+	                </a>
+	            </div>
+	            <div class="weui-panel__ft">
+	                <a href="javascript:void(0);" class="weui-cell weui-cell_access weui-cell_link">
+	                    <div class="weui-cell__bd">关于更多</div>
+	                    <span class="weui-cell__ft"></span>
+	                </a>    
+	            </div>
+	        </div>
+	        
+	    </div>
+	</div>
+	
+    <div class="weui-footer margin-top-footer">
+           <p class="weui-footer__links">
+               <a href="javascript:void(0);" class="weui-footer__link">微信红包</a>
+           </p>
+           <p class="weui-footer__text">Copyright © 2008-2016 inthb.com</p>
+    </div>
+</div>
+
+	<script th:inline="javascript">
+	/*<![CDATA[*/
+	
+		'use strict';
+	
+		var message = [[${p_id}]];
+		var config = {
+			debug: false,
+			appId: /*[[${jsapiSignature.appId}]]*/'appId',
+			timestamp: /*[[${jsapiSignature.timestamp}]]*/'timestamp',
+			nonceStr: /*[[${jsapiSignature.nonceStr}]]*/'nonceStr',
+			signature: /*[[${jsapiSignature.signature}]]*/'signature',
+			// https://mp.weixin.qq.com/wiki?t=resource/res_main&amp;id=mp1421141115&amp;token=&amp;lang=zh_CN
+			jsApiList: [ 'checkJsApi','getLocation', 'onMenuShareTimeline', '' ]
+		};
+		
+		$("#subscribe_btn").click(function(event) {
+			console.info('subscribe_btn clicked');
+			window.location=$(event.target).attr('href');
+		});
+		
+		$("#oauth2_btn").click(function(event) {
+			console.info('oauth2_btn clicked');
+			window.location=$(event.target).attr('href');
+		});
+	
+		wx.config(config);
+		wx.ready(function() {
+			wx.getNetworkType({
+				success : function(res) {
+					console.info('NetworkType: ' + res.networkType);
+				}
+			});
+			wx.getLocation({
+			    type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
+			    success: function (res) {
+			        var latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
+			        var longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
+			        var speed = res.speed; // 速度，以米/每秒计
+			        var accuracy = res.accuracy; // 位置精度
+					console.info("latitude:", latitude, "longitude:", longitude, "speed:", speed, "accuracy:", accuracy);
+			    }
+			});
+			wx.onMenuShareTimeline({
+			    title: '发红包', // 分享标题
+			    link: 'http://redpacket.dev.liudonghua.com/p/0001/0001/000', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+			    imgUrl: 'http://redpacket.dev.liudonghua.com/images/2017.jpg', // 分享图标
+			    success: function () { 
+			        console.info('onMenuShareTimeline success');
+			        
+			    },
+			    cancel: function () { 
+			        console.info('onMenuShareTimeline cancel');
+			    }
+			});
+		});
+	
+	/*]]>*/
+	</script>	
+</body>
+</html>

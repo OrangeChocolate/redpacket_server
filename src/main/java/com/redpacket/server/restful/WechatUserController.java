@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.redpacket.server.common.CustomErrorType;
-import com.redpacket.server.common.SwaggerSecurityDefinition;
 import com.redpacket.server.model.WechatUser;
 import com.redpacket.server.service.WechatUserService;
 
@@ -28,7 +27,7 @@ import io.swagger.annotations.Authorization;
 @Api(tags={"wechatUser"})
 @RestController
 @RequestMapping("/api/wechatUser/")
-public class WechatUserController implements SwaggerSecurityDefinition {
+public class WechatUserController {
 	
 	public static final Logger logger = LoggerFactory.getLogger(WechatUserController.class);
 	

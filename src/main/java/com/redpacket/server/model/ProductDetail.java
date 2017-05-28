@@ -63,8 +63,11 @@ public class ProductDetail implements Comparable<ProductDetail>, Serializable {
      */
     private boolean isScanned = false;
     
+    /**
+     * 相应的红包
+     */
     private RedPacket redPacket;
-
+    
 	public ProductDetail() {
 	}
 

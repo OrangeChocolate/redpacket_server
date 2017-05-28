@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.redpacket.server.common.CustomErrorType;
-import com.redpacket.server.common.SwaggerSecurityDefinition;
 import com.redpacket.server.model.ProductDetail;
 import com.redpacket.server.model.SimpleEnableItem;
 import com.redpacket.server.service.ProductDetailService;
@@ -28,7 +27,7 @@ import io.swagger.annotations.Authorization;
 @Api(tags={"productDetail"})
 @RestController
 @RequestMapping("/api/productDetail/")
-public class ProductDetailController implements SwaggerSecurityDefinition {
+public class ProductDetailController {
 	
 	public static final Logger logger = LoggerFactory.getLogger(ProductDetailController.class);
 	
@@ -48,6 +47,13 @@ public class ProductDetailController implements SwaggerSecurityDefinition {
 		List<ProductDetail> productDetails = productDetailService.findByProductId(productId);
 		return new ResponseEntity<List<ProductDetail>>(productDetails, HttpStatus.OK);
 	}
+	
+	@ApiOperation(value = "List all productDetail scan path", notes = "List all productDetail scan path in json response", authorizations={@Authorization(value = "token")})
+	@RequestMapping(value = "/scanPath/{product_id}", method = RequestMethod.GET, produces = "application/json")
+	public List<String> getScanPathByProductId(@PathVariable(name="product_id") Long productId) {
+		List<String> productScanUrlPath = productDetailService.getProductScanUrlPath(productId);
+		return productScanUrlPath;
+	}
 
 	@SuppressWarnings("rawtypes")
 	@ApiOperation(value = "Get a productDetail", notes = "Get a productDetail by id with json response", authorizations={@Authorization(value = "token")})
@@ -59,6 +65,19 @@ public class ProductDetailController implements SwaggerSecurityDefinition {
             return new ResponseEntity(new CustomErrorType("ProductDetail with product_detail_id " + productDetailId + " not found"), HttpStatus.NOT_FOUND);
 		}
 		return new ResponseEntity<ProductDetail>(productDetail, HttpStatus.OK);
+	}
+
+	@SuppressWarnings("rawtypes")
+	@ApiOperation(value = "Get a productDetail scan path", notes = "Get a productDetail scan path by id with json response", authorizations={@Authorization(value = "token")})
+	@RequestMapping(value = "/scanPath/{product_id}/{product_detail_num}", method = RequestMethod.GET, produces = "application/json")
+	public String getScanPathByProductIdAndProductDetailNum(@PathVariable(name="product_id") Long productId, @PathVariable(name="product_detail_num") Long productDetailNum) {
+		ProductDetail productDetail = productDetailService.findByProductIdAndProductDetailNum(productId, productDetailNum);
+		if(productDetail == null) {
+            logger.error("ProductDetail with product_id {} and product_detail_num {} not found.", productId, productDetailNum);
+            return null;
+		}
+		String productScanUrlPath = productDetailService.getProductScanUrlPath(productId, productDetailNum);
+		return productScanUrlPath;
 	}
 
 	@SuppressWarnings("rawtypes")

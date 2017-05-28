@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.redpacket.server.model.ProductDetail;
 import com.redpacket.server.model.RedPacket;
 import com.redpacket.server.model.WechatUser;
 
@@ -38,8 +39,8 @@ public class RedPacketRepositoryTest {
 	@Test
 	public void test_b_insertRedPacket() {
 		WechatUser wechatUser = wechatUserRepository.findByNickname("iman");
-		RedPacket redPacket1 = new RedPacket(wechatUser, 10, new Date());
-		RedPacket redPacket2 = new RedPacket(wechatUser, 100, new Date());
+		RedPacket redPacket1 = new RedPacket(wechatUser, new ProductDetail(), 10, new Date());
+		RedPacket redPacket2 = new RedPacket(wechatUser, new ProductDetail(), 100, new Date());
 		redPacketRepository.save(redPacket1);
 		redPacketRepository.save(redPacket2);
 		assertThat(redPacketRepository.findAll().size()).isEqualTo(2);

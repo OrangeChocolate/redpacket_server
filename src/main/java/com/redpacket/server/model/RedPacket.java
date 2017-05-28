@@ -13,6 +13,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.PrimaryKeyJoinColumns;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
@@ -33,6 +35,7 @@ public class RedPacket implements Serializable {
 	
 	private Long wechatUserId;
 	private String wechatNickname;
+	private String wechatOpenId;
     
     /**
      * 红包发放金额（单位分）
@@ -46,7 +49,7 @@ public class RedPacket implements Serializable {
     
 //    private Product product;
     private ProductDetail productDetail;
-//    private String productDetailId;
+    private long productDetailId;
 //    private String productName;
 	
 	public RedPacket() {
@@ -57,8 +60,13 @@ public class RedPacket implements Serializable {
 		this.createDateTime = createDateTime;
 	}
 
-	public RedPacket(WechatUser user, int amount, Date createDateTime) {
+	public RedPacket(WechatUser user, ProductDetail productDetail, int amount, Date createDateTime) {
 		this.user = user;
+		this.wechatUserId = user.getId();
+		this.wechatNickname = user.getNickname();
+		this.wechatOpenId = user.getOpenId();
+		this.productDetail = productDetail;
+		this.productDetailId = productDetail.getId();
 		this.amount = amount;
 		this.createDateTime = createDateTime;
 	}
@@ -76,7 +84,8 @@ public class RedPacket implements Serializable {
 	@ManyToOne
 	@JoinColumns(foreignKey = @ForeignKey(name = "FK_WECHAT_USER_COMPOSITE"), value = {
 	    @JoinColumn(name = "wechat_user_id", foreignKey = @ForeignKey(name="FK_WECHAT_USER_ID"), referencedColumnName = "id", insertable = false, updatable = false),
-	    @JoinColumn(name = "wechat_nickname", referencedColumnName = "nickname", insertable = false, updatable = false)
+	    @JoinColumn(name = "wechat_nickname", referencedColumnName = "nickname", insertable = false, updatable = false),
+	    @JoinColumn(name = "wechat_open_id", referencedColumnName = "openId", insertable = false, updatable = false)
 	})
 	@JsonProperty(access = Access.WRITE_ONLY)
 	public WechatUser getUser() {
@@ -96,13 +105,22 @@ public class RedPacket implements Serializable {
 		this.wechatUserId = wechatUserId;
 	}
 
-    @Column(name="wechat_nickname")
+    @Column(name="wechat_nickname", length=100)
 	public String getWechatNickname() {
 		return wechatNickname;
 	}
 
 	public void setWechatNickname(String wechatNickname) {
 		this.wechatNickname = wechatNickname;
+	}
+
+    @Column(name="wechat_open_id", length=100)
+	public String getWechatOpenId() {
+		return wechatOpenId;
+	}
+
+	public void setWechatOpenId(String wechatOpenId) {
+		this.wechatOpenId = wechatOpenId;
 	}
 
 	public int getAmount() {
@@ -136,11 +154,10 @@ public class RedPacket implements Serializable {
 //	}
 	
 	@OneToOne
-	@JoinColumn(name = "product_detail_id", referencedColumnName = "id", insertable = false, updatable = false)
-//	@JoinColumns(foreignKey = @ForeignKey(name = "FK_PRODUCT_DETAIL_COMPOSITE"), value = {
-//			@JoinColumn(name = "product_detail_id", referencedColumnName = "id", insertable = false, updatable = false),
-//			@JoinColumn(name = "product_name", referencedColumnName = "product_name", insertable = false, updatable = false) })
-//	@JsonProperty(access = Access.WRITE_ONLY)
+//	@JoinColumn(name = "product_detail_id", foreignKey = @ForeignKey(name="FK_WECHAT_PRODUCT_DETAIL_ID"), referencedColumnName = "id", insertable = false, updatable = false)
+	@PrimaryKeyJoinColumns(foreignKey = @ForeignKey(name = "FK_PRODUCT_DETAIL_COMPOSITE"), value = {
+			@PrimaryKeyJoinColumn(name = "product_detail_id", referencedColumnName = "id")})
+	@JsonProperty(access = Access.WRITE_ONLY)
     public ProductDetail getProductDetail() {
 		return productDetail;
 	}
@@ -149,15 +166,15 @@ public class RedPacket implements Serializable {
 		this.productDetail = productDetail;
 	}
 
-	// Table [red_packet] contains physical column name [product_detail_id] referred to by multiple physical column names: [product_detail_id], [productDetailId]
-//	@JoinColumn(name = "product_detail_id")
-//	public String getProductDetailId() {
-//		return productDetailId;
-//	}
-//
-//	public void setProductDetailId(String productDetailId) {
-//		this.productDetailId = productDetailId;
-//	}
+//	// Table [red_packet] contains physical column name [product_detail_id] referred to by multiple physical column names: [product_detail_id], [productDetailId]
+	@PrimaryKeyJoinColumn(name = "product_product_detail_id")
+	public long getProductDetailId() {
+		return productDetailId;
+	}
+
+	public void setProductDetailId(long productDetailId) {
+		this.productDetailId = productDetailId;
+	}
 
 //	@Column(name="product_name")
 //	public String getProductName() {

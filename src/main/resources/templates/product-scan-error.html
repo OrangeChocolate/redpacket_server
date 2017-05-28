@@ -1,0 +1,38 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>微信红包</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0" />
+<link rel="stylesheet" href="//res.wx.qq.com/open/libs/weui/1.1.2/weui.min.css" />
+<link rel="stylesheet" href="/css/app.css" />
+<meta name="format-detection" content="telephone=no" />
+<meta name="format-detection" content="address=no" />
+<script src="//res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+<script src="//cdn.bootcss.com/zepto/1.2.0/zepto.min.js"></script>
+</head>
+<body>
+
+<div class="container" id="container">
+	<div class="page panel">
+	    <div class="page__hd">
+		    <article class="weui-article padding-left-article">
+		           <h1>发红包啦 ^_^</h1>
+		           <section>
+		           		<p>谢谢您购买我们的产品，但出现了一些问题</p>
+				   		<p th:text="${error_message}" />
+		           </section>
+		    </article>
+	    </div>
+	</div>
+	
+    <div class="weui-footer margin-top-footer">
+           <p class="weui-footer__links">
+               <a href="javascript:void(0);" class="weui-footer__link">微信红包</a>
+           </p>
+           <p class="weui-footer__text">Copyright © 2008-2016 inthb.com</p>
+    </div>
+</div>
+
+</body>
+</html>

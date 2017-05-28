@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.redpacket.server.common.CustomErrorType;
-import com.redpacket.server.common.SwaggerSecurityDefinition;
 import com.redpacket.server.model.Product;
 import com.redpacket.server.service.ProductService;
 
@@ -28,7 +27,7 @@ import io.swagger.annotations.Authorization;
 @Api(tags={"product"})
 @RestController
 @RequestMapping("/api/product/")
-public class ProductController implements SwaggerSecurityDefinition {
+public class ProductController {
 	
 	public static final Logger logger = LoggerFactory.getLogger(ProductController.class);
 	

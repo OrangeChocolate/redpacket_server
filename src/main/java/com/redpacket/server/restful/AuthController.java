@@ -9,13 +9,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.redpacket.server.security.auth.ajax.LoginRequest;
 import com.redpacket.server.security.model.token.AccessJwtToken;
 import com.redpacket.server.security.model.token.JwtToken;
-import com.redpacket.server.security.model.token.RefreshToken;
 
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.Authorization;
 
 /**
  * 

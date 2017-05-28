@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.redpacket.server.common.CustomErrorType;
-import com.redpacket.server.common.SwaggerSecurityDefinition;
 import com.redpacket.server.model.AdminUser;
 import com.redpacket.server.service.AdminUserService;
 
@@ -28,7 +27,7 @@ import io.swagger.annotations.Authorization;
 @Api(tags={"admin"})
 @RestController
 @RequestMapping("/api/admin/")
-public class AdminUserController implements SwaggerSecurityDefinition {
+public class AdminUserController {
 	
 	public static final Logger logger = LoggerFactory.getLogger(AdminUserController.class);
 	

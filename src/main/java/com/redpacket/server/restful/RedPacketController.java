@@ -7,7 +7,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.redpacket.server.common.CustomErrorType;
-import com.redpacket.server.common.SwaggerSecurityDefinition;
 import com.redpacket.server.model.RedPacket;
 import com.redpacket.server.service.RedPacketService;
 
@@ -28,7 +26,7 @@ import io.swagger.annotations.Authorization;
 @Api(tags={"redPacket"})
 @RestController
 @RequestMapping("/api/redPacket/")
-public class RedPacketController implements SwaggerSecurityDefinition {
+public class RedPacketController {
 	
 	public static final Logger logger = LoggerFactory.getLogger(RedPacketController.class);
 	

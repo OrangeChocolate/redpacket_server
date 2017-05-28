@@ -36,3 +36,18 @@ spring.jpa:
 #spring.jpa:
 #  database-platform: org.hibernate.dialect.H2Dialect
 #spring.h2.console.enabled: true
+
+
+#wechat:
+#  mp:
+#    appId: wxf596e31049113e14
+#    secret: 5e85ca80b40567cdc105299c08f45df7
+#    token: test
+#    aesKey: f7GgZCfK8o5bQVE9Hs3BHLP51SG2rD5wgXQ8LyDAbly
+    
+wechat:
+  mp:
+    appId: wx3909fcd001df528d
+    secret: a1e229be117b2a8d45e4a48d4239d6ac
+    token: test
+    aesKey: f7GgZCfK8o5bQVE9Hs3BHLP51SG2rD5wgXQ8LyDAbly

@@ -8,9 +8,11 @@ import com.redpacket.server.model.ProductDetail;
 
 public interface ProductDetailRepository extends JpaRepository<ProductDetail, Long> {
 
-	List<ProductDetail> findByProductId(Long productId);
+	List<ProductDetail> findAllByOrderByProductIdAscProductDetailNumAsc();
 
-	ProductDetail findByProductIdAndProductDetailNum(Long productId, Long productNum);
+	List<ProductDetail> findByProductIdOrderByProductDetailNumAsc(Long productId);
+
+	ProductDetail findByProductIdAndProductDetailNum(Long productId, Long productDetailNum);
 
 	List<ProductDetail> findByIdIn(List<Long> productDetailIds);
 

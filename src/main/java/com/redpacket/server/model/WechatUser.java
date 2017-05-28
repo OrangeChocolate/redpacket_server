@@ -1,9 +1,11 @@
 package com.redpacket.server.model;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,7 +15,7 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(uniqueConstraints = @UniqueConstraint(name = "UK_WECHAT_USER_ID_NICKNAME", columnNames = { "id", "nickname" }))
+//@Table(uniqueConstraints = @UniqueConstraint(name = "UK_WECHAT_USER_ID_NICKNAME", columnNames = { "id", "nickname" }))
 public class WechatUser implements Serializable {
 	
 	private static final long serialVersionUID = 5416290197708277177L;
@@ -59,7 +61,7 @@ public class WechatUser implements Serializable {
 	/**
 	 * 微信用户的头像url
 	 */
-    private String headimgurl;
+    private String headImgUrl;
     
     /**
      * 微信用户地理位置经度
@@ -80,12 +82,18 @@ public class WechatUser implements Serializable {
      * 微信用户红包记录
      */
     private Set<RedPacket> redPackets;
+    
+    private Date createDate;
+    
+    private Date updateDate;
+    
+    private boolean subscribe = true;
 
 	public WechatUser() {
 	}
 
 	public WechatUser(String openId, String nickname, String sex, String city, String country, String province,
-			String language, String headimgurl) {
+			String language, String headImgUrl) {
 		this.openId = openId;
 		this.nickname = nickname;
 		this.sex = sex;
@@ -93,7 +101,7 @@ public class WechatUser implements Serializable {
 		this.country = country;
 		this.province = province;
 		this.language = language;
-		this.headimgurl = headimgurl;
+		this.headImgUrl = headImgUrl;
 	}
 
 	@Id
@@ -106,6 +114,7 @@ public class WechatUser implements Serializable {
 		this.id = id;
 	}
 
+	@Column(nullable = false, length = 100)
 	public String getOpenId() {
 		return openId;
 	}
@@ -114,6 +123,7 @@ public class WechatUser implements Serializable {
 		this.openId = openId;
 	}
 
+	@Column(nullable = false, length = 100)
 	public String getNickname() {
 		return nickname;
 	}
@@ -162,12 +172,12 @@ public class WechatUser implements Serializable {
 		this.language = language;
 	}
 
-	public String getHeadimgurl() {
-		return headimgurl;
+	public String getHeadImgUrl() {
+		return headImgUrl;
 	}
 
-	public void setHeadimgurl(String headimgurl) {
-		this.headimgurl = headimgurl;
+	public void setHeadImgUrl(String headImgUrl) {
+		this.headImgUrl = headImgUrl;
 	}
 
 	public double getLongitude() {
@@ -201,6 +211,31 @@ public class WechatUser implements Serializable {
 
 	public void setRedPackets(Set<RedPacket> redPackets) {
 		this.redPackets = redPackets;
+	}
+
+	public Date getCreateDate() {
+		return createDate;
+	}
+
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
+	}
+
+	public Date getUpdateDate() {
+		return updateDate;
+	}
+
+	public void setUpdateDate(Date updateDate) {
+		this.updateDate = updateDate;
+	}
+
+	@Column(nullable = false, columnDefinition = "TINYINT default 1", length = 1)
+	public boolean isSubscribe() {
+		return subscribe;
+	}
+
+	public void setSubscribe(boolean subscribe) {
+		this.subscribe = subscribe;
 	}
     
     
