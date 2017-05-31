@@ -28,6 +28,11 @@ public class Option implements Serializable {
      * 配置项是否启用
      */
     private Boolean enable;
+    
+    /**
+     * 描述
+     */
+    private String description;
 
 	public Option() {
 	}
@@ -71,6 +76,14 @@ public class Option implements Serializable {
 
 	public void setEnable(Boolean enable) {
 		this.enable = enable;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
     
     

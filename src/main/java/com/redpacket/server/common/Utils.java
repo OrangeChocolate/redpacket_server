@@ -7,6 +7,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Stack;
+import java.util.UUID;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -213,6 +214,30 @@ public class Utils {
 
 	public static int getRandom(int randomMinAmount, int randomMaxAmount) {
 		return (int)(Math.random() * (randomMaxAmount - randomMinAmount) + randomMinAmount);
+	}
+
+
+	private static SimpleDateFormat mchBillNoDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+	
+	/**
+	 * 生成唯一的商户订单号，根据时间+openid的前5个字符
+	 * @param openId
+	 * @return
+	 */
+	public static String getMchBillNo(String openId) {
+		Date currentDate = new Date();
+		String dataString = mchBillNoDateFormat.format(currentDate);
+		return dataString + openId.substring(0, 5);
+	}
+
+	/**
+	 * 使用uuid作为随机的字符串，删除中间的-字符
+	 * @see https://stackoverflow.com/questions/41107/how-to-generate-a-random-alpha-numeric-string
+	 * @return
+	 */
+	public static String getRandomString() {
+		String uuid = UUID.randomUUID().toString().replaceAll("-", "");;
+		return uuid;
 	}
 
 }

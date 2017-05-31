@@ -54,4 +54,5 @@ wechat:
 
 app:
   mapKey: SP2BZ-B7MWJ-KW5F7-FVV37-S4UCO-XFFW6
+  hostIpAddress: 202.203.208.20
 

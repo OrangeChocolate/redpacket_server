@@ -27,8 +27,15 @@ INSERT INTO `wechat_user` (`id`, `actual_city`, `city`, `country`, `create_date`
 
 INSERT INTO `red_packet` (`id`, `amount`, `create_date_time`, `wechat_nickname`, `wechat_user_id`, `wechat_open_id`, `product_detail_id`) VALUES (1,123,'2017-04-22 15:45:53','iman¹²³',1,'oseIo1mUcV1BTM550N3H0QmxeSWg',1),(2,234,'2017-04-21 15:46:10','iman¹²³',1,'oseIo1mUcV1BTM550N3H0QmxeSWg',2);
 
-INSERT INTO `option` (`enable`, `name`, `value`) VALUES (1, 'min_redpacket_amount', '1');
-INSERT INTO `option` (`enable`, `name`, `value`) VALUES (1, 'max_redpacket_amount', '1000');
-INSERT INTO `option` (`enable`, `name`, `value`) VALUES (0, 'force_city_check', 'false');
-INSERT INTO `option` (`enable`, `name`, `value`) VALUES (1, 'max_redpackets_user_total', '5');
-INSERT INTO `option` (`enable`, `name`, `value`) VALUES (1, 'max_redpackets_user_daily', '2');
+INSERT INTO `option` (`enable`, `name`, `value`, `description`) VALUES (1, 'redpacket_act_name', '微信红包啦！', '活动名称');
+INSERT INTO `option` (`enable`, `name`, `value`, `description`) VALUES (1, 'redpacket_wishing', '感谢您购买我们的产品', '红包祝福语');
+INSERT INTO `option` (`enable`, `name`, `value`, `description`) VALUES (1, 'redpacket_remark', '谢谢！', '红包备注信息');
+INSERT INTO `option` (`enable`, `name`, `value`, `description`) VALUES (1, 'wechat_send_name', '众信香油', '红包发送者名称');
+INSERT INTO `option` (`enable`, `name`, `value`, `description`) VALUES (0, 'force_city_check', 'false', '是否强制检查用户所在城市与产品可售城市匹配');
+INSERT INTO `option` (`enable`, `name`, `value`, `description`) VALUES (1, 'max_redpackets_user_total', '5', '用户领取红包总上限');
+INSERT INTO `option` (`enable`, `name`, `value`, `description`) VALUES (1, 'max_redpackets_user_daily', '2', '用户领取红包每天上限');
+
+INSERT INTO `wechat_auto_reply` (`content`, `keyword`, `priority`, `type`) VALUES ('hi,too', 'hi', 0, 'text');
+INSERT INTO `wechat_auto_reply` (`content`, `keyword`, `priority`, `type`) VALUES ('{\r\n  \"title\": \"title\",\r\n  \"description\": \"description\",\r\n  \"thumbMediaId\": \"thumbMediaId\",\r\n  \"musicUrl\": \"musicUrl\",\r\n  \"hqMusicUrl\": \"hqMusicUrl\"\r\n}', 'music', 0, 'music');
+INSERT INTO `wechat_auto_reply` (`content`, `keyword`, `priority`, `type`) VALUES ('{\r\n  \"mediaId\": \"5eFogdEzZBzr5xGmt6tMuJ743XOJ2b1MoUQy0rqLQMk\"}', 'image', 0, 'image');
+

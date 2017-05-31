@@ -39,6 +39,12 @@ public class ApplicationMessageConfiguration {
     @Value("${scan_item_user_not_found}")
 	public String scanItemUserNotFound;
 
+    @Value("${auto_reply_not_support_this_type}")
+	public String autoReplyNotSupportThisType;
+
+    @Value("${auto_reply_not_support_your_message}")
+	public String autoReplyNotSupportYourMessage;
+
     @Bean
     public static PropertySourcesPlaceholderConfigurer propertyConfigInDev() {
         return new PropertySourcesPlaceholderConfigurer();

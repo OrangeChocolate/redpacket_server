@@ -6,10 +6,22 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @ConfigurationProperties(prefix = "app")
 public class ApplicationProperties {
+	
     /**
      * 设置腾讯地图的key
      */
     private String mapKey;
+    
+    /**
+     * 商户号
+     */
+    private String mch_id;
+    
+    /**
+     * 主机的IP地址
+     */
+    private String hostIpAddress;
+    
 
     public String getMapKey() {
 		return mapKey;
@@ -17,6 +29,22 @@ public class ApplicationProperties {
 
 	public void setMapKey(String mapKey) {
 		this.mapKey = mapKey;
+	}
+
+	public String getMch_id() {
+		return mch_id;
+	}
+
+	public void setMch_id(String mch_id) {
+		this.mch_id = mch_id;
+	}
+
+	public String getHostIpAddress() {
+		return hostIpAddress;
+	}
+
+	public void setHostIpAddress(String hostIpAddress) {
+		this.hostIpAddress = hostIpAddress;
 	}
 
 	@Override

@@ -9,11 +9,13 @@ import com.redpacket.server.model.Option;
 public class Configuration {
 	
 	
-	public static String min_redpacket_amount_key = "min_redpacket_amount";
-	public static String max_redpacket_amount_key = "max_redpacket_amount";
 	public static String force_city_check_key = "force_city_check";
 	public static String max_redpackets_user_total_key = "max_redpackets_user_total";
 	public static String max_redpackets_user_daily_key = "max_redpackets_user_daily";
+	public static String wechat_wishing_key = "wechat_wishing";
+	public static String wechat_act_name_key = "wechat_act_name";
+	public static String wechat_remark_key = "wechat_remark";
+	public static String wechat_send_name_key = "wechat_send_name";
 	
 	public static Map<String, Option> optionMap = new HashMap<String, Option>();
 	

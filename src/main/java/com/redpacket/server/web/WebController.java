@@ -1,16 +1,27 @@
 package com.redpacket.server.web;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.UnrecoverableKeyException;
+import java.security.cert.CertificateException;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeMap;
 
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.X509TrustManager;
 import javax.servlet.http.HttpServletRequest;
 
+import org.json.JSONException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,6 +31,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.redpacket.server.ApplicationMessageConfiguration;
+import com.redpacket.server.ApplicationProperties;
 import com.redpacket.server.common.Configuration;
 import com.redpacket.server.common.GeneralResponse;
 import com.redpacket.server.common.Utils;
@@ -33,6 +45,7 @@ import com.redpacket.server.service.ProductDetailService;
 import com.redpacket.server.service.ProductService;
 import com.redpacket.server.service.RedPacketService;
 import com.redpacket.server.service.WechatUserService;
+import com.redpacket.server.wechat.config.WechatMpProperties;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
@@ -42,24 +55,39 @@ import me.chanjar.weixin.mp.api.WxMpMessageRouter;
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.result.WxMpOAuth2AccessToken;
 import me.chanjar.weixin.mp.bean.result.WxMpUser;
+import model.SendRedPack;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+import okhttp3.internal.platform.Platform;
+import tool.Tool;
 
 @Controller
 @RequestMapping("/")
+@EnableConfigurationProperties({WechatMpProperties.class, ApplicationProperties.class})
 public class WebController {
 	
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     
     @Autowired
-    ProductDetailService productDetailService;
+    private WechatMpProperties wechatMpProperties;
+
+    @Autowired
+    private ApplicationProperties applicationProperties;
     
     @Autowired
-    ProductService productService;
+    private ProductDetailService productDetailService;
     
     @Autowired
-    WechatUserService wechatUserService;
+    private ProductService productService;
     
     @Autowired
-    RedPacketService redPacketService;
+    private WechatUserService wechatUserService;
+    
+    @Autowired
+    private RedPacketService redPacketService;
 
     @Autowired
     private WxMpService wxService;
@@ -158,7 +186,7 @@ public class WebController {
 	
 
 	@RequestMapping(value = "p/sharedtimeline", method = RequestMethod.GET)
-	public @ResponseBody GeneralResponse<String> productSharedTimeline(@RequestParam String state, @RequestParam String openId, HttpServletRequest request) {
+	public @ResponseBody GeneralResponse<String> productSharedTimeline(@RequestParam String state, @RequestParam String openId) {
 		String path = state;
 		boolean isValidateScanPath = Utils.checkProductScanUrlPath(path);
 		if(!isValidateScanPath) {
@@ -216,6 +244,67 @@ public class WebController {
 		RedPacket redPacket = new RedPacket(wechatUser, productDetail, amount, new Date());
 		redPacketService.saveOrUpdate(redPacket);
 		// 调用商户平台api发放现金红包
+		
+
+        //具体参数查看具体实体类，实体类中的的参数参考微信的红包发放接口，这里你直接用map，进行设置参数也可以。。。
+        SendRedPack sendRedPack = new SendRedPack(
+                Utils.getRandomString(),
+                Utils.getMchBillNo(openId),
+                applicationProperties.getMch_id(),
+                wechatMpProperties.getAppId(),
+                Configuration.getOption(Configuration.wechat_send_name_key).getValue(),
+                openId,
+                amount,
+                1,
+                Configuration.getOption(Configuration.wechat_wishing_key).getValue(),
+                applicationProperties.getHostIpAddress(),
+                Configuration.getOption(Configuration.wechat_act_name_key).getValue(),
+                Configuration.getOption(Configuration.wechat_remark_key).getValue(),
+                "PRODUCT_2"
+        );
+
+
+        //将实体类转换为url形式
+        String urlParamsByMap = Tool.getUrlParamsByMap(Tool.toMap(sendRedPack));
+        //拼接我们在前期准备好的API密钥，前期准备第5条
+        urlParamsByMap += "&key=填写API密钥";
+        //进行签名，需要说明的是，如果内容包含中文的话，要使用utf-8进行md5签名，不然会签名错误
+        String sign = Tool.parseStrToMd5L32(urlParamsByMap).toUpperCase();
+        sendRedPack.setSign(sign);
+        //微信要求按照参数名ASCII字典序排序，这里巧用treeMap进行字典排序
+        TreeMap treeMap = new TreeMap(Tool.toMap(sendRedPack));
+        //然后转换成xml格式
+        String soapRequestData = null;
+		try {
+			soapRequestData = Tool.getSoapRequestData(treeMap);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+        //发起请求前准备
+        RequestBody body = RequestBody.create(MediaType.parse("text/xml;charset=UTF-8"), soapRequestData);
+        Request request = new Request.Builder()
+                .url("https://api.mch.weixin.qq.com/mmpaymkttransfers/sendredpack")
+                .post(body)
+                .build();
+        //为http请求设置证书
+        SSLSocketFactory socketFactory = null;
+		try {
+			socketFactory = Tool.getSSL().getSocketFactory();
+		} catch (UnrecoverableKeyException | KeyManagementException | KeyStoreException | CertificateException
+				| NoSuchAlgorithmException | IOException e) {
+			e.printStackTrace();
+		}
+        X509TrustManager x509TrustManager = Platform.get().trustManager(socketFactory);
+        OkHttpClient okHttpClient = new OkHttpClient.Builder().sslSocketFactory(socketFactory, x509TrustManager).build();
+        //得到输出内容
+        Response response;
+		try {
+			response = okHttpClient.newCall(request).execute();
+	        String content = response.body().string();
+	        System.out.println(content);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		
 		return new GeneralResponse<String>(GeneralResponse.SUCCESS, applicationMessageConfiguration.scanItemRedpacketGot);
 	}
