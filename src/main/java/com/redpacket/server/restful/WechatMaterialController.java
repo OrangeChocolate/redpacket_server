@@ -11,7 +11,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.redpacket.server.common.Utils;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -47,8 +51,10 @@ public class WechatMaterialController {
 	}
 
 	@ApiOperation(value = "添加其他类型永久素材", notes = "非图文永久素材由类 WxMpMaterial 封装，对于非视频类的永久素材，构造时传入素材文件对象file和素材名name即可，素材名会显示在公众平台官网素材管理模块中，其余两个字段可设置为null或者空字符串。视频类永久素材需要在构造时传入视频名title和简介introduction，目前已知视频支持mp4格式", authorizations = { @Authorization(value = "token") })
-	@RequestMapping(value = "/materialFileUpload/{mediaType}", method = RequestMethod.POST, produces = "application/json")
-	public WxMpMaterialUploadResult materialNewsUpload(@PathVariable String mediaType, @RequestBody WxMpMaterial material) throws WxErrorException {
+	@RequestMapping(value = "/materialFileUpload/{mediaType}", method = RequestMethod.POST, consumes = "multipart/form-data", produces = "application/json")
+	public WxMpMaterialUploadResult materialNewsUpload(@PathVariable String mediaType, @RequestPart(required = true) MultipartFile file,
+			@RequestParam String name, @RequestParam(required=false) String videoTitle, @RequestParam(required=false) String videoIntroduction) throws WxErrorException {
+		WxMpMaterial material = new WxMpMaterial(name, Utils.getTempFile(file), videoTitle, videoIntroduction);
 		WxMpMaterialUploadResult materialFileUpload = wxService.getMaterialService().materialFileUpload(mediaType, material);
 		return materialFileUpload;
 	}

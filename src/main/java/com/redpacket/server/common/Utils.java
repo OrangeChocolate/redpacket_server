@@ -1,5 +1,6 @@
 package com.redpacket.server.common;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Field;
@@ -15,14 +16,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.redpacket.server.model.Option;
-import com.redpacket.server.model.ProductDetail;
 
 public class Utils {
 	
@@ -238,6 +241,31 @@ public class Utils {
 	public static String getRandomString() {
 		String uuid = UUID.randomUUID().toString().replaceAll("-", "");;
 		return uuid;
+	}
+
+	public static File getTempFile(MultipartFile multipartFile) {
+		CommonsMultipartFile commonsMultipartFile = (CommonsMultipartFile) multipartFile;
+		// Fix {"errcode":40113,"errmsg":"unsupported file type hint"}
+		commonsMultipartFile.setPreserveFilename(true);
+		FileItem fileItem = commonsMultipartFile.getFileItem();
+		DiskFileItem diskFileItem = (DiskFileItem) fileItem;
+		String absPath = diskFileItem.getStoreLocation().getAbsolutePath();
+		File file = new File(absPath);
+		// trick to implicitly save on disk small files (<10240 bytes by
+		// default)
+		if (!file.exists()) {
+			try {
+				file.createNewFile();
+				multipartFile.transferTo(file);
+			} catch (IllegalStateException | IOException e) {
+				e.printStackTrace();
+			}
+		}
+		// Fix {"errcode":40113,"errmsg":"unsupported file type hint"}
+		File movedFile = new File(diskFileItem.getStoreLocation().getParent(), fileItem.getName());
+		file.renameTo(movedFile);
+
+		return movedFile;
 	}
 
 }

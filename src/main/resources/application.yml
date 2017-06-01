@@ -6,6 +6,11 @@ demo.security.jwt:
   refreshTokenExpTime: 600
   tokenIssuer: http://svlada.com
   tokenSigningKey: xm8EV6Hy5RMFK4EEACIDAwQus
+  
+spring:
+  http:
+    multipart:
+      enabled: false
 
 spring.datasource:
   url: "jdbc:mysql://localhost:3306/redpacket?autoReconnect=true&useUnicode=true&characterEncoding=UTF-8&connectionCollation=utf8mb4_unicode_ci&characterSetResults=UTF-8"

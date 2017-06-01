@@ -1,12 +1,13 @@
+<!-- HTML for static distribution bundle build -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>Swagger UI</title>
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700|Source+Code+Pro:300,600|Titillium+Web:400,600,700" rel="stylesheet">
-  <link rel="stylesheet" type="text/css" href="/swagger-ui.css" >
-  <link rel="icon" type="image/png" href="favicon-32x32.png" sizes="32x32" />
-  <link rel="icon" type="image/png" href="favicon-16x16.png" sizes="16x16" />
+  <link rel="stylesheet" type="text/css" href="./swagger-ui.css" >
+  <link rel="icon" type="image/png" href="./favicon-32x32.png" sizes="32x32" />
+  <link rel="icon" type="image/png" href="./favicon-16x16.png" sizes="16x16" />
   <style>
     html
     {
@@ -24,17 +25,6 @@
     body {
       margin:0;
       background: #fafafa;
-    }
-    
-    div.responses-inner table.responses-table {
-      table-layout: fixed;
-    }
-    tr.response pre.microlight span {
-      word-wrap: break-word;
-      width: 100%;
-    }
-    tr.response pre span.headerline {
-      display: inherit;
     }
   </style>
 </head>
@@ -78,18 +68,16 @@
 <div id="swagger-ui"></div>
 
 <script src="./swagger-ui-bundle.js"> </script>
-<script src="/swagger-ui-standalone-preset.js"> </script>
+<script src="./swagger-ui-standalone-preset.js"> </script>
 <script>
 window.onload = function() {
   // Build a system
   const ui = SwaggerUIBundle({
     url: "/v2/api-docs",
-    validatorUrl: null,
     dom_id: '#swagger-ui',
     presets: [
       SwaggerUIBundle.presets.apis,
-      // yay ES6 modules ↘
-      Array.isArray(SwaggerUIStandalonePreset) ? SwaggerUIStandalonePreset : SwaggerUIStandalonePreset.default
+      SwaggerUIStandalonePreset
     ],
     plugins: [
       SwaggerUIBundle.plugins.DownloadUrl
