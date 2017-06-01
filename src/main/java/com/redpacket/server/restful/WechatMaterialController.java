@@ -108,8 +108,8 @@ public class WechatMaterialController {
 
 	@ApiOperation(value = "根据类别分页获取非图文素材列表", notes = "获取素材总数，返回结构由类 WxMpMaterialFileBatchGetResult 封装", authorizations = { @Authorization(value = "token") })
 	@RequestMapping(value = "/materialFileBatchGet", method = RequestMethod.GET, produces = "application/json")
-	public WxMpMaterialFileBatchGetResult materialFileBatchGet(@RequestParam String type, @RequestParam int offset, @RequestParam int count) throws WxErrorException {
-		WxMpMaterialFileBatchGetResult materialFileBatchGet = wxService.getMaterialService().materialFileBatchGet(type, offset, count);
+	public WxMpMaterialFileBatchGetResult materialFileBatchGet(@RequestParam MediaType type, @RequestParam int offset, @RequestParam int count) throws WxErrorException {
+		WxMpMaterialFileBatchGetResult materialFileBatchGet = wxService.getMaterialService().materialFileBatchGet(type.name(), offset, count);
 		return materialFileBatchGet;
 	}
 
