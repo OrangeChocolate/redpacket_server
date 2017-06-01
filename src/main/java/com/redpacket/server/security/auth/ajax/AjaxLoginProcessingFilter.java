@@ -67,7 +67,7 @@ public class AjaxLoginProcessingFilter extends AbstractAuthenticationProcessingF
 				origin = request.getHeader(Constants.ORIGIN);
 			}
 			response.addHeader("Access-Control-Allow-Origin", origin);
-			response.addHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+			response.addHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
 			response.addHeader("Access-Control-Allow-Credentials", "true");
 			response.addHeader("Access-Control-Allow-Headers", request.getHeader("Access-Control-Request-Headers"));
 			if (request.getMethod().equals(HttpMethod.OPTIONS.name())) {
