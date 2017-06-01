@@ -77,7 +77,7 @@ public class ProductDetailService {
 		return updatedProductDetails;
 	}
 	
-	public List<String> getProductScanUrlPath(Long productIdForLookup) {
+	public List<String> getProductScanPath(Long productIdForLookup) {
 		List<String> productScanUrlPaths = new ArrayList<String>();
 		productDetailRepository.findByProductIdOrderByProductDetailNumAsc(productIdForLookup).stream().forEach(productDetail -> {
 			long productId = productDetail.getProductId();
@@ -87,7 +87,7 @@ public class ProductDetailService {
 		return productScanUrlPaths;
 	}
 
-	public String getProductScanUrlPath(Long productId, Long productDetailNum) {
+	public String getProductScanPath(Long productId, Long productDetailNum) {
 		ProductDetail productDetail = productDetailRepository.findByProductIdAndProductDetailNum(productId, productDetailNum);
 		if(productDetail == null) {
 			logger.info("productDetial with productId {}, productDetailNum {} not found", productId, productDetailNum);
@@ -97,7 +97,7 @@ public class ProductDetailService {
 		return scanUrlPath;
 	}
 	
-	public boolean checkProductScanUrlPath(String productScanUrlPath, boolean checkHash) {
+	public boolean checkProductScanPath(String productScanUrlPath, boolean checkHash) {
 		String[] split = productScanUrlPath.split("/");
 		if(split.length < 4) {
 			logger.info("invalide productScanUrlPath: {}", productScanUrlPath);

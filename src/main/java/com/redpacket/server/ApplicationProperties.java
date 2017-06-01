@@ -22,6 +22,11 @@ public class ApplicationProperties {
      */
     private String hostIpAddress;
     
+    /**
+     * 服务端域名
+     */
+    private String domain;
+    
 
     public String getMapKey() {
 		return mapKey;
@@ -45,6 +50,14 @@ public class ApplicationProperties {
 
 	public void setHostIpAddress(String hostIpAddress) {
 		this.hostIpAddress = hostIpAddress;
+	}
+
+	public String getDomain() {
+		return domain;
+	}
+
+	public void setDomain(String domain) {
+		this.domain = domain;
 	}
 
 	@Override

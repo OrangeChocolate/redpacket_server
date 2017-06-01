@@ -60,5 +60,7 @@ wechat:
 
 app:
   mapKey: SP2BZ-B7MWJ-KW5F7-FVV37-S4UCO-XFFW6
+  mch_id: mch_id
   hostIpAddress: 202.203.208.20
+  domain: http://redpacket.dev.liudonghua.com
 

@@ -1,6 +1,7 @@
 package com.redpacket.server.restful;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.redpacket.server.ApplicationProperties;
 import com.redpacket.server.common.CustomErrorType;
 import com.redpacket.server.model.ProductDetail;
 import com.redpacket.server.model.SimpleEnableItem;
@@ -34,6 +36,9 @@ public class ProductDetailController {
 	@Autowired
 	private ProductDetailService productDetailService;
 	
+	@Autowired
+	private ApplicationProperties applicationProperties;
+	
 	@ApiOperation(value = "List all productDetail", notes = "List all productDetail in json response", authorizations={@Authorization(value = "token")})
 	@RequestMapping(value = "/", method = RequestMethod.GET, produces = "application/json")
 	public ResponseEntity<List<ProductDetail>> get() {
@@ -51,8 +56,18 @@ public class ProductDetailController {
 	@ApiOperation(value = "List all productDetail scan path", notes = "List all productDetail scan path in json response", authorizations={@Authorization(value = "token")})
 	@RequestMapping(value = "/scanPath/{product_id}", method = RequestMethod.GET, produces = "application/json")
 	public List<String> getScanPathByProductId(@PathVariable(name="product_id") Long productId) {
-		List<String> productScanUrlPath = productDetailService.getProductScanUrlPath(productId);
-		return productScanUrlPath;
+		List<String> productScanPath = productDetailService.getProductScanPath(productId);
+		return productScanPath;
+	}
+	
+	@ApiOperation(value = "List all productDetail scan url", notes = "List all productDetail scan url in json response", authorizations={@Authorization(value = "token")})
+	@RequestMapping(value = "/scanUrl/{product_id}", method = RequestMethod.GET, produces = "application/json")
+	public List<String> getScanUrlByProductId(@PathVariable(name="product_id") Long productId) {
+		List<String> productScanPath = productDetailService.getProductScanPath(productId);
+		List<String> productScanUrl = productScanPath.stream().map(path -> {
+			return applicationProperties.getDomain() + path;
+		}).collect(Collectors.toList());
+		return productScanUrl;
 	}
 
 	@SuppressWarnings("rawtypes")
@@ -76,8 +91,21 @@ public class ProductDetailController {
             logger.error("ProductDetail with product_id {} and product_detail_num {} not found.", productId, productDetailNum);
             return null;
 		}
-		String productScanUrlPath = productDetailService.getProductScanUrlPath(productId, productDetailNum);
-		return productScanUrlPath;
+		String productScanPath = productDetailService.getProductScanPath(productId, productDetailNum);
+		return productScanPath;
+	}
+
+	@SuppressWarnings("rawtypes")
+	@ApiOperation(value = "Get a productDetail scan url", notes = "Get a productDetail scan url by id with json response", authorizations={@Authorization(value = "token")})
+	@RequestMapping(value = "/scanUrl/{product_id}/{product_detail_num}", method = RequestMethod.GET, produces = "application/json")
+	public String getScanUrlByProductIdAndProductDetailNum(@PathVariable(name="product_id") Long productId, @PathVariable(name="product_detail_num") Long productDetailNum) {
+		ProductDetail productDetail = productDetailService.findByProductIdAndProductDetailNum(productId, productDetailNum);
+		if(productDetail == null) {
+            logger.error("ProductDetail with product_id {} and product_detail_num {} not found.", productId, productDetailNum);
+            return null;
+		}
+		String productScanUrl = applicationProperties.getDomain() + productDetailService.getProductScanPath(productId, productDetailNum);
+		return productScanUrl;
 	}
 
 	@SuppressWarnings("rawtypes")

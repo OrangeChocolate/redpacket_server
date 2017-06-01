@@ -66,7 +66,6 @@ import tool.Tool;
 
 @Controller
 @RequestMapping("/")
-@EnableConfigurationProperties({WechatMpProperties.class, ApplicationProperties.class})
 public class WebController {
 	
     private final Logger logger = LoggerFactory.getLogger(this.getClass());

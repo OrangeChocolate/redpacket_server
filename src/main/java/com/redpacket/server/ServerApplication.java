@@ -9,8 +9,10 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
+import com.redpacket.server.wechat.config.WechatMpProperties;
+
 @SpringBootApplication
-@EnableConfigurationProperties
+@EnableConfigurationProperties({WechatMpProperties.class, ApplicationProperties.class})
 public class ServerApplication {
 
 	public static void main(String[] args) {
