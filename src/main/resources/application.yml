@@ -6,7 +6,8 @@ demo.security.jwt:
   refreshTokenExpTime: 600
   tokenIssuer: http://svlada.com
   tokenSigningKey: xm8EV6Hy5RMFK4EEACIDAwQus
-  
+
+# https://stackoverflow.com/questions/42732725/spring-boot-multipart-upload-getting-null-file-object/44016727#44016727  
 spring:
   http:
     multipart:

@@ -6,6 +6,8 @@ import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -23,6 +25,10 @@ import me.chanjar.weixin.mp.builder.outxml.NewsBuilder;
 @Entity
 public class WechatAutoReply implements Serializable{
 	
+	public static enum Type {
+		text, image, voice, video, news, music
+	}
+	
 	private static final long serialVersionUID = 2639911931187343918L;
 
 	private Long id;
@@ -32,7 +38,7 @@ public class WechatAutoReply implements Serializable{
 	/**
 	 * 类型, see WxConsts
 	 */
-    private String type;
+    private Type type;
 	
 	/**
 	 * 内容，JSON格式, see WxMpXmlOutMusicMessage/WxMpXmlOutMusicMessage/...
@@ -53,7 +59,7 @@ public class WechatAutoReply implements Serializable{
 	public WechatAutoReply() {
 	}
 
-	public WechatAutoReply(String keyword, String type, String content) {
+	public WechatAutoReply(String keyword, Type type, String content) {
 		this.keyword = keyword;
 		this.type = type;
 		this.content = content;
@@ -77,11 +83,12 @@ public class WechatAutoReply implements Serializable{
 		this.keyword = keyword;
 	}
 
-	public String getType() {
+	@Enumerated(EnumType.STRING)
+	public Type getType() {
 		return type;
 	}
 
-	public void setType(String type) {
+	public void setType(Type type) {
 		this.type = type;
 	}
 
@@ -111,7 +118,7 @@ public class WechatAutoReply implements Serializable{
 	}
 
 	public void contentDeserialize() {
-		switch (type) {
+		switch (type.name()) {
 		case WxConsts.XML_MSG_TEXT:
 			message = content;
 			break;
@@ -138,7 +145,7 @@ public class WechatAutoReply implements Serializable{
 	
 	public WxMpXmlOutMessage constructWxMpXmlOutMessage(String fromUser, String toUser) {
 		WxMpXmlOutMessage messageToSend;
-		switch (type) {
+		switch (type.name()) {
 		case WxConsts.XML_MSG_TEXT:
 			messageToSend = WxMpXmlOutMessage.TEXT().content((String)message)
 			.fromUser(fromUser).toUser(toUser).build();

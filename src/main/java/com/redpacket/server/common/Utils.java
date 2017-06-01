@@ -251,8 +251,7 @@ public class Utils {
 		DiskFileItem diskFileItem = (DiskFileItem) fileItem;
 		String absPath = diskFileItem.getStoreLocation().getAbsolutePath();
 		File file = new File(absPath);
-		// trick to implicitly save on disk small files (<10240 bytes by
-		// default)
+		// trick to implicitly save on disk small files (<10240 bytes by default)
 		if (!file.exists()) {
 			try {
 				file.createNewFile();
