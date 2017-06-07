@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.redpacket.server.ApplicationProperties;
 import com.redpacket.server.common.Utils;
 import com.redpacket.server.model.Product;
 import com.redpacket.server.model.ProductDetail;
@@ -24,6 +25,9 @@ public class ProductDetailService {
 	
 	@Autowired
 	private ProductDetailRepository productDetailRepository;
+	
+	@Autowired
+	private ApplicationProperties applicationProperties;
 	
 	public List<ProductDetail> findAll() {
 		return productDetailRepository.findAllByOrderByProductIdAscProductDetailNumAsc();
@@ -82,7 +86,7 @@ public class ProductDetailService {
 		productDetailRepository.findByProductIdOrderByProductDetailNumAsc(productIdForLookup).stream().forEach(productDetail -> {
 			long productId = productDetail.getProductId();
 			long productDetailNum = productDetail.getProductDetailNum();
-			productScanUrlPaths.add(Utils.getProductScanUrlPath(productId, productDetailNum));
+			productScanUrlPaths.add(Utils.getProductScanUrlPath(applicationProperties.getHash_secret(), productId, productDetailNum));
 		});
 		return productScanUrlPaths;
 	}
@@ -93,7 +97,7 @@ public class ProductDetailService {
 			logger.info("productDetial with productId {}, productDetailNum {} not found", productId, productDetailNum);
 			return "product detail not found!";
 		}
-		String scanUrlPath = Utils.getProductScanUrlPath(productId, productDetailNum);
+		String scanUrlPath = Utils.getProductScanUrlPath(applicationProperties.getHash_secret(), productId, productDetailNum);
 		return scanUrlPath;
 	}
 	
@@ -114,7 +118,7 @@ public class ProductDetailService {
 			return false;
 		}
 		String productIdAndProductDetailNumString = productIdString + productDetailNumString;
-		String CalculateHash = Utils.calculateSaltHash(productIdAndProductDetailNumString);
+		String CalculateHash = Utils.calculateSaltHash(applicationProperties.getHash_secret(), productIdAndProductDetailNumString);
 		return hash.equals(CalculateHash);
 	}
 

@@ -1,11 +1,19 @@
 package com.redpacket.server.restful;
 
+import java.io.FileInputStream;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -15,8 +23,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.redpacket.server.ApplicationProperties;
 import com.redpacket.server.common.CustomErrorType;
 import com.redpacket.server.model.Product;
+import com.redpacket.server.service.ProductDetailService;
 import com.redpacket.server.service.ProductService;
 
 import io.swagger.annotations.Api;
@@ -33,6 +43,12 @@ public class ProductController {
 	
 	@Autowired
 	private ProductService productService;
+
+	@Autowired
+	private ProductDetailService productDetailService;
+	
+	@Autowired
+	private ApplicationProperties applicationProperties;
 	
 	@ApiOperation(value = "List all product", notes = "List all product in json response", authorizations={@Authorization(value = "token")})
 	@RequestMapping(value = "/", method = RequestMethod.GET, produces = "application/json")
@@ -94,5 +110,27 @@ public class ProductController {
 		}
 		productService.delete(product);
 		return new ResponseEntity<Product>(product, HttpStatus.OK);
+	}
+
+	@ApiOperation(value = "Get a product detail scan url file", notes = "Get a product detail scan url", authorizations={@Authorization(value = "token")})
+	@RequestMapping(value = "scanUrlFile/{id}", method = RequestMethod.GET)
+	public ResponseEntity<Resource> getProductDetailScanUrlFile(@PathVariable Long id) {
+		List<String> productScanPath = productDetailService.getProductScanPath(id);
+		String fileContents = productScanPath.stream().map(path -> {
+			return applicationProperties.getDomain() + path;
+		}).collect(Collectors.joining("\r\n"));
+		// https://stackoverflow.com/questions/35680932/download-a-file-from-spring-boot-rest-service
+//		InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
+		ByteArrayResource resource = null;
+		try {
+			resource = new ByteArrayResource(fileContents.getBytes("UTF-8"));
+		} catch (UnsupportedEncodingException e) {
+            logger.error("Product getProductDetailScanUrlFile error with {}", e.getMessage());
+			e.printStackTrace();
+		}
+
+	    return ResponseEntity.ok()
+	            .contentType(MediaType.parseMediaType("text/plain"))
+	            .body(resource);
 	}
 }

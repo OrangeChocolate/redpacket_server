@@ -7,7 +7,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 /**
  * wechat mp properties
  *
- * @author Binary Wang
+ * @author Donghua Liu
  */
 @ConfigurationProperties(prefix = "wechat.mp")
 public class WechatMpProperties {

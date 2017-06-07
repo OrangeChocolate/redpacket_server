@@ -41,7 +41,7 @@
 	
 		var message = [[${p_id}]];
 		var config = {
-			debug: 'true',
+			debug: 'false',
 			appId: /*[[${jsapiSignature.appId}]]*/'appId',
 			timestamp: /*[[${jsapiSignature.timestamp}]]*/'timestamp',
 			nonceStr: /*[[${jsapiSignature.nonceStr}]]*/'nonceStr',
@@ -87,9 +87,9 @@
 			    }
 			});
 			wx.onMenuShareTimeline({
-			    title: 'ruanyifeng', // 分享标题
-			    link: 'http://www.ruanyifeng.com/home.html', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-			    imgUrl: 'http://redpacket.dev.liudonghua.com/images/2017.jpg', // 分享图标
+			    title: '我领到众信香油大红包啦！', // 分享标题
+			    link: 'http://redpacket.dev.liudonghua.com/redpacket-share.html', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+			    imgUrl: 'http://redpacket.dev.liudonghua.com/images/bless-you.jpg', // 分享图标
 			    success: function () { 
 			        console.info('onMenuShareTimeline success');
 			        // ajax get方式调用后台接口准备发送红包

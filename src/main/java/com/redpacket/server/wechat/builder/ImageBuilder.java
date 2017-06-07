@@ -7,7 +7,7 @@ import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
 
 /**
  * 
- * @author Binary Wang
+ * @author Donghua Liu
  *
  */
 public class ImageBuilder extends AbstractBuilder {

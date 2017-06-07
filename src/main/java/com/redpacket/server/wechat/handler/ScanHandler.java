@@ -2,7 +2,7 @@ package com.redpacket.server.wechat.handler;
 
 /**
  * 
- * @author Binary Wang
+ * @author Donghua Liu
  *
  */
 public abstract class ScanHandler extends AbstractHandler {

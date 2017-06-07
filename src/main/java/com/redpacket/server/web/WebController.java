@@ -34,12 +34,14 @@ import com.redpacket.server.ApplicationMessageConfiguration;
 import com.redpacket.server.ApplicationProperties;
 import com.redpacket.server.common.Configuration;
 import com.redpacket.server.common.GeneralResponse;
+import com.redpacket.server.common.Tool;
 import com.redpacket.server.common.Utils;
 import com.redpacket.server.model.City;
 import com.redpacket.server.model.Option;
 import com.redpacket.server.model.Product;
 import com.redpacket.server.model.ProductDetail;
 import com.redpacket.server.model.RedPacket;
+import com.redpacket.server.model.SendRedPack;
 import com.redpacket.server.model.WechatUser;
 import com.redpacket.server.service.ProductDetailService;
 import com.redpacket.server.service.ProductService;
@@ -55,14 +57,12 @@ import me.chanjar.weixin.mp.api.WxMpMessageRouter;
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.result.WxMpOAuth2AccessToken;
 import me.chanjar.weixin.mp.bean.result.WxMpUser;
-import model.SendRedPack;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.internal.platform.Platform;
-import tool.Tool;
 
 @Controller
 @RequestMapping("/")
@@ -121,7 +121,7 @@ public class WebController {
 	    
 
 		// 检测checksum
-		boolean isUrlValid = Utils.checkProductScanUrlPath(path);
+		boolean isUrlValid = Utils.checkProductScanUrlPath(applicationProperties.getHash_secret(), path);
 		if(!isUrlValid) {
 			model.addAttribute("error_message", applicationMessageConfiguration.scanUrlInvalidate);
 			return "product-scan-error";
@@ -187,7 +187,7 @@ public class WebController {
 	@RequestMapping(value = "p/sharedtimeline", method = RequestMethod.GET)
 	public @ResponseBody GeneralResponse<String> productSharedTimeline(@RequestParam String state, @RequestParam String openId) {
 		String path = state;
-		boolean isValidateScanPath = Utils.checkProductScanUrlPath(path);
+		boolean isValidateScanPath = Utils.checkProductScanUrlPath(applicationProperties.getHash_secret(), path);
 		if(!isValidateScanPath) {
 			return new GeneralResponse<String>(GeneralResponse.ERROR, applicationMessageConfiguration.scanUrlInvalidate);
 		}
@@ -255,54 +255,29 @@ public class WebController {
                 openId,
                 amount,
                 1,
-                Configuration.getOption(Configuration.wechat_wishing_key).getValue(),
-                applicationProperties.getHostIpAddress(),
-                Configuration.getOption(Configuration.wechat_act_name_key).getValue(),
-                Configuration.getOption(Configuration.wechat_remark_key).getValue(),
+                Configuration.getOption(Configuration.redpacket_wishing_key).getValue(),
+                applicationProperties.getHost_ip_address(),
+                Configuration.getOption(Configuration.redpacket_act_name_key).getValue(),
+                Configuration.getOption(Configuration.redpacket_remark_key).getValue(),
                 "PRODUCT_2"
         );
 
 
-        //将实体类转换为url形式
-        String urlParamsByMap = Tool.getUrlParamsByMap(Tool.toMap(sendRedPack));
-        //拼接我们在前期准备好的API密钥，前期准备第5条
-        urlParamsByMap += "&key=填写API密钥";
-        //进行签名，需要说明的是，如果内容包含中文的话，要使用utf-8进行md5签名，不然会签名错误
-        String sign = Tool.parseStrToMd5L32(urlParamsByMap).toUpperCase();
-        sendRedPack.setSign(sign);
-        //微信要求按照参数名ASCII字典序排序，这里巧用treeMap进行字典排序
-        TreeMap treeMap = new TreeMap(Tool.toMap(sendRedPack));
-        //然后转换成xml格式
-        String soapRequestData = null;
-		try {
-			soapRequestData = Tool.getSoapRequestData(treeMap);
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-        //发起请求前准备
-        RequestBody body = RequestBody.create(MediaType.parse("text/xml;charset=UTF-8"), soapRequestData);
-        Request request = new Request.Builder()
-                .url("https://api.mch.weixin.qq.com/mmpaymkttransfers/sendredpack")
-                .post(body)
-                .build();
-        //为http请求设置证书
-        SSLSocketFactory socketFactory = null;
-		try {
-			socketFactory = Tool.getSSL().getSocketFactory();
-		} catch (UnrecoverableKeyException | KeyManagementException | KeyStoreException | CertificateException
-				| NoSuchAlgorithmException | IOException e) {
-			e.printStackTrace();
-		}
-        X509TrustManager x509TrustManager = Platform.get().trustManager(socketFactory);
-        OkHttpClient okHttpClient = new OkHttpClient.Builder().sslSocketFactory(socketFactory, x509TrustManager).build();
+        String soapRequestData = Tool.generateSoapRequestData(sendRedPack, applicationProperties.getMch_api_secret());
+        
+        Request request = Tool.buildRequest(soapRequestData);
+        
+        OkHttpClient okHttpClient = Tool.buildHttpClient(applicationProperties.getMch_cert_path(), applicationProperties.getMch_cert_secret());
+        
         //得到输出内容
         Response response;
 		try {
 			response = okHttpClient.newCall(request).execute();
 	        String content = response.body().string();
-	        System.out.println(content);
+	        logger.info(content);
 		} catch (IOException e) {
 			e.printStackTrace();
+	        logger.error(e.getMessage());
 		}
 		
 		return new GeneralResponse<String>(GeneralResponse.SUCCESS, applicationMessageConfiguration.scanItemRedpacketGot);

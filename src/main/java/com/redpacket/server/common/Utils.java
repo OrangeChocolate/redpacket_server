@@ -135,10 +135,10 @@ public class Utils {
 	 * @param message
 	 * @return
 	 */
-	public static String calculateSaltHash(String message) {
+	public static String calculateSaltHash(String secret, String message) {
 		try {
 			Mac sha256_HMAC = Mac.getInstance("HmacSHA256");
-			SecretKeySpec secret_key = new SecretKeySpec(Configuration.secret.getBytes(), "HmacSHA256");
+			SecretKeySpec secret_key = new SecretKeySpec(secret.getBytes(), "HmacSHA256");
 			sha256_HMAC.init(secret_key);
 			String hash = Base64.encodeBase64String(sha256_HMAC.doFinal(message.getBytes()));
 			return hash.substring(0, 3);
@@ -148,16 +148,16 @@ public class Utils {
 		return null;
 	}
 	
-	public static String getProductScanUrlPath(Long productId, Long productDetailNum) {
+	public static String getProductScanUrlPath(String secret, Long productId, Long productDetailNum) {
 		String productIdEncoded64 = Utils._10_62(productId);
 		String productDetailNumEncoded64 = Utils._10_62(productDetailNum);
 		String productIdAndProductDetailNumString = productIdEncoded64 + productDetailNumEncoded64;
-		String hash = Utils.calculateSaltHash(productIdAndProductDetailNumString);
+		String hash = Utils.calculateSaltHash(secret, productIdAndProductDetailNumString);
 		return String.format("/p/%s/%s/%s", productIdEncoded64, productDetailNumEncoded64, hash);
 	}
 
 	// productScanUrlPath的一个列子是"/p/0001/0001/LtI" -split-> ("","p","0001","0001","LtI")
-	public static boolean checkProductScanUrlPath(String productScanUrlPath) {
+	public static boolean checkProductScanUrlPath(String secret, String productScanUrlPath) {
 		String[] split = productScanUrlPath.split("/");
 		if(split.length < 5) {
 			logger.info("invalide productScanUrlPath: {}", productScanUrlPath);
@@ -167,7 +167,7 @@ public class Utils {
 		String productDetailNumString = split[3];
 		String hash = split[4];
 		String productIdAndProductDetailNumString = productIdString + productDetailNumString;
-		String CalculateHash = Utils.calculateSaltHash(productIdAndProductDetailNumString);
+		String CalculateHash = Utils.calculateSaltHash(secret, productIdAndProductDetailNumString);
 		return hash.equals(CalculateHash);
 	}
 	

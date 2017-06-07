@@ -15,7 +15,7 @@ import me.chanjar.weixin.mp.bean.message.WxMpXmlMessage;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
 
 /**
- * @author Binary Wang
+ * @author Donghua Liu
  */
 @Component
 public class UnsubscribeHandler extends AbstractHandler {

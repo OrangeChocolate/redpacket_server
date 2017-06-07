@@ -28,7 +28,7 @@ import me.chanjar.weixin.mp.api.impl.WxMpServiceImpl;
 /**
  * wechat mp configuration
  *
- * @author Binary Wang
+ * @author Donghua Liu
  */
 @Configuration
 @ConditionalOnClass(WxMpService.class)

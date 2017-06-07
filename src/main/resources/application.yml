@@ -43,14 +43,7 @@ spring.jpa:
 #  database-platform: org.hibernate.dialect.H2Dialect
 #spring.h2.console.enabled: true
 
-
-#wechat:
-#  mp:
-#    appId: wxf596e31049113e14
-#    secret: 5e85ca80b40567cdc105299c08f45df7
-#    token: test
-#    aesKey: f7GgZCfK8o5bQVE9Hs3BHLP51SG2rD5wgXQ8LyDAbly
-    
+# iman test
 wechat:
   mp:
     appId: wx3909fcd001df528d
@@ -59,8 +52,12 @@ wechat:
     aesKey: f7GgZCfK8o5bQVE9Hs3BHLP51SG2rD5wgXQ8LyDAbly
 
 app:
-  mapKey: SP2BZ-B7MWJ-KW5F7-FVV37-S4UCO-XFFW6
-  mch_id: mch_id
-  hostIpAddress: 202.203.208.20
-  domain: http://redpacket.dev.liudonghua.com
+  hash_secret: 
+  mapK_key: 
+  mch_id: 
+  mch_api_secret: 
+  mch_cert_secret: 
+  mch_cert_path: 
+  host_ip_address: 
+  domain: 
 

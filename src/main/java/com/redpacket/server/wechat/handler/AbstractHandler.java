@@ -7,7 +7,7 @@ import me.chanjar.weixin.mp.api.WxMpMessageHandler;
 
 /**
  * 
- * @author Binary Wang
+ * @author Donghua Liu
  *
  */
 public abstract class AbstractHandler implements WxMpMessageHandler {

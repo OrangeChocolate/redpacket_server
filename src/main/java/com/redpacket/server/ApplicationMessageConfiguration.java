@@ -8,8 +8,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 
 @Configuration
-//@ConfigurationProperties(prefix="scan")
-@PropertySource("application-message.properties")
+@PropertySource(value="application-message.yml",encoding="UTF-8")
 public class ApplicationMessageConfiguration {
 
     @Value("${scan_url_invalidate}")
