@@ -22,3 +22,6 @@ nbbuild/
 dist/
 nbdist/
 .nb-gradle/
+
+# ignore application configuration files
+src/main/resources/application.yml
