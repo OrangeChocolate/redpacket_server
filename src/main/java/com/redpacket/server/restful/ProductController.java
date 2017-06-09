@@ -130,7 +130,7 @@ public class ProductController {
 		}
 
 	    return ResponseEntity.ok()
-	            .contentType(MediaType.parseMediaType("text/plain"))
+	            .contentType(MediaType.parseMediaType("application/octet-stream"))
 	            .body(resource);
 	}
 }
