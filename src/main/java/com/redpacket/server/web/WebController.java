@@ -238,13 +238,8 @@ public class WebController {
 		else {
 			amount = product.getAverageAmount();
 		}
-		productDetail.setScanned(true);
-		productDetailService.saveOrUpdate(productDetail);
-		RedPacket redPacket = new RedPacket(wechatUser, productDetail, amount, new Date());
-		redPacketService.saveOrUpdate(redPacket);
-		// 调用商户平台api发放现金红包
 		
-
+		// 调用商户平台api发放现金红包
         //具体参数查看具体实体类，实体类中的的参数参考微信的红包发放接口，这里你直接用map，进行设置参数也可以。。。
         SendRedPack sendRedPack = new SendRedPack(
                 Utils.getRandomString(),
@@ -275,12 +270,24 @@ public class WebController {
 			response = okHttpClient.newCall(request).execute();
 	        String content = response.body().string();
 	        logger.info(content);
+	        
+	        //检查是否发放成功
+	        if(content.contains("发放成功")) {
+	    		productDetail.setScanned(true);
+	    		productDetailService.saveOrUpdate(productDetail);
+	    		RedPacket redPacket = new RedPacket(wechatUser, productDetail, amount, new Date());
+	    		redPacketService.saveOrUpdate(redPacket);
+	    		return new GeneralResponse<String>(GeneralResponse.SUCCESS, applicationMessageConfiguration.scanItemRedpacketGot);
+	        }
+	        else {
+	    		return new GeneralResponse<String>(GeneralResponse.ERROR, content);
+	        }
 		} catch (IOException e) {
 			e.printStackTrace();
 	        logger.error(e.getMessage());
 		}
-		
 		return new GeneralResponse<String>(GeneralResponse.SUCCESS, applicationMessageConfiguration.scanItemRedpacketGot);
+		
 	}
 
 }
