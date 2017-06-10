@@ -227,7 +227,8 @@ public class WebController {
 		String actualCityString = wechatUser.getActualCity();
 		City actualCity = new City(actualCityString);
 		Set<City> allowSellCities = product.getAllowSellCities();
-		if(forceCityCheckOption.getEnable() && allowSellCities.contains(actualCity)) {
+		if(forceCityCheckOption.getEnable() && Boolean.parseBoolean(forceCityCheckOption.getValue())
+				&& !allowSellCities.contains(actualCity)) {
 			return new GeneralResponse<String>(GeneralResponse.ERROR, applicationMessageConfiguration.scanItemCityNotMatch);
 		}
 		// 发红包啦
