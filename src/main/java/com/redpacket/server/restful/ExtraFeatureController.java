@@ -19,7 +19,7 @@ import io.swagger.annotations.Authorization;
 @CrossOrigin
 @Api(tags = { "extra" })
 @RestController
-@RequestMapping("/api/extra/")
+@RequestMapping("/extra/")
 public class ExtraFeatureController {
 
 	public static final Logger logger = LoggerFactory.getLogger(AdminUserController.class);
@@ -27,13 +27,12 @@ public class ExtraFeatureController {
 	@Autowired
 	private ExtraFeatureService extraFeatureService;
 
-	@ApiOperation(value = "update user location", notes = "update user location", authorizations = {
-			@Authorization(value = "token") })
+	@ApiOperation(value = "update user location", notes = "update user location")
 	@RequestMapping(value = "location/{openId}/{latitude}/{longitude}", method = RequestMethod.PUT, produces = "application/json")
 	public GeneralResponse<String> updateLocation(@PathVariable String openId, @PathVariable double latitude,
 			@PathVariable double longitude) {
-		boolean updateSuccess = extraFeatureService.updateLocation(openId, latitude, longitude);
-		return new GeneralResponse<String>(updateSuccess ? GeneralResponse.SUCCESS : GeneralResponse.ERROR, "");
+		String cityString = extraFeatureService.updateLocation(openId, latitude, longitude);
+		return new GeneralResponse<String>(cityString != null ? GeneralResponse.SUCCESS : GeneralResponse.ERROR, cityString);
 
 	}
 

@@ -28,9 +28,10 @@ public class ExtraFeatureService {
 	
 	Logger logger = LoggerFactory.getLogger(getClass());
 
-	String urlTemplateString = "http://apis.map.qq.com/ws/geocoder/v1/?location=%f,%f&key=%s";
+	// http://lbs.qq.com/webservice_v1/guide-gcoder.html
+	String urlTemplateString = "http://apis.map.qq.com/ws/geocoder/v1/?location=%f,%f&key=%s&coord_type=1";
 	
-	public boolean updateLocation(String openId, double latitude, double longitude) {
+	public String updateLocation(String openId, double latitude, double longitude) {
 		logger.info("收到来自{}的更新地理位置信息", openId);
         WechatUser wechatUser = wechatUserService.findByOpenId(openId);
         if(wechatUser != null) {
@@ -45,9 +46,9 @@ public class ExtraFeatureService {
         	wechatUser.setActualCity(cityString);
         	wechatUser.setUpdateDate(new Date());
         	wechatUserService.saveOrUpdate(wechatUser);
-        	return true;
+        	return cityString;
         }
-        return false;
+        return null;
 	}
 
 }
