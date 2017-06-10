@@ -141,7 +141,15 @@ public class Utils {
 			SecretKeySpec secret_key = new SecretKeySpec(secret.getBytes(), "HmacSHA256");
 			sha256_HMAC.init(secret_key);
 			String hash = Base64.encodeBase64String(sha256_HMAC.doFinal(message.getBytes()));
-			return hash.substring(0, 3);
+//			return hash.substring(0, 3);
+			StringBuilder secureStringBuilder = new StringBuilder();
+			for(int i = 0; i < hash.length(); i++) {
+				char digit = hash.charAt(i);
+				if(Character.isDigit(digit) || Character.isLetter(digit)) {
+					secureStringBuilder.append(digit);
+				}
+			}
+			return secureStringBuilder.substring(0, 3);
 		} catch (Exception e) {
 			System.out.println("Error");
 		}
