@@ -89,7 +89,7 @@
 					// ajax get方式调用后台接口准备发送红包
 			        $.ajax({
 			        	type: 'PUT',
-			        	url: '/extra/location/'+ openId + '/' + latitude + '/' + longitude,
+			        	url: '/extra/location/'+ openId + '/' + latitude + '/' + longitude + '/',
 			        	success: function(response){
 				        	console.info(response);
 				        	alert(response.data);
