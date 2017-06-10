@@ -42,20 +42,11 @@ public class SubscribeHandler extends AbstractHandler {
         	WechatUser wechatUser = wechatUserService.findByOpenId(userWxInfo.getOpenId());
         	// 之前已经关注过，现在重新关注
         	if(wechatUser != null) {
-        		wechatUser.setNickname(userWxInfo.getNickname());
-        		wechatUser.setHeadImgUrl(userWxInfo.getHeadImgUrl());
-        		wechatUser.setCity(userWxInfo.getCity());
-        		wechatUser.setProvince(userWxInfo.getProvince());
-        		wechatUser.setCountry(userWxInfo.getCountry());
-        		wechatUser.setUpdateDate(new Date());
+        		WechatUser.updateWechatUserFromWxUserInfo(wechatUser, userWxInfo);
         	}
         	// 首次关注
         	else {
-        		wechatUser = new WechatUser(userWxInfo.getOpenId(), userWxInfo.getNickname(), userWxInfo.getSex(), userWxInfo.getCity(),
-        				userWxInfo.getCountry(), userWxInfo.getProvince(), userWxInfo.getLanguage(), userWxInfo.getHeadImgUrl());
-        		Date currentDate = new Date();
-        		wechatUser.setCreateDate(currentDate);
-        		wechatUser.setUpdateDate(currentDate);
+        		wechatUser = WechatUser.convertWxUserInfoToWechatUser(userWxInfo);
         	}
         	wechatUserService.saveOrUpdate(wechatUser);
         }

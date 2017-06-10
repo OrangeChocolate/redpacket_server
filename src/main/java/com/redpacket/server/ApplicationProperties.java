@@ -7,6 +7,11 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "app")
 public class ApplicationProperties {
 	
+	/**
+	 * 是否初始化已关注的微信用户信息
+	 */
+	private boolean initilization_user;
+	
     /**
      * 设置扫描网址hash的secret
      */
@@ -47,6 +52,14 @@ public class ApplicationProperties {
      */
     private String mch_cert_path;
     
+	public boolean isInitilization_user() {
+		return initilization_user;
+	}
+
+	public void setInitilization_user(boolean initilization_user) {
+		this.initilization_user = initilization_user;
+	}
+
 	public String getHash_secret() {
 		return hash_secret;
 	}

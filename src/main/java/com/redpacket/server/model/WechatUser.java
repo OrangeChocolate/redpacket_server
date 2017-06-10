@@ -14,6 +14,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import me.chanjar.weixin.mp.bean.result.WxMpUser;
+
 @Entity
 //@Table(uniqueConstraints = @UniqueConstraint(name = "UK_WECHAT_USER_ID_NICKNAME", columnNames = { "id", "nickname" }))
 public class WechatUser implements Serializable {
@@ -238,5 +240,22 @@ public class WechatUser implements Serializable {
 		this.subscribe = subscribe;
 	}
     
-    
+    public static WechatUser convertWxUserInfoToWechatUser(WxMpUser userWxInfo) {
+    	WechatUser wechatUser = new WechatUser(userWxInfo.getOpenId(), userWxInfo.getNickname(), userWxInfo.getSex(), userWxInfo.getCity(),
+				userWxInfo.getCountry(), userWxInfo.getProvince(), userWxInfo.getLanguage(), userWxInfo.getHeadImgUrl());
+		Date currentDate = new Date();
+		wechatUser.setCreateDate(currentDate);
+		wechatUser.setUpdateDate(currentDate);
+    	return wechatUser;
+    }
+
+	public static void updateWechatUserFromWxUserInfo(WechatUser wechatUser, WxMpUser userWxInfo) {
+		wechatUser.setNickname(userWxInfo.getNickname());
+		wechatUser.setHeadImgUrl(userWxInfo.getHeadImgUrl());
+		wechatUser.setCity(userWxInfo.getCity());
+		wechatUser.setProvince(userWxInfo.getProvince());
+		wechatUser.setCountry(userWxInfo.getCountry());
+		Date currentDate = new Date();
+		wechatUser.setUpdateDate(currentDate);
+	}
 }
