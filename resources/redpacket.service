@@ -1,0 +1,11 @@
+[Unit]
+Description=A Spring Boot application named redpacket
+After=syslog.target
+ 
+[Service]
+User=root
+WorkingDirectory=/code/redpacket_server
+ExecStart=/app/apache-maven-3.5.0/bin/mvn spring-boot:run -DskipTests
+ 
+[Install] 
+WantedBy=multi-user.target
