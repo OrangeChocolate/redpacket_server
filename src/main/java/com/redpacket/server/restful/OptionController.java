@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.redpacket.server.common.Configuration;
 import com.redpacket.server.common.CustomErrorType;
 import com.redpacket.server.common.Utils;
 import com.redpacket.server.model.Option;
@@ -58,6 +59,8 @@ public class OptionController {
 		}
 		Option mergedOption = Utils.mergeObjects(existOption, option);
 		Option pesistedOption = optionService.saveOrUpdate(mergedOption);
+		// 重新加载option
+		Configuration.loadOption(optionService.findAll());
 		return new ResponseEntity<Option>(pesistedOption, HttpStatus.OK);
 	}
 }
