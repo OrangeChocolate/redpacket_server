@@ -5,7 +5,7 @@ demo.security.jwt:
   tokenExpirationTime: 150 
   refreshTokenExpTime: 600
   tokenIssuer: http://svlada.com
-  tokenSigningKey: xm8EV6Hy5RMFK4EEACIDAwQus
+  tokenSigningKey: <your_token_here>
 
 # https://stackoverflow.com/questions/42732725/spring-boot-multipart-upload-getting-null-file-object/44016727#44016727  
 spring:
@@ -16,8 +16,8 @@ spring:
 spring.datasource:
   url: "jdbc:mysql://localhost:3306/redpacket?autoReconnect=true&useUnicode=true&characterEncoding=UTF-8&connectionCollation=utf8mb4_unicode_ci&characterSetResults=UTF-8"
   driverClassName: com.mysql.jdbc.Driver
-  username: root
-  password: ""
+  username: <your_mysql_user_here>
+  password: <your_mysql_password_here>
   data: "classpath*:data.sql"
   sql-script-encoding: utf-8
 spring.jpa:
@@ -43,21 +43,20 @@ spring.jpa:
 #  database-platform: org.hibernate.dialect.H2Dialect
 #spring.h2.console.enabled: true
 
-# iman test
 wechat:
-  mp:
-    appId: wx3909fcd001df528d
-    secret: a1e229be117b2a8d45e4a48d4239d6ac
-    token: test
-    aesKey: f7GgZCfK8o5bQVE9Hs3BHLP51SG2rD5wgXQ8LyDAbly
+  mp: <fill_releate_info>
+    appId: <fill_releate_info>
+    secret: <fill_releate_info>
+    token: <fill_releate_info>
+    aesKey: <fill_releate_info>
 
 app:
-  hash_secret: 
-  mapK_key: 
-  mch_id: 
-  mch_api_secret: 
-  mch_cert_secret: 
-  mch_cert_path: 
-  host_ip_address: 
-  domain: 
+  hash_secret: <fill_releate_info>
+  mapK_key: <fill_releate_info>
+  mch_id: <fill_releate_info>
+  mch_api_secret: <fill_releate_info>
+  mch_cert_secret: <fill_releate_info>
+  mch_cert_path: <fill_releate_info>
+  host_ip_address: <fill_releate_info>
+  domain: <fill_releate_info>
 
