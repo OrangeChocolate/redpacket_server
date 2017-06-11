@@ -85,18 +85,18 @@
 			        var longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
 			        var speed = res.speed; // 速度，以米/每秒计
 			        var accuracy = res.accuracy; // 位置精度
-					alert("latitude:" + latitude + ", longitude:" + longitude + ", speed:" + speed + ", accuracy:" + accuracy);
+				//alert("latitude:" + latitude + ", longitude:" + longitude + ", speed:" + speed + ", accuracy:" + accuracy);
 					// ajax get方式调用后台接口准备发送红包
 			        $.ajax({
 			        	type: 'PUT',
 			        	url: '/extra/location/'+ openId + '/' + latitude + '/' + longitude + '/',
 			        	success: function(response){
 				        	console.info(response);
-				        	alert(response.data);
+				        	//alert(response.data);
 			        	},
 				        error: function(xhr, errorType, error){
 				        	console.info(error);
-				        	alert(error);
+				        	//alert(error);
 			        	}
 			        });
 			    }
@@ -120,12 +120,12 @@
 			    }
 			});
 			// 方便调试
-			setTimeout(function() {
-		        $.get('/p/sharedtimeline', {state: QueryString.state, openId: openId}, function(response){
-		        	console.info(response);
-		        	alert(response.data);
-		        });
-			}, 1000);
+			//setTimeout(function() {
+		        //$.get('/p/sharedtimeline', {state: QueryString.state, openId: openId}, function(response){
+		        //	console.info(response);
+		        //	alert(response.data);
+		        //});
+			//}, 1000);
 		});
 	
 	/*]]>*/
