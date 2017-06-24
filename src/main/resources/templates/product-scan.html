@@ -16,57 +16,54 @@
 <div class="container" id="container">
 	<div class="page panel">
 	    <div class="page__hd">
-		    <article class="weui-article padding-left-article">
-		           <h1>发红包啦 ^_^</h1>
+		    <article class="weui-article">
+		           <h1 class="title">众信香油</h1>
+		           <h1 class="title">千万红包送不停！</h1>
 		           <section>
-		           		<p>谢谢您购买我们的产品，为了答谢客户长期的支持，我们给大家发放一定的现金红包，打开这个页面的时候请大家统一获取地理位置信息以及进行如下操作</p>
+		           		<p>感谢购买我们的产品，为答谢您对我们产品的支持和厚爱，众信香油为您送上红包！按照如下步骤操作，即可拿到现金大红包！</p>
 		           		<!-- 
 				   		<p th:text="'您购买的产品是' + ${p_id} + '，' + ${p_num}" />
 				   		 -->
 		           </section>
 		    </article>
 	    </div>
-	    <div class="page__bd">
-	        <div class="weui-panel weui-panel_access">
-	            <div class="weui-panel__hd">操作步骤</div>
-	            <div class="weui-panel__bd">
-	                <a href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg">
-	                    <div class="weui-media-box__hd">
-	                        <img class="weui-media-box__thumb" src="/images/1.png" alt="" />
-	                    </div>
-	                    <div class="weui-media-box__bd">
-	                        <h4 class="weui-media-box__title">关注公众号</h4>
-	                        <p class="weui-media-box__desc">打开<button id="subscribe_btn" class="weui-btn weui-btn_mini weui-btn_primary my-narrow-button" href='https://mp.weixin.qq.com/mp/profile_ext?action=home&amp;__biz=MzI0MTE3MzI2NQ==&amp;scene=124#wechat_redirect'>众信香油公众号</button>，点击关注，如果已经关注则忽略这一步</p>
-	                    </div>
-	                </a>
-	                <a href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg">
-	                    <div class="weui-media-box__hd">
-	                        <img class="weui-media-box__thumb" src="/images/2.png" alt="" />
-	                    </div>
-	                    <div class="weui-media-box__bd">
-	                        <h4 class="weui-media-box__title">微信认证登录</h4>
-	                        <p class="weui-media-box__desc">由于发送红包需要获得用户基本信息，所以需要<button id="oauth2_btn" class="weui-btn weui-btn_mini weui-btn_primary my-narrow-button" th:href="@{${oauth2AuthorizationUrl}}">微信认证</button>，点击前面的按钮开始认证</p>
-	                    </div>
-	                </a>
-	                <a href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg">
-	                    <div class="weui-media-box__hd">
-	                        <img class="weui-media-box__thumb" src="/images/3.png" alt="" />
-	                    </div>
-	                    <div class="weui-media-box__bd">
-	                        <h4 class="weui-media-box__title">分享朋友圈</h4>
-	                        <p class="weui-media-box__desc">最后一步啦:)，再微信认证后的页面上点击右上角分享到朋友圈即可领取现金红包</p>
-	                    </div>
-	                </a>
-	            </div>
-	            <div class="weui-panel__ft">
-	                <a href="javascript:void(0);" class="weui-cell weui-cell_access weui-cell_link">
-	                    <div class="weui-cell__bd">关于更多</div>
-	                    <span class="weui-cell__ft"></span>
-	                </a>    
-	            </div>
-	        </div>
-	        
-	    </div>
+        <div class="weui-panel_access">
+            <div class="weui-panel__hd">操作步骤</div>
+            <div class="weui-panel__bd">
+                <a href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg">
+                    <div class="weui-media-box__hd">
+                        <img class="weui-media-box__thumb" src="/images/1.png" alt="" />
+                    </div>
+                    <div class="weui-media-box__bd">
+                        <h4 class="weui-media-box__title">关注公众号</h4>
+                        <p class="weui-media-box__desc">打开<button id="subscribe_btn" class="weui-btn weui-btn_mini weui-btn_primary my-narrow-button" href='https://mp.weixin.qq.com/mp/profile_ext?action=home&amp;__biz=MzI0MTE3MzI2NQ==&amp;scene=124#wechat_redirect'>众信香油公众号</button>，点击关注，如果已经关注则忽略这一步</p>
+                    </div>
+                </a>
+                <a href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg">
+                    <div class="weui-media-box__hd">
+                        <img class="weui-media-box__thumb" src="/images/2.png" alt="" />
+                    </div>
+                    <div class="weui-media-box__bd">
+                        <h4 class="weui-media-box__title">微信认证登录</h4>
+                        <p class="weui-media-box__desc">点击该按钮<button id="oauth2_btn" class="weui-btn weui-btn_mini weui-btn_primary my-narrow-button" th:href="@{${oauth2AuthorizationUrl}}">微信认证</button>，通过微信认证</p>
+                    </div>
+                </a>
+                <a href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg">
+                    <div class="weui-media-box__hd">
+                        <img class="weui-media-box__thumb" src="/images/3.png" alt="" />
+                    </div>
+                    <div class="weui-media-box__bd">
+                        <h4 class="weui-media-box__title">分享朋友圈</h4>
+                        <p class="weui-media-box__desc">将微信认证后的页面分享到朋友圈，即可领取现金红包</p>
+                    </div>
+                </a>
+            </div>
+            <div class="weui-panel__ft">
+                <a href="javascript:void(0);" class="weui-cell weui-cell_access weui-cell_link">
+                    <div class="weui-cell__bd">关于更多</div>
+                </a>    
+            </div>
+        </div>
 	</div>
 	
     <div class="weui-footer margin-top-footer">

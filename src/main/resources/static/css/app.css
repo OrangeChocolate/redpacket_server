@@ -1,11 +1,91 @@
-.weui-btn_mini.my-narrow-button {
-    padding: 0 3px;
+html {
+	font-size: 16px;
 }
 
-article.padding-left-article {
-	padding: 15px;
+body {
+	font-size: 16px;
+	letter-spacing: .05rem;
+}
+
+.container {
+	padding: 1rem;
+	margin: .5rem;
+	position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+	background: -webkit-gradient(linear, 0 0, 0 bottom, from(#F73335), to(#FEDE78))!important;
+}
+
+h1.title {
+	text-align: center;
+	font-size: 2rem;
+	letter-spacing: .07rem;
+	font-weight: bold;
+    color: orange;
+    text-shadow: 0 0 1px currentColor,-1px -1px 1px #030,0 -1px 1px #030,1px -1px 1px #030,1px 0 1px #030,1px 1px 1px #030,0 1px 1px #030,-1px 1px 1px #030,-1px 0 1px #030;
+    margin-bottom: 0;
+}
+
+.weui-article {
+    padding: 0 15px;
+    font-size: 1rem;
+}
+
+.weui-article section {
+    margin-top: .5rem;
+}
+
+.weui-article section p {
+	color: oldlace;
+    font-size: 1rem;
+}
+
+.weui-article section p.emphasis {
+    font-size: 1.5rem;
+}
+
+.weui-panel_access {
+    margin-top: 3rem;
+}
+
+.weui-panel__hd {
+    position: relative;
+    color: #FFF;
+    font-size: 1rem;
+}
+
+.weui-media-box__title {
+    font-weight: 600;
+    font-size: 1.25rem;
+    color: oldlace;
+}
+
+.weui-media-box__desc {
+    color: #FFF;
+    font-size: 1rem;
+}
+
+.weui-btn_mini.my-narrow-button {
+    margin: .2rem;
+    padding: 0 .5rem;
+    letter-spacing: .1rem;
+    font-size: 1rem;
+}
+
+.weui-footer__text {
+    font-size: .5rem;
+}
+
+.weui-cell_link {
+    font-size: .875rem;
 }
 
 .margin-top-footer {
-	margin-top: 25px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 1rem;
+    width: 100%;
 }
