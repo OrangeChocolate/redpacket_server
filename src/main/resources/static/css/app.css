@@ -4,12 +4,11 @@ html {
 
 body {
 	font-size: 16px;
-	letter-spacing: .05rem;
+	letter-spacing: .025rem;
 }
 
 .container {
-	padding: 1rem;
-	margin: .5rem;
+	padding: 0;
 	position: fixed;
     top: 0;
     left: 0;
@@ -20,40 +19,50 @@ body {
 
 h1.title {
 	text-align: center;
-	font-size: 2rem;
-	letter-spacing: .07rem;
+	font-size: 1.5rem;
+    letter-spacing: .2rem;
 	font-weight: bold;
     color: orange;
     text-shadow: 0 0 1px currentColor,-1px -1px 1px #030,0 -1px 1px #030,1px -1px 1px #030,1px 0 1px #030,1px 1px 1px #030,0 1px 1px #030,-1px 1px 1px #030,-1px 0 1px #030;
-    margin-bottom: 0;
+    margin-bottom: -.2rem;
 }
 
 .weui-article {
-    padding: 0 15px;
+    padding: 0 .938rem;
     font-size: 1rem;
+    margin-top: .938rem;
 }
 
 .weui-article section {
     margin-top: .5rem;
+    margin-bottom: -.5rem;
 }
 
-.weui-article section p {
+.weui-article section p,
+.weui-article section ul {
 	color: oldlace;
     font-size: 1rem;
 }
 
 .weui-article section p.emphasis {
-    font-size: 1.5rem;
-}
-
-.weui-panel_access {
-    margin-top: 3rem;
+    font-size: 1.125rem;
+    margin-top: 1rem;
 }
 
 .weui-panel__hd {
-    position: relative;
-    color: #FFF;
-    font-size: 1rem;
+    font-weight: 600;
+    font-size: 1.25rem;
+    color: oldlace;
+    padding: .5rem .938rem;
+}
+
+.weui-media-box {
+	padding: .5rem .938rem;
+}
+
+.weui-panel__hd:before, .weui-media-box:before, .weui-cell:before, 
+.weui-panel__hd:after, .weui-media-box:after, .weui-cell:after {
+	left: 0;
 }
 
 .weui-media-box__title {
@@ -68,9 +77,8 @@ h1.title {
 }
 
 .weui-btn_mini.my-narrow-button {
-    margin: .2rem;
     padding: 0 .5rem;
-    letter-spacing: .1rem;
+    letter-spacing: .025rem;
     font-size: 1rem;
 }
 
@@ -79,7 +87,7 @@ h1.title {
 }
 
 .weui-cell_link {
-    font-size: .875rem;
+    font-size: .938rem;
 }
 
 .margin-top-footer {
