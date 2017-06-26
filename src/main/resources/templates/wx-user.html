@@ -108,13 +108,13 @@
 			wx.onMenuShareTimeline({
 			    title: '我领到众信香油大红包啦！', // 分享标题
 			    link: 'http://inthb.cn/redpacket-share.html', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-			    imgUrl: 'http://inthb.cn/images/bless-you.jpg', // 分享图标
+			    imgUrl: 'http://inthb.cn/images/zhongxinxiangyou.jpg', // 分享图标
 			    success: function () { 
 			        // console.info('onMenuShareTimeline success');
 			        // ajax get方式调用后台接口准备发送红包
 			        $.get('/p/sharedtimeline', {state: QueryString.state, openId: openId}, function(response){
-			        	// console.info(response);
-			        	// alert(response.data);
+			        	console.info(response);
+			        	alert(response.data);
 			        });
 			        
 			    },
