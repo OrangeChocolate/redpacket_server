@@ -2,9 +2,17 @@ package com.redpacket.server.restful;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -15,12 +23,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.redpacket.server.common.CustomErrorType;
+import com.redpacket.server.model.ProductDetail;
 import com.redpacket.server.model.RedPacket;
 import com.redpacket.server.service.RedPacketService;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
+import net.kaczmarzyk.spring.data.jpa.domain.Like;
+import net.kaczmarzyk.spring.data.jpa.web.annotation.Spec;
 
 @CrossOrigin
 @Api(tags={"redPacket"})
@@ -34,9 +47,17 @@ public class RedPacketController {
 	private RedPacketService redPacketService;
 	
 	@ApiOperation(value = "List all redPacket", notes = "List all redPacket in json response", authorizations={@Authorization(value = "token")})
+	@ApiImplicitParams({ @ApiImplicitParam(name = "wechatNickname", paramType = "query"),
+		@ApiImplicitParam(name = "page", defaultValue="0", paramType = "query"),
+		@ApiImplicitParam(name = "size", defaultValue = "10", paramType = "query"),
+		@ApiImplicitParam(name = "sort", defaultValue = "updateDate,desc", paramType = "query")})
 	@RequestMapping(value = "/", method = RequestMethod.GET, produces = "application/json")
-	public ResponseEntity<List<RedPacket>> get() {
-		List<RedPacket> redPackets = redPacketService.findAll();
+	public ResponseEntity<List<RedPacket>> get(HttpServletRequest request, HttpServletResponse response,
+			@Spec(path = "wechatNickname", spec = Like.class) Specification<RedPacket> spec,
+	        @PageableDefault(size = 1000, sort = "createDateTime", direction=Direction.DESC) Pageable pageable) {
+		Page<RedPacket> page = redPacketService.findAll(spec, pageable);
+		List<RedPacket> redPackets = page.getContent();
+		response.setHeader("X-Total-Count", String.valueOf(page.getTotalElements()));
 		return new ResponseEntity<List<RedPacket>>(redPackets, HttpStatus.OK);
 	}
 

@@ -4,11 +4,13 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.redpacket.server.model.AdminUser;
-import com.redpacket.server.model.Role;
 import com.redpacket.server.repository.AdminUserRepository;
 import com.redpacket.server.repository.AdminUserRoleRepository;
 
@@ -34,6 +36,10 @@ public class AdminUserService {
 
 	public List<AdminUser> findAll() {
 		return userRepository.findAll();
+	}
+
+	public Page<AdminUser> findAll(Specification<AdminUser> spec, Pageable pageable) {
+		return userRepository.findAll(spec, pageable);
 	}
 
 	public AdminUser findById(Long id) {

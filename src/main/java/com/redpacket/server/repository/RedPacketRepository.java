@@ -4,11 +4,11 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-import com.redpacket.server.model.Product;
 import com.redpacket.server.model.RedPacket;
 
-public interface RedPacketRepository extends JpaRepository<RedPacket, Long> {
+public interface RedPacketRepository extends JpaRepository<RedPacket, Long>, JpaSpecificationExecutor<RedPacket> {
 
 	List<RedPacket> findByUserOpenId(String openId);
 

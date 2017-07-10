@@ -4,6 +4,9 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.redpacket.server.common.Utils;
@@ -18,6 +21,10 @@ public class RedPacketService {
 	
 	public List<RedPacket> findAll() {
 		return redPacketRepository.findAll();
+	}
+
+	public Page<RedPacket> findAll(Specification<RedPacket> spec, Pageable pageable) {
+		return redPacketRepository.findAll(spec, pageable);
 	}
 	
 	public RedPacket findById(long id) {

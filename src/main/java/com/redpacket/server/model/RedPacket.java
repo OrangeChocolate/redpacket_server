@@ -47,10 +47,10 @@ public class RedPacket implements Serializable {
      */
     private Date createDateTime = new Date();
     
-//    private Product product;
     private ProductDetail productDetail;
+    
     private long productDetailId;
-//    private String productName;
+    private String productDetailProductName;
 	
 	public RedPacket() {
 	}
@@ -67,6 +67,7 @@ public class RedPacket implements Serializable {
 		this.wechatOpenId = user.getOpenId();
 		this.productDetail = productDetail;
 		this.productDetailId = productDetail.getId();
+		this.productDetailProductName = productDetail.getProductName();
 		this.amount = amount;
 		this.createDateTime = createDateTime;
 	}
@@ -154,9 +155,9 @@ public class RedPacket implements Serializable {
 //	}
 	
 	@OneToOne
-//	@JoinColumn(name = "product_detail_id", foreignKey = @ForeignKey(name="FK_WECHAT_PRODUCT_DETAIL_ID"), referencedColumnName = "id", insertable = false, updatable = false)
 	@PrimaryKeyJoinColumns(foreignKey = @ForeignKey(name = "FK_PRODUCT_DETAIL_COMPOSITE"), value = {
-			@PrimaryKeyJoinColumn(name = "product_detail_id", referencedColumnName = "id")})
+			@PrimaryKeyJoinColumn(name = "product_detail_id", referencedColumnName = "id"),
+			@PrimaryKeyJoinColumn(name = "product_detail_product_name", referencedColumnName = "product_name")})
 	@JsonProperty(access = Access.WRITE_ONLY)
     public ProductDetail getProductDetail() {
 		return productDetail;
@@ -168,7 +169,7 @@ public class RedPacket implements Serializable {
 
 //	// Table [red_packet] contains physical column name [product_detail_id] referred to by multiple physical column names: [product_detail_id], [productDetailId]
 	// https://stackoverflow.com/questions/16335513/hibernate-find-with-composite-key-invalid-column-name-exception
-	@PrimaryKeyJoinColumn(name = "product_product_detail_id")
+	@PrimaryKeyJoinColumn(name = "product_detail_id")
 	public long getProductDetailId() {
 		return productDetailId;
 	}
@@ -177,13 +178,13 @@ public class RedPacket implements Serializable {
 		this.productDetailId = productDetailId;
 	}
 
-//	@Column(name="product_name")
-//	public String getProductName() {
-//		return productName;
-//	}
-//
-//	public void setProductName(String productName) {
-//		this.productName = productName;
-//	}
+	@PrimaryKeyJoinColumn(name="product_detail_product_name")
+	public String getProductDetailProductName() {
+		return productDetailProductName;
+	}
+
+	public void setProductDetailProductName(String productDetailProductName) {
+		this.productDetailProductName = productDetailProductName;
+	}
 
 }

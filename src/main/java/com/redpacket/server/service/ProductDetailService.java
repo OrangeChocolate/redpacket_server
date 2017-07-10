@@ -8,10 +8,14 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.redpacket.server.ApplicationProperties;
 import com.redpacket.server.common.Utils;
+import com.redpacket.server.model.AdminUser;
 import com.redpacket.server.model.Product;
 import com.redpacket.server.model.ProductDetail;
 import com.redpacket.server.model.SimpleEnableItem;
@@ -31,6 +35,10 @@ public class ProductDetailService {
 	
 	public List<ProductDetail> findAll() {
 		return productDetailRepository.findAllByOrderByProductIdAscProductDetailNumAsc();
+	}
+
+	public Page<ProductDetail> findAll(Specification<ProductDetail> spec, Pageable pageable) {
+		return productDetailRepository.findAll(spec, pageable);
 	}
 
 	public ProductDetail saveOrUpdate(ProductDetail productDetail) {
