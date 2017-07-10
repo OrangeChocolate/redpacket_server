@@ -180,6 +180,12 @@ public class WebController {
 		model.addAttribute("jsapiSignature", jsapiSignature);
 		model.addAttribute("wxMpOAuth2AccessToken", wxMpOAuth2AccessToken);
 		model.addAttribute("wxMpUser", wxMpUser);
+
+		model.addAttribute(Configuration.wechat_user_title_key, Configuration.getOption(Configuration.wechat_user_title_key).getValue());
+		model.addAttribute(Configuration.wechat_user_text_key, Configuration.getOption(Configuration.wechat_user_text_key).getValue());
+		model.addAttribute(Configuration.wechat_share_title_key, Configuration.getOption(Configuration.wechat_share_title_key).getValue());
+		model.addAttribute(Configuration.wechat_share_link_key, Configuration.getOption(Configuration.wechat_share_link_key).getValue());
+		model.addAttribute(Configuration.wechat_share_imgUrl_key, Configuration.getOption(Configuration.wechat_share_imgUrl_key).getValue());
 		return "wx-user";
 	}
 	
@@ -278,6 +284,9 @@ public class WebController {
 	    		productDetailService.saveOrUpdate(productDetail);
 	    		RedPacket redPacket = new RedPacket(wechatUser, productDetail, amount, new Date());
 	    		redPacketService.saveOrUpdate(redPacket);
+	    		// 更新用户微信用户最后更新时间
+	    		wechatUser.setUpdateDate(new Date());
+	    		wechatUserService.saveOrUpdate(wechatUser);
 	    		return new GeneralResponse<String>(GeneralResponse.SUCCESS, applicationMessageConfiguration.scanItemRedpacketGot);
 	        }
 	        else {

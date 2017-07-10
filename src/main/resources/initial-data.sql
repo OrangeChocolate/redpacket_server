@@ -412,6 +412,13 @@ INSERT INTO `option` (`enable`, `name`, `value`, `description`) VALUES (0, 'forc
 INSERT INTO `option` (`enable`, `name`, `value`, `description`) VALUES (1, 'max_redpackets_user_total', '5', '用户领取红包总上限');
 INSERT INTO `option` (`enable`, `name`, `value`, `description`) VALUES (1, 'max_redpackets_user_daily', '2', '用户领取红包每天上限');
 
+INSERT INTO `option` (`enable`, `name`, `value`, `description`) VALUES (1, 'wechat_user_title', '千万红包送不停！', '微信认证成功页面显示的标题');
+INSERT INTO `option` (`enable`, `name`, `value`, `description`) VALUES (1, 'wechat_user_text', '请支持众信香油，我们将以更优质的产品和服务回报大家！', '微信认证成功页面显示的主要内容');
+
+INSERT INTO `option` (`enable`, `name`, `value`, `description`) VALUES (1, 'wechat_share_title', '我领到众信香油大红包啦！', '微信分享弹窗的显示标题');
+INSERT INTO `option` (`enable`, `name`, `value`, `description`) VALUES (1, 'wechat_share_link', 'http://inthb.cn/redpacket-share.html', '微信分享弹窗的分享链接');
+INSERT INTO `option` (`enable`, `name`, `value`, `description`) VALUES (1, 'wechat_share_imgUrl', 'http://inthb.cn/images/zhongxinxiangyou.jpg', '微信分享弹窗的缩略图链接');
+
 INSERT INTO `wechat_auto_reply` (`content`, `keyword`, `priority`, `type`) VALUES ('hi,too', 'hi', 0, 'text');
 INSERT INTO `wechat_auto_reply` (`content`, `keyword`, `priority`, `type`) VALUES ('{\r\n  \"title\": \"title\",\r\n  \"description\": \"description\",\r\n  \"thumbMediaId\": \"thumbMediaId\",\r\n  \"musicUrl\": \"musicUrl\",\r\n  \"hqMusicUrl\": \"hqMusicUrl\"\r\n}', 'music', 0, 'music');
 INSERT INTO `wechat_auto_reply` (`content`, `keyword`, `priority`, `type`) VALUES ('{\r\n  \"mediaId\": \"5eFogdEzZBzr5xGmt6tMuJ743XOJ2b1MoUQy0rqLQMk\"}', 'image', 0, 'image');

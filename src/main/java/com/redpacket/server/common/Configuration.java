@@ -15,6 +15,13 @@ public class Configuration {
 	public static String redpacket_act_name_key = "redpacket_act_name";
 	public static String redpacket_remark_key = "redpacket_remark";
 	public static String wechat_send_name_key = "wechat_send_name";
+	// 微信认证成功页面显示的标题和内容
+	public static String wechat_user_title_key = "wechat_user_title";
+	public static String wechat_user_text_key = "wechat_user_text";
+	// 微信分享弹窗的显示的标题、链接、缩略图链接
+	public static String wechat_share_title_key = "wechat_share_title";
+	public static String wechat_share_link_key = "wechat_share_link";
+	public static String wechat_share_imgUrl_key = "wechat_share_imgUrl";
 	
 	public static Map<String, Option> optionMap = new HashMap<String, Option>();
 	
