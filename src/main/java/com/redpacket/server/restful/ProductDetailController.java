@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.redpacket.server.ApplicationProperties;
 import com.redpacket.server.common.CustomErrorType;
+import com.redpacket.server.common.Utils;
 import com.redpacket.server.model.AdminUser;
 import com.redpacket.server.model.ProductDetail;
 import com.redpacket.server.model.SimpleEnableItem;
@@ -64,12 +65,12 @@ public class ProductDetailController {
 	        @PageableDefault(size = 1000, sort = "id") Pageable pageable) {
 		Page<ProductDetail> page = productDetailService.findAll(spec, pageable);
 		List<ProductDetail> productDetails = page.getContent();
-		response.setHeader("X-Total-Count", String.valueOf(page.getTotalElements()));
+		Utils.setExtraHeader(response, page);
 		return new ResponseEntity<List<ProductDetail>>(productDetails, HttpStatus.OK);
 	}
 	
 	@ApiOperation(value = "List all productDetail", notes = "List all productDetail in json response", authorizations={@Authorization(value = "token")})
-	@RequestMapping(value = "/{product_id}", method = RequestMethod.GET, produces = "application/json")
+	@RequestMapping(value = "/product/{product_id}", method = RequestMethod.GET, produces = "application/json")
 	public ResponseEntity<List<ProductDetail>> getByProductId(@PathVariable(name="product_id") Long productId) {
 		List<ProductDetail> productDetails = productDetailService.findByProductId(productId);
 		return new ResponseEntity<List<ProductDetail>>(productDetails, HttpStatus.OK);

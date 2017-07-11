@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.redpacket.server.common.Utils;
 import com.redpacket.server.model.City;
 import com.redpacket.server.service.CityService;
 
@@ -53,7 +54,7 @@ public class CityController {
 	        @PageableDefault(size = 1000, sort = "id") Pageable pageable) {
 		Page<City> page = cityService.findAll(spec, pageable);
 		List<City> cities = page.getContent();
-		response.setHeader("X-Total-Count", String.valueOf(page.getTotalElements()));
+		Utils.setExtraHeader(response, page);
 		return new ResponseEntity<List<City>>(cities, HttpStatus.OK);
 	}
 	

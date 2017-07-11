@@ -21,11 +21,13 @@ import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.redpacket.server.model.Option;
+import com.redpacket.server.model.ProductDetail;
 
 public class Utils {
 	
@@ -273,6 +275,11 @@ public class Utils {
 		file.renameTo(movedFile);
 
 		return movedFile;
+	}
+
+	public static <T> void setExtraHeader(HttpServletResponse response, Page<T> page) {
+		response.setHeader("X-Total-Count", String.valueOf(page.getTotalElements()));
+		response.setHeader("Access-Control-Expose-Headers", "X-Total-Count,Content-Range");
 	}
 
 }

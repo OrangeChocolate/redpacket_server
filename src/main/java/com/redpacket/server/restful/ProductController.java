@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.redpacket.server.ApplicationProperties;
 import com.redpacket.server.common.CustomErrorType;
+import com.redpacket.server.common.Utils;
 import com.redpacket.server.model.Product;
 import com.redpacket.server.service.ProductDetailService;
 import com.redpacket.server.service.ProductService;
@@ -73,7 +74,7 @@ public class ProductController {
 	        @PageableDefault(size = 1000, sort = "id") Pageable pageable) {
 		Page<Product> page = productService.findAll(spec, pageable);
 		List<Product> products = page.getContent();
-		response.setHeader("X-Total-Count", String.valueOf(page.getTotalElements()));
+		Utils.setExtraHeader(response, page);
 		return new ResponseEntity<List<Product>>(products, HttpStatus.OK);
 	}
 

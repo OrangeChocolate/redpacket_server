@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.redpacket.server.common.CustomErrorType;
+import com.redpacket.server.common.Utils;
 import com.redpacket.server.model.AdminUser;
 import com.redpacket.server.service.AdminUserService;
 
@@ -56,7 +57,7 @@ public class AdminUserController {
         @PageableDefault(size = 1000, sort = "id") Pageable pageable) {
 		Page<AdminUser> page = adminUserService.findAll(spec, pageable);
 		List<AdminUser> adminUsers = page.getContent();
-		response.setHeader("X-Total-Count", String.valueOf(page.getTotalElements()));
+		Utils.setExtraHeader(response, page);
 		return new ResponseEntity<List<AdminUser>>(adminUsers, HttpStatus.OK);
 	}
 

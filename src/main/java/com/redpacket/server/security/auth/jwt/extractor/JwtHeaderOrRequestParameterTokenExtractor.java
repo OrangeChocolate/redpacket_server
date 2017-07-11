@@ -23,6 +23,9 @@ public class JwtHeaderOrRequestParameterTokenExtractor implements TokenExtractor
     @Override
     public String extract(HttpServletRequest request) {
         String authorizationHeader = request.getHeader(WebSecurityConfig.JWT_TOKEN_HEADER_PARAM);
+        if(authorizationHeader == null) {
+        	authorizationHeader = request.getHeader(WebSecurityConfig.GENERAL_AUTHORIZATION_HEADER_PARAM);
+        }
         if (StringUtils.isBlank(authorizationHeader)) {
         	String authorizationRequestToken = request.getParameter(WebSecurityConfig.JWT_TOKEN_REQUEST_PARAM);
         	if(StringUtils.isBlank(authorizationRequestToken)) {

@@ -57,7 +57,7 @@ public class OptionController {
 	        @PageableDefault(size = 1000, sort = "id") Pageable pageable) {
 		Page<Option> page = optionService.findAll(spec, pageable);
 		List<Option> options = page.getContent();
-		response.setHeader("X-Total-Count", String.valueOf(page.getTotalElements()));
+		Utils.setExtraHeader(response, page);
 		return new ResponseEntity<List<Option>>(options, HttpStatus.OK);
 	}
 	

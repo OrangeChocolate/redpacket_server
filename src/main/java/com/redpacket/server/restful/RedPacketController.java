@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.redpacket.server.common.CustomErrorType;
+import com.redpacket.server.common.Utils;
 import com.redpacket.server.model.ProductDetail;
 import com.redpacket.server.model.RedPacket;
 import com.redpacket.server.service.RedPacketService;
@@ -57,7 +58,7 @@ public class RedPacketController {
 	        @PageableDefault(size = 1000, sort = "createDateTime", direction=Direction.DESC) Pageable pageable) {
 		Page<RedPacket> page = redPacketService.findAll(spec, pageable);
 		List<RedPacket> redPackets = page.getContent();
-		response.setHeader("X-Total-Count", String.valueOf(page.getTotalElements()));
+		Utils.setExtraHeader(response, page);
 		return new ResponseEntity<List<RedPacket>>(redPackets, HttpStatus.OK);
 	}
 

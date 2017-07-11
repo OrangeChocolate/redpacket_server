@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.redpacket.server.common.CustomErrorType;
+import com.redpacket.server.common.Utils;
 import com.redpacket.server.model.RedPacket;
 import com.redpacket.server.model.WechatUser;
 import com.redpacket.server.service.WechatUserService;
@@ -58,7 +59,7 @@ public class WechatUserController {
 	        @PageableDefault(size = 1000, sort = "updateDate", direction=Direction.DESC) Pageable pageable) {
 		Page<WechatUser> page = wechatUserService.findAll(spec, pageable);
 		List<WechatUser> wechatUsers = page.getContent();
-		response.setHeader("X-Total-Count", String.valueOf(page.getTotalElements()));
+		Utils.setExtraHeader(response, page);
 		return new ResponseEntity<List<WechatUser>>(wechatUsers, HttpStatus.OK);
 	}
 

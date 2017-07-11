@@ -12,12 +12,15 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.ImmutableList;
 import com.redpacket.server.security.RestAuthenticationEntryPoint;
 import com.redpacket.server.security.auth.ajax.AjaxAuthenticationProvider;
 import com.redpacket.server.security.auth.ajax.AjaxLoginProcessingFilter;
@@ -37,6 +40,7 @@ import com.redpacket.server.security.auth.jwt.extractor.TokenExtractor;
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public static final String JWT_TOKEN_HEADER_PARAM = "X-Authorization";
+    public static final String GENERAL_AUTHORIZATION_HEADER_PARAM = "Authorization";
     public static final String JWT_TOKEN_REQUEST_PARAM = "token";
     public static final String FORM_BASED_LOGIN_ENTRY_POINT = "/api/auth/login";
     public static final String TOKEN_BASED_AUTH_ENTRY_POINT = "/api/**";
@@ -84,6 +88,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+		// by default uses a Bean by the name of corsConfigurationSource
+        // http://docs.spring.io/spring-security/site/docs/4.2.x/reference/html/cors.html#cors
+        // https://stackoverflow.com/questions/42016126/cors-issue-no-access-control-allow-origin-header-is-present-on-the-requested#answer-43559441
+		.cors().and()
         .csrf().disable() // We don't need CSRF for JWT based authentication
         .exceptionHandling()
         .authenticationEntryPoint(this.authenticationEntryPoint)
@@ -103,5 +111,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .and()
             .addFilterBefore(buildAjaxLoginProcessingFilter(), UsernamePasswordAuthenticationFilter.class)
             .addFilterBefore(buildJwtTokenAuthenticationProcessingFilter(), UsernamePasswordAuthenticationFilter.class);
+    }
+    
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        final CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(ImmutableList.of("*"));
+        configuration.setAllowedMethods(ImmutableList.of("GET", "POST", "PUT", "DELETE", "HEAD", "PATCH"));
+        // setAllowCredentials(true) is important, otherwise:
+        // The value of the 'Access-Control-Allow-Origin' header in the response must not be the wildcard '*' when the request's credentials mode is 'include'.
+        configuration.setAllowCredentials(true);
+        // setAllowedHeaders is important! Without it, OPTIONS preflight request
+        // will fail with 403 Invalid CORS request
+        configuration.setAllowedHeaders(ImmutableList.of("*"));
+        final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 }
