@@ -63,14 +63,14 @@ public class ProductController {
 	private ApplicationProperties applicationProperties;
 	
 	@ApiOperation(value = "List all product", notes = "List all product in json response", authorizations={@Authorization(value = "token")})
-	@ApiImplicitParams({ @ApiImplicitParam(name = "enable", dataType="boolean", paramType = "query"),
-			@ApiImplicitParam(name = "name", paramType = "query"),
+	@ApiImplicitParams({ @ApiImplicitParam(name = "productName", paramType = "query"),
+			@ApiImplicitParam(name = "enable", dataType="boolean", paramType = "query"),
 			@ApiImplicitParam(name = "page", defaultValue="0", paramType = "query"),
 			@ApiImplicitParam(name = "size", defaultValue = "10", paramType = "query"),
 			@ApiImplicitParam(name = "sort", defaultValue = "updateDate,desc", paramType = "query") })
 	@RequestMapping(value = "/", method = RequestMethod.GET, produces = "application/json")
 	public ResponseEntity<List<Product>> get(HttpServletRequest request, HttpServletResponse response, 
-			@And({@Spec(path = "enable", spec = Equal.class), @Spec(path = "name", spec = Like.class)}) Specification<Product> spec,
+			@And({@Spec(path = "productName", spec = Like.class), @Spec(path = "enable", spec = Equal.class)}) Specification<Product> spec,
 	        @PageableDefault(size = 1000, sort = "id") Pageable pageable) {
 		Page<Product> page = productService.findAll(spec, pageable);
 		List<Product> products = page.getContent();
