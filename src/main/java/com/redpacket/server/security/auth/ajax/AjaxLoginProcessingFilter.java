@@ -61,25 +61,25 @@ public class AjaxLoginProcessingFilter extends AbstractAuthenticationProcessingF
 //        }
 		// we need to only handle cors for /api/auth/login, other path are
 		// controlled by @CrossOrigin
-		if (request.getRequestURI().equals("/api/auth/login")) {
-			String origin = "*";
-			if (request.getHeader(Constants.ORIGIN) != null) {
-				origin = request.getHeader(Constants.ORIGIN);
-			}
-			response.addHeader("Access-Control-Allow-Origin", origin);
-			response.addHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-			response.addHeader("Access-Control-Allow-Credentials", "true");
-			response.addHeader("Access-Control-Allow-Headers", request.getHeader("Access-Control-Request-Headers"));
-			if (request.getMethod().equals(HttpMethod.OPTIONS.name())) {
-				try {
-					response.getWriter().print("OK");
-					response.getWriter().flush();
-					return null;
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		}
+//		if (request.getRequestURI().equals("/api/auth/login")) {
+//			String origin = "*";
+//			if (request.getHeader(Constants.ORIGIN) != null) {
+//				origin = request.getHeader(Constants.ORIGIN);
+//			}
+//			response.setHeader("Access-Control-Allow-Origin", origin);
+//			response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+//			response.setHeader("Access-Control-Allow-Credentials", "true");
+//			response.setHeader("Access-Control-Allow-Headers", request.getHeader("Access-Control-Request-Headers"));
+//			if (request.getMethod().equals(HttpMethod.OPTIONS.name())) {
+//				try {
+//					response.getWriter().print("OK");
+//					response.getWriter().flush();
+//					return null;
+//				} catch (IOException e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		}
 
         LoginRequest loginRequest = objectMapper.readValue(request.getReader(), LoginRequest.class);
         
