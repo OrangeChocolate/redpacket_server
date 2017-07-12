@@ -46,7 +46,7 @@ public class ProductRepositoryTest {
 	}
 
 	private void insertProduct() {
-		Product product = new Product("product1", 1000, "sample product");
+		Product product = new Product("product1", 1000, "sample product", null);
 		productRepository.save(product);
 	}
 

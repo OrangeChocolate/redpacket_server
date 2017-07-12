@@ -1,5 +1,6 @@
 package com.redpacket.server.service;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -50,6 +51,7 @@ public class ProductService {
 		}
 		persistedProduct.setAllowSellCities(savedCities);
 		persistedProduct.setProductDetails(productDetails);
+		persistedProduct.setUpdateDate(new Date());
 		return productRepository.save(persistedProduct);
 	}
 

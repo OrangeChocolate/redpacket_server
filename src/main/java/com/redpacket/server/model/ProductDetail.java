@@ -1,6 +1,7 @@
 package com.redpacket.server.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.annotation.Generated;
 import javax.persistence.CascadeType;
@@ -68,6 +69,16 @@ public class ProductDetail implements Comparable<ProductDetail>, Serializable {
      */
     private RedPacket redPacket;
     
+    /**
+     * 产品详情创建的时间
+     */
+    private Date createDate;
+    
+    /**
+     * 产品详情更新的时间
+     */
+    private Date updateDate;
+    
 	public ProductDetail() {
 	}
 
@@ -76,6 +87,7 @@ public class ProductDetail implements Comparable<ProductDetail>, Serializable {
 		this.productId = product.getId();
 		this.productName = product.getName();
 		this.productDetailNum = productDetailNum;
+		this.createDate = new Date();
 	}
 	
 	@Id
@@ -158,6 +170,21 @@ public class ProductDetail implements Comparable<ProductDetail>, Serializable {
 		this.redPacket = redPacket;
 	}
 
+	public Date getCreateDate() {
+		return createDate;
+	}
+
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
+	}
+
+	public Date getUpdateDate() {
+		return updateDate;
+	}
+
+	public void setUpdateDate(Date updateDate) {
+		this.updateDate = updateDate;
+	}
 
 	/**
 	 * 产品详情的联合主键，使用产品ID和产品详情序号，

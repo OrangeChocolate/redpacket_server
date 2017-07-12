@@ -1,6 +1,7 @@
 package com.redpacket.server.service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
@@ -42,6 +43,7 @@ public class ProductDetailService {
 	}
 
 	public ProductDetail saveOrUpdate(ProductDetail productDetail) {
+		productDetail.setUpdateDate(new Date());
 		return productDetailRepository.save(productDetail);
 	}
 

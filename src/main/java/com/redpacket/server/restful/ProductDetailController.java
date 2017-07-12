@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
@@ -60,11 +61,11 @@ public class ProductDetailController {
 		@ApiImplicitParam(name = "scanned", dataType="boolean", paramType = "query"),
 		@ApiImplicitParam(name = "page", defaultValue="0", paramType = "query"),
 		@ApiImplicitParam(name = "size", defaultValue = "10", paramType = "query"),
-		@ApiImplicitParam(name = "sort", defaultValue = "id,asc", paramType = "query")})
+		@ApiImplicitParam(name = "sort", defaultValue = "updateDate,desc", paramType = "query")})
 	@RequestMapping(value = "/", method = RequestMethod.GET, produces = "application/json")
 	public ResponseEntity<List<ProductDetail>> get(HttpServletRequest request, HttpServletResponse response,
 			@And({@Spec(path = "enable", spec = Equal.class), @Spec(path = "scanned", spec = Equal.class), @Spec(path = "productName", spec = Like.class)}) Specification<ProductDetail> spec,
-	        @PageableDefault(size = 1000, sort = "id") Pageable pageable) {
+	        @PageableDefault(size = 1000, sort = {"updateDate", "productId", "id"}, direction=Direction.DESC) Pageable pageable) {
 		Page<ProductDetail> page = productDetailService.findAll(spec, pageable);
 		List<ProductDetail> productDetails = page.getContent();
 		Utils.setExtraHeader(response, page);

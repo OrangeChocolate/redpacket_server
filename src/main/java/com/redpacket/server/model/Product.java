@@ -1,6 +1,7 @@
 package com.redpacket.server.model;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -83,14 +84,18 @@ public class Product implements Serializable {
 	 * 产品层面的是否可以领取红包
 	 */
 	private boolean enable = true;
+	
+	/**
+	 * 创建产品的时间
+	 */
+	private Date createDate;
+    
+	/**
+	 * 修改产品的时间
+	 */
+    private Date updateDate;
 
 	public Product() {
-	}
-
-	public Product(String name, int amount, String description) {
-		this.name = name;
-		this.amount = amount;
-		this.description = description;
 	}
 
 	public Product(String name, int amount, String description, Set<City> allowSellCity) {
@@ -98,6 +103,7 @@ public class Product implements Serializable {
 		this.amount = amount;
 		this.description = description;
 		this.allowSellCities = allowSellCity;
+		this.createDate = new Date();
 	}
 
 	@Id
@@ -215,6 +221,22 @@ public class Product implements Serializable {
 
 	public void setEnable(boolean enable) {
 		this.enable = enable;
+	}
+	
+	public Date getCreateDate() {
+		return createDate;
+	}
+
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
+	}
+
+	public Date getUpdateDate() {
+		return updateDate;
+	}
+
+	public void setUpdateDate(Date updateDate) {
+		this.updateDate = updateDate;
 	}
 
 	// https://commons.apache.org/proper/commons-lang/apidocs/org/apache/commons/lang3/builder/ToStringBuilder.html

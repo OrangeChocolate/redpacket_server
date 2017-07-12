@@ -14,6 +14,7 @@ import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
@@ -71,7 +72,7 @@ public class ProductController {
 	@RequestMapping(value = "/", method = RequestMethod.GET, produces = "application/json")
 	public ResponseEntity<List<Product>> get(HttpServletRequest request, HttpServletResponse response, 
 			@And({@Spec(path = "productName", spec = Like.class), @Spec(path = "enable", spec = Equal.class)}) Specification<Product> spec,
-	        @PageableDefault(size = 1000, sort = "id") Pageable pageable) {
+	        @PageableDefault(size = 1000, sort = {"updateDate", "id"}, direction=Direction.DESC) Pageable pageable) {
 		Page<Product> page = productService.findAll(spec, pageable);
 		List<Product> products = page.getContent();
 		Utils.setExtraHeader(response, page);
