@@ -32,7 +32,9 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
+import net.kaczmarzyk.spring.data.jpa.domain.Equal;
 import net.kaczmarzyk.spring.data.jpa.domain.Like;
+import net.kaczmarzyk.spring.data.jpa.web.annotation.And;
 import net.kaczmarzyk.spring.data.jpa.web.annotation.Spec;
 
 @CrossOrigin
@@ -48,12 +50,14 @@ public class OptionController {
 	
 	@ApiOperation(value = "List all options", notes = "List all options in json response", authorizations={@Authorization(value = "token")})
 	@ApiImplicitParams({ @ApiImplicitParam(name = "name", paramType = "query"),
+		@ApiImplicitParam(name = "description", paramType = "query"),
+		@ApiImplicitParam(name = "enable", dataType="boolean", paramType = "query"),
 		@ApiImplicitParam(name = "page", defaultValue="0", paramType = "query"),
 		@ApiImplicitParam(name = "size", defaultValue = "10", paramType = "query"),
 		@ApiImplicitParam(name = "sort", defaultValue = "updateDate,desc", paramType = "query") })
 	@RequestMapping(value = "/", method = RequestMethod.GET, produces = "application/json")
 	public ResponseEntity<List<Option>> get(HttpServletRequest request, HttpServletResponse response, 
-			@Spec(path = "name", spec = Like.class) Specification<Option> spec,
+			@And({@Spec(path = "name", spec = Like.class), @Spec(path = "description", spec = Like.class), @Spec(path = "enable", spec = Equal.class)}) Specification<Option> spec,
 	        @PageableDefault(size = 1000, sort = "id") Pageable pageable) {
 		Page<Option> page = optionService.findAll(spec, pageable);
 		List<Option> options = page.getContent();
