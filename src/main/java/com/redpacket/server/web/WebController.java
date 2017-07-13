@@ -207,6 +207,11 @@ public class WebController {
 		if(!productDetail.getEnable()) {
 			return new GeneralResponse<String>(GeneralResponse.ERROR, applicationMessageConfiguration.scanItemNotEnable);
 		}
+		// 检测此产品的红包是否已经被领取过
+		List<RedPacket> redPacketsByProductDetailId = redPacketService.findByProductDetailId(productDetail.getId());
+		if(redPacketsByProductDetailId != null && !redPacketsByProductDetailId.isEmpty()) {
+			return new GeneralResponse<String>(GeneralResponse.ERROR, applicationMessageConfiguration.scanItemHasUsed);
+		}
 		// 检测用户是否可以领取红包
 		List<RedPacket> redPacketsTotal = redPacketService.findByUserOpenId(openId);
 		List<RedPacket> redPacketsDaily = redPacketService.findByUserOpenIdCurrentDay(openId, new Date());

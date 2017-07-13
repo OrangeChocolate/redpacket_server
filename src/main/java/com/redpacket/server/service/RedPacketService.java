@@ -46,6 +46,10 @@ public class RedPacketService {
 		Date dayEnd = Utils.getDateEnd(currentDate);
 		return redPacketRepository.findByUserOpenIdAndCreateDateTimeBetween(openId, dayBegin, dayEnd);
 	}
+	
+	public List<RedPacket> findByProductDetailId(long productDetailId) {
+		return redPacketRepository.findByProductDetailId(productDetailId);
+	}
 
 	public RedPacket saveOrUpdate(RedPacket redPacket) {
 		return redPacketRepository.save(redPacket);

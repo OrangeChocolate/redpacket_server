@@ -14,4 +14,6 @@ public interface RedPacketRepository extends JpaRepository<RedPacket, Long>, Jpa
 
 	List<RedPacket> findByUserOpenIdAndCreateDateTimeBetween(String openId, Date dayBegin, Date dayEnd);
 
+	List<RedPacket> findByProductDetailId(long productDetailId);
+
 }

@@ -75,6 +75,18 @@ public class RedPacketController {
 	}
 
 	@SuppressWarnings("rawtypes")
+	@ApiOperation(value = "Get a redPacket by product detail id", notes = "Get a redPacket by product detail id with json response", authorizations={@Authorization(value = "token")})
+	@RequestMapping(value = "/productDetail/{productDetailId}", method = RequestMethod.GET, produces = "application/json")
+	public ResponseEntity<List<RedPacket>> getByProductDetailId(@PathVariable Long productDetailId) {
+		List<RedPacket> redPackets = redPacketService.findByProductDetailId(productDetailId);
+		if(redPackets == null) {
+            logger.error("RedPacket with productDetailId {} not found.", productDetailId);
+            return new ResponseEntity(new CustomErrorType("RedPacket with productDetailId " + productDetailId + " not found"), HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<List<RedPacket>>(redPackets, HttpStatus.OK);
+	}
+
+	@SuppressWarnings("rawtypes")
 	@ApiOperation(value = "Create a redPacket", notes = "Create a redPacket with json response", authorizations={@Authorization(value = "token")})
 	@RequestMapping(value = "/", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
 	public ResponseEntity<RedPacket> create(@RequestBody RedPacket redPacket) {
