@@ -51,7 +51,7 @@ public class RedPacketController {
 	@ApiImplicitParams({ @ApiImplicitParam(name = "wechatNickname", paramType = "query"),
 		@ApiImplicitParam(name = "page", defaultValue="0", paramType = "query"),
 		@ApiImplicitParam(name = "size", defaultValue = "10", paramType = "query"),
-		@ApiImplicitParam(name = "sort", defaultValue = "updateDate,desc", paramType = "query")})
+		@ApiImplicitParam(name = "sort", defaultValue = "createDateTime,desc", paramType = "query")})
 	@RequestMapping(value = "/", method = RequestMethod.GET, produces = "application/json")
 	public ResponseEntity<List<RedPacket>> get(HttpServletRequest request, HttpServletResponse response,
 			@Spec(path = "wechatNickname", spec = Like.class) Specification<RedPacket> spec,
