@@ -89,7 +89,14 @@
 		
 		$("#oauth2_btn").click(function(event) {
 			console.info('oauth2_btn clicked');
-			window.location=$(event.target).attr('href');
+			// 如果url已经有query参数
+            if ($(event.target).attr('href').indexOf("?") !== -1) {
+                window.location=$(event.target).attr('href') + "&state=" + encodeURIComponent(window.location.pathname);
+            }
+            // url中没有query参数
+            else {
+                window.location=$(event.target).attr('href') + "?state=" + encodeURIComponent(window.location.pathname);
+            }
 		});
 	
 		wx.config(config);

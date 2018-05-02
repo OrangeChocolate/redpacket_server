@@ -95,6 +95,31 @@ public class Product implements Serializable {
 	 */
     private Date updateDate;
 
+	/**
+	 * 微信认证成功页面显示的标题
+	 */
+	private String wechatUserTitle;
+
+	/**
+	 * 微信认证成功页面显示的主要内容
+	 */
+	private String wechatUserText;
+
+	/**
+	 * 微信分享弹窗的显示标题
+	 */
+	private String wechatShareTitle;
+
+	/**
+	 * 微信分享弹窗的分享链接
+	 */
+	private String wechatShareLink;
+
+	/**
+	 * 微信分享弹窗的缩略图链接
+	 */
+	private String wechatShareImgUrl;
+
 	public Product() {
 	}
 
@@ -237,6 +262,47 @@ public class Product implements Serializable {
 
 	public void setUpdateDate(Date updateDate) {
 		this.updateDate = updateDate;
+	}
+
+	public String getWechatUserTitle() {
+		return wechatUserTitle;
+	}
+
+	public void setWechatUserTitle(String wechatUserTitle) {
+		this.wechatUserTitle = wechatUserTitle;
+	}
+
+	public String getWechatUserText() {
+		return wechatUserText;
+	}
+
+	public void setWechatUserText(String wechatUserText) {
+		this.wechatUserText = wechatUserText;
+	}
+
+	public String getWechatShareTitle() {
+		return wechatShareTitle;
+	}
+
+	public void setWechatShareTitle(String wechatShareTitle) {
+		this.wechatShareTitle = wechatShareTitle;
+	}
+
+	public String getWechatShareLink() {
+		return wechatShareLink;
+	}
+
+	public void setWechatShareLink(String wechatShareLink) {
+		this.wechatShareLink = wechatShareLink;
+	}
+
+//	@Column(name = "wechat_share_imgUrl")
+	public String getWechatShareImgUrl() {
+		return wechatShareImgUrl;
+	}
+
+	public void setWechatShareImgUrl(String wechatShareImgUrl) {
+		this.wechatShareImgUrl = wechatShareImgUrl;
 	}
 
 	// https://commons.apache.org/proper/commons-lang/apidocs/org/apache/commons/lang3/builder/ToStringBuilder.html

@@ -12,6 +12,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.X509TrustManager;
@@ -24,6 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -105,6 +108,8 @@ public class WebController {
     private static String OAUTH2_SCOPE = "snsapi_userinfo";
     private static String OAUTH2_STATE = "STATE";
 
+	private Pattern pattern = Pattern.compile("/p/(\\w+)/(\\w+)/(\\w+)");
+
 	@RequestMapping(value = "p/{p_id}/{p_num}/{checksum}", method = RequestMethod.GET)
 	public String productScan(@PathVariable("p_id") String p_id, 
 			@PathVariable("p_num") String p_num, 
@@ -163,11 +168,31 @@ public class WebController {
 	
 
 	@RequestMapping(value = "oauth2/authorize", method = RequestMethod.GET)
-	public String productScan(@RequestParam("code") String code, Model model, HttpServletRequest request) {
+	public String productScan(@RequestParam("code") String code, @RequestParam("state") String state, Model model, HttpServletRequest request) {
 		WxMpOAuth2AccessToken wxMpOAuth2AccessToken = null;
 		WxMpUser wxMpUser = null;
 		WxJsapiSignature jsapiSignature = null;
 		String requestUrl = Utils.getFullURL(request);
+		// 从state参数里(/p/{p_id}/{p_num}/{checksum})获取到product id
+		logger.info("code: {}", code);
+		logger.info("state: {}", state);
+		long productId = 0;
+		Matcher matcher = pattern.matcher(state);
+		if(matcher.matches()) {
+			String productIdEncoded = matcher.group(1);
+			productId = Long.parseLong(Utils._62_10(productIdEncoded));
+			logger.info("productId: {}", productId);
+		}
+		else {
+			model.addAttribute("errorMessage", "state 参数未提供！");
+			return "wx-user-error";
+		}
+		Product product = productService.findById(productId);
+		if(product == null) {
+			model.addAttribute("errorMessage", applicationMessageConfiguration.scanItemNotFound);
+			return "wx-user-error";
+		}
+
 		try {
 			wxMpOAuth2AccessToken = wxService.oauth2getAccessToken(code);
 			wxMpUser = wxService.oauth2getUserInfo(wxMpOAuth2AccessToken, null);
@@ -175,17 +200,24 @@ public class WebController {
 		} catch (WxErrorException e) {
 			e.printStackTrace();
 			logger.error(e.getMessage());
+			model.addAttribute("errorMessage", e.getMessage());
 			return "wx-user-error";
 		}
 		model.addAttribute("jsapiSignature", jsapiSignature);
 		model.addAttribute("wxMpOAuth2AccessToken", wxMpOAuth2AccessToken);
 		model.addAttribute("wxMpUser", wxMpUser);
 
-		model.addAttribute(Configuration.wechat_user_title_key, Configuration.getOption(Configuration.wechat_user_title_key).getValue());
-		model.addAttribute(Configuration.wechat_user_text_key, Configuration.getOption(Configuration.wechat_user_text_key).getValue());
-		model.addAttribute(Configuration.wechat_share_title_key, Configuration.getOption(Configuration.wechat_share_title_key).getValue());
-		model.addAttribute(Configuration.wechat_share_link_key, Configuration.getOption(Configuration.wechat_share_link_key).getValue());
-		model.addAttribute(Configuration.wechat_share_imgUrl_key, Configuration.getOption(Configuration.wechat_share_imgUrl_key).getValue());
+		// 设置相关信息，如果product中没有设置，则使用全局配置
+		model.addAttribute(Configuration.wechat_user_title_key,
+				StringUtils.isEmpty(product.getWechatUserTitle()) ? Configuration.getOption(Configuration.wechat_user_title_key).getValue() : product.getWechatUserTitle());
+		model.addAttribute(Configuration.wechat_user_text_key,
+				StringUtils.isEmpty(product.getWechatUserText()) ? Configuration.getOption(Configuration.wechat_user_text_key).getValue() : product.getWechatUserText());
+		model.addAttribute(Configuration.wechat_share_title_key,
+				StringUtils.isEmpty(product.getWechatShareTitle()) ? Configuration.getOption(Configuration.wechat_share_title_key).getValue() : product.getWechatShareTitle());
+		model.addAttribute(Configuration.wechat_share_link_key,
+				StringUtils.isEmpty(product.getWechatShareLink()) ? Configuration.getOption(Configuration.wechat_share_link_key).getValue() : product.getWechatShareLink());
+		model.addAttribute(Configuration.wechat_share_imgUrl_key,
+				StringUtils.isEmpty(product.getWechatShareImgUrl()) ? Configuration.getOption(Configuration.wechat_share_imgUrl_key).getValue() : product.getWechatShareImgUrl());
 		return "wx-user";
 	}
 	
