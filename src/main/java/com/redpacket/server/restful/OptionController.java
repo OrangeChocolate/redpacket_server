@@ -54,7 +54,7 @@ public class OptionController {
 		@ApiImplicitParam(name = "enable", dataType="boolean", paramType = "query"),
 		@ApiImplicitParam(name = "page", defaultValue="0", paramType = "query"),
 		@ApiImplicitParam(name = "size", defaultValue = "10", paramType = "query"),
-		@ApiImplicitParam(name = "sort", defaultValue = "updateDate,desc", paramType = "query") })
+		@ApiImplicitParam(name = "sort", defaultValue = "id", paramType = "query") })
 	@RequestMapping(value = "/", method = RequestMethod.GET, produces = "application/json")
 	public ResponseEntity<List<Option>> get(HttpServletRequest request, HttpServletResponse response, 
 			@And({@Spec(path = "name", spec = Like.class), @Spec(path = "description", spec = Like.class), @Spec(path = "enable", spec = Equal.class)}) Specification<Option> spec,
