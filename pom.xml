@@ -26,6 +26,7 @@
 		<io.springfox.swagger2.version>2.7.0-SNAPSHOT</io.springfox.swagger2.version>
 		<org.hibernate.version>5.2.10.Final</org.hibernate.version>
 		<weixin-java-mp.version>2.6.0</weixin-java-mp.version>
+		<maven.test.skip>true</maven.test.skip>
 	</properties>
 
 	<dependencies>
