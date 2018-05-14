@@ -168,14 +168,18 @@ public class WebController {
 	
 
 	@RequestMapping(value = "oauth2/authorize", method = RequestMethod.GET)
-	public String productScan(@RequestParam("code") String code, @RequestParam("state") String state, Model model, HttpServletRequest request) {
+	public String productAuthorize(@RequestParam(name = "code", required = false) String code, @RequestParam(name = "state", required = false) String state, Model model, HttpServletRequest request) {
 		WxMpOAuth2AccessToken wxMpOAuth2AccessToken = null;
 		WxMpUser wxMpUser = null;
 		WxJsapiSignature jsapiSignature = null;
 		String requestUrl = Utils.getFullURL(request);
 		// 从state参数里(/p/{p_id}/{p_num}/{checksum})获取到product id
-		logger.info("code: {}", code);
-		logger.info("state: {}", state);
+		logger.info("productAuthorize code: {}", code);
+		logger.info("productAuthorize state: {}", state);
+		if(StringUtils.isEmpty(code) || StringUtils.isEmpty(state)) {
+			model.addAttribute("errorMessage", "code: " + code + ", state: " + state);
+			return "wx-user-error";
+		}
 		long productId = 0;
 		Matcher matcher = pattern.matcher(state);
 		if(matcher.matches()) {
@@ -188,6 +192,7 @@ public class WebController {
 			return "wx-user-error";
 		}
 		Product product = productService.findById(productId);
+		logger.info("product: {}", product);
 		if(product == null) {
 			model.addAttribute("errorMessage", applicationMessageConfiguration.scanItemNotFound);
 			return "wx-user-error";
@@ -223,7 +228,9 @@ public class WebController {
 	
 
 	@RequestMapping(value = "p/sharedtimeline", method = RequestMethod.GET)
-	public @ResponseBody GeneralResponse<String> productSharedTimeline(@RequestParam String state, @RequestParam String openId) {
+	public @ResponseBody GeneralResponse<String> productSharedTimeline(@RequestParam String state, @RequestParam String code, @RequestParam String openId) {
+		logger.info("productSharedTimeline state: {}", state);
+		logger.info("productSharedTimeline code: {}", code);
 		String path = state;
 		boolean isValidateScanPath = Utils.checkProductScanUrlPath(applicationProperties.getHash_secret(), path);
 		if(!isValidateScanPath) {
@@ -324,9 +331,11 @@ public class WebController {
 	    		// 更新用户微信用户最后更新时间
 	    		wechatUser.setUpdateDate(new Date());
 	    		wechatUserService.saveOrUpdate(wechatUser);
+				logger.info("productSharedTimeline {} 红包发送成功: {}", openId, amount);
 	    		return new GeneralResponse<String>(GeneralResponse.SUCCESS, applicationMessageConfiguration.scanItemRedpacketGot);
 	        }
 	        else {
+				logger.info("productSharedTimeline {} 红包发送失败: {}", openId, content);
 	    		return new GeneralResponse<String>(GeneralResponse.ERROR, content);
 	        }
 		} catch (IOException e) {
