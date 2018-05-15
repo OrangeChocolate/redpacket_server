@@ -112,7 +112,7 @@
 			    success: function () { 
 			        // console.info('onMenuShareTimeline success');
 			        // ajax get方式调用后台接口准备发送红包
-			        $.get('/p/sharedtimeline', {state: QueryString.state, openId: openId}, function(response){
+			        $.get('/p/sharedtimeline', {state: QueryString.state, code: QueryString.code, openId: openId}, function(response){
 			        	console.info(response);
 			        	alert(response.data);
 			        });
