@@ -117,6 +117,11 @@ public class ProductController {
 		pesistedProduct.setName(product.getName());
 		pesistedProduct.setAmount(product.getAmount());
 		pesistedProduct.setAllowSellCities(product.getAllowSellCities());
+		pesistedProduct.setWechatUserTitle(product.getWechatUserTitle());
+		pesistedProduct.setWechatUserText(product.getWechatUserText());
+		pesistedProduct.setWechatShareTitle(product.getWechatShareTitle());
+		pesistedProduct.setWechatShareLink(product.getWechatShareLink());
+		pesistedProduct.setWechatShareImgUrl(product.getWechatShareImgUrl());
 		pesistedProduct = productService.saveOrUpdate(pesistedProduct);
 		return new ResponseEntity<Product>(pesistedProduct, HttpStatus.OK);
 	}
