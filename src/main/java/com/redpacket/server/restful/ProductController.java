@@ -114,14 +114,15 @@ public class ProductController {
             logger.error("Product with id {} not found.", id);
             return new ResponseEntity(new CustomErrorType("Product with id " + id + " not found"), HttpStatus.NOT_FOUND);
 		}
-		pesistedProduct.setName(product.getName());
-		pesistedProduct.setAmount(product.getAmount());
-		pesistedProduct.setAllowSellCities(product.getAllowSellCities());
-		pesistedProduct.setWechatUserTitle(product.getWechatUserTitle());
-		pesistedProduct.setWechatUserText(product.getWechatUserText());
-		pesistedProduct.setWechatShareTitle(product.getWechatShareTitle());
-		pesistedProduct.setWechatShareLink(product.getWechatShareLink());
-		pesistedProduct.setWechatShareImgUrl(product.getWechatShareImgUrl());
+//		pesistedProduct.setName(product.getName());
+//		pesistedProduct.setAmount(product.getAmount());
+//		pesistedProduct.setAllowSellCities(product.getAllowSellCities());
+//		pesistedProduct.setWechatUserTitle(product.getWechatUserTitle());
+//		pesistedProduct.setWechatUserText(product.getWechatUserText());
+//		pesistedProduct.setWechatShareTitle(product.getWechatShareTitle());
+//		pesistedProduct.setWechatShareLink(product.getWechatShareLink());
+//		pesistedProduct.setWechatShareImgUrl(product.getWechatShareImgUrl());
+		Utils.mergeObjects(pesistedProduct, product);
 		pesistedProduct = productService.saveOrUpdate(pesistedProduct);
 		return new ResponseEntity<Product>(pesistedProduct, HttpStatus.OK);
 	}
